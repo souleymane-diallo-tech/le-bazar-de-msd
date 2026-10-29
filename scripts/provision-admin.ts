@@ -8,6 +8,14 @@ import { PrismaClient } from "../src/generated/prisma/client";
 // JSON on stdin, never passwords in shell arguments or output.
 const chunks: Buffer[] = [];
 for await (const chunk of process.stdin) chunks.push(Buffer.from(chunk));
+let payload: unknown;
+try {
+  payload = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+} catch {
+  // Native JSON errors may echo the input, including a password.
+  console.error("JSON invalide. Aucun compte créé.");
+  process.exit(1);
+}
 const input = z
   .object({
     email: z.email().transform((v) => v.toLowerCase()),
@@ -15,7 +23,7 @@ const input = z
     password: z.string().min(12).max(128),
     role: z.enum(["OWNER", "MANAGER"]).default("OWNER"),
   })
-  .safeParse(JSON.parse(Buffer.concat(chunks).toString("utf8")));
+  .safeParse(payload);
 if (!input.success)
   throw new Error(
     "Entrée invalide ; email, name, password (12 caractères minimum), role requis.",
@@ -57,6 +65,12 @@ try {
     });
   });
   console.log("Compte créé. Aucun identifiant secret n’est affiché.");
+} catch {
+  // Prisma diagnostics can contain credential fields; never print the original error.
+  console.error(
+    "Provisionnement impossible. Vérifiez la base et l’absence de compte existant.",
+  );
+  process.exitCode = 1;
 } finally {
   await db.$disconnect();
 }
