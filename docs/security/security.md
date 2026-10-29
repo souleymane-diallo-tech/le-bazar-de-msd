@@ -2,18 +2,18 @@
 
 ## Permissions proposées
 
-| Opération | Propriétaire | Gestionnaire | Public |
-|---|---|---|---|
-| Catalogue publié / commande invitée | Oui | Oui | Oui |
-| Catalogue interne et publication | Oui | Oui | Non |
-| Ajustement stock avec motif | Oui | Oui | Non |
-| Traitement commande/livraison | Oui | Oui | Non |
-| Enregistrer encaissement | Oui | Oui | Non |
-| Remboursement / correction encaissement | Oui | Non | Non |
-| Paramètres commerciaux et zones | Oui | Lecture | Non |
-| Utilisateurs et rôles | Oui | Non | Non |
-| Secrets paiement | Via infrastructure autorisée | Non | Non |
-| Consultation audit | Oui | Non | Non |
+| Opération                               | Propriétaire                 | Gestionnaire | Public |
+| --------------------------------------- | ---------------------------- | ------------ | ------ |
+| Catalogue publié / commande invitée     | Oui                          | Oui          | Oui    |
+| Catalogue interne et publication        | Oui                          | Oui          | Non    |
+| Ajustement stock avec motif             | Oui                          | Oui          | Non    |
+| Traitement commande/livraison           | Oui                          | Oui          | Non    |
+| Enregistrer encaissement                | Oui                          | Oui          | Non    |
+| Remboursement / correction encaissement | Oui                          | Non          | Non    |
+| Paramètres commerciaux et zones         | Oui                          | Lecture      | Non    |
+| Utilisateurs et rôles                   | Oui                          | Non          | Non    |
+| Secrets paiement                        | Via infrastructure autorisée | Non          | Non    |
+| Consultation audit                      | Oui                          | Non          | Non    |
 
 Politique par défaut : refus. Vérification dans chaque service sensible, y compris actions serveur et endpoints, et pas seulement dans les pages. Pas d'inscription publique administrateur. Provisionnement initial du propriétaire par procédure contrôlée, jamais par mot de passe commité.
 

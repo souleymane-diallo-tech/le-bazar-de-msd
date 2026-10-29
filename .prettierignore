@@ -1,0 +1,9 @@
+node_modules
+.next
+.local
+src/generated
+package-lock.json
+msf
+*.svg
+playwright-report
+test-results

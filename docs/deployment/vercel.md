@@ -4,11 +4,11 @@
 
 Premier déploiement Vercel du socle en fin de Phase 2 ; boutique navigable en Phase 3. Aucune URL n'existe encore pour ce projet.
 
-| Environnement | Données et accès | Paiements |
-|---|---|---|
-| Local | Base de développement | Faux adaptateur explicite |
+| Environnement         | Données et accès                                             | Paiements                             |
+| --------------------- | ------------------------------------------------------------ | ------------------------------------- |
+| Local                 | Base de développement                                        | Faux adaptateur explicite             |
 | Preview/démonstration | Base/médias dédiés, données fictives, accès protégé, noindex | Faux adaptateur ou sandbox documentée |
-| Production | Base/médias et secrets distincts, domaine validé | Livraison et prestataires autorisés |
+| Production            | Base/médias et secrets distincts, domaine validé             | Livraison et prestataires autorisés   |
 
 Une Preview ne doit jamais recevoir la chaîne de connexion de production. Les previews peuvent partager une base de démonstration au début, mais les changements de schéma concurrents imposent des bases isolées ou une coordination stricte.
 

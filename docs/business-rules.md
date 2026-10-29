@@ -10,15 +10,15 @@
 
 ## États de commande
 
-| État | Transitions permises | Conditions |
-|---|---|---|
-| PENDING_CONFIRMATION | CONFIRMED, CANCELLED | Gestionnaire ; réservation valide ; paiement réussi si électronique |
-| CONFIRMED | PREPARING, CANCELLED | Gestionnaire ; annulation lance procédure remboursement si nécessaire |
-| PREPARING | SHIPPED, CANCELLED | Gestionnaire ; consommation du stock à l'expédition |
-| SHIPPED | DELIVERED, DELIVERY_FAILED | Résultat de livraison documenté |
-| DELIVERY_FAILED | SHIPPED, RETURNED | Réessai ou retour physique confirmé |
-| DELIVERED | Aucune transition ordinaire | Correction exceptionnelle auditée ; remboursement distinct |
-| CANCELLED / RETURNED | Aucune | Terminaux |
+| État                 | Transitions permises        | Conditions                                                            |
+| -------------------- | --------------------------- | --------------------------------------------------------------------- |
+| PENDING_CONFIRMATION | CONFIRMED, CANCELLED        | Gestionnaire ; réservation valide ; paiement réussi si électronique   |
+| CONFIRMED            | PREPARING, CANCELLED        | Gestionnaire ; annulation lance procédure remboursement si nécessaire |
+| PREPARING            | SHIPPED, CANCELLED          | Gestionnaire ; consommation du stock à l'expédition                   |
+| SHIPPED              | DELIVERED, DELIVERY_FAILED  | Résultat de livraison documenté                                       |
+| DELIVERY_FAILED      | SHIPPED, RETURNED           | Réessai ou retour physique confirmé                                   |
+| DELIVERED            | Aucune transition ordinaire | Correction exceptionnelle auditée ; remboursement distinct            |
+| CANCELLED / RETURNED | Aucune                      | Terminaux                                                             |
 
 Retour après livraison : traitement manuel documenté ; remboursement et mouvement de stock distincts, sans réécrire la commande livrée. L'état RETURNED décrit ici un échec de livraison retourné.
 
