@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120" role="img" aria-labelledby="title desc">
+<title id="title">Le Bazar de MSD — maquettes de conception</title>
+<desc id="desc">Trois écrans mobiles : accueil, fiche produit et commande. Un écran bureau de gestion des commandes. Prix et données commerciales à confirmer.</desc>
+<defs><style>
+text{font-family:Arial,sans-serif;fill:#182D24} .muted{fill:#4D6056;font-size:13px}.small{font-size:12px}.label{font-size:14px;font-weight:600}.title{font-family:Georgia,serif;font-size:28px}.white{fill:white;font-size:14px;font-weight:600}.line{stroke:#6F8175;stroke-width:1}.field{fill:white;stroke:#6F8175;rx:7}.photo{fill:#E8ECE5}.section{font-size:19px;font-weight:600}
+</style></defs>
+<rect width="1440" height="1120" fill="#F7F6F0"/>
+<text x="48" y="49" font-size="27" font-weight="700">Le Bazar de MSD</text>
+<text x="48" y="78" class="muted">PHASE 1 · DIRECTION PROPOSÉE · MAQUETTES STATIQUES · 29 OCTOBRE 2026</text>
+<text x="48" y="117" class="label">01 — Accueil mobile</text>
+<text x="414" y="117" class="label">02 — Fiche produit mobile</text>
+<text x="780" y="117" class="label">03 — Commande mobile</text>
+<!-- Accueil -->
+<rect x="48" y="136" width="342" height="588" rx="18" fill="white" stroke="#6F8175"/>
+<text x="65" y="171" class="label">Le Bazar de MSD</text><text x="306" y="171" class="muted">Panier 0</text>
+<rect x="64" y="190" width="310" height="40" class="field"/><text x="77" y="215" class="muted">Rechercher un produit…</text>
+<rect x="64" y="248" width="310" height="146" rx="12" fill="#DCE9D8"/>
+<text x="80" y="283" class="title">Des idées utiles</text><text x="80" y="317" class="title">pour le quotidien.</text>
+<rect x="80" y="338" width="197" height="40" rx="8" fill="#214C3B"/><text x="94" y="363" class="white">Découvrir la boutique</text>
+<text x="64" y="425" class="label">Maison · Salle de bain · Gadgets</text>
+<text x="64" y="463" class="section">Notre sélection</text>
+<rect x="64" y="480" width="147" height="124" rx="9" class="photo"/><rect x="227" y="480" width="147" height="124" rx="9" class="photo"/>
+<text x="85" y="537" class="muted">Photo fournie</text><text x="87" y="558" class="small">Distributeur</text>
+<text x="248" y="537" class="muted">Photo fournie</text><text x="260" y="558" class="small">Rangement</text>
+<text x="64" y="628" class="label">Distributeur de savon</text><text x="227" y="628" class="label">Rangement mural</text>
+<text x="64" y="650" class="muted">Prix à renseigner</text><text x="227" y="650" class="muted">Prix à renseigner</text>
+<line x1="64" y1="674" x2="374" y2="674" class="line"/><text x="64" y="699" class="muted">Livraison à Dakar · Contact WhatsApp</text>
+<!-- Fiche -->
+<rect x="414" y="136" width="342" height="588" rx="18" fill="white" stroke="#6F8175"/>
+<text x="430" y="171" class="label">← Boutique</text><text x="672" y="171" class="muted">Panier 0</text>
+<rect x="430" y="190" width="310" height="202" rx="12" class="photo"/>
+<text x="509" y="280" class="muted">Photo du ventilateur</text><text x="494" y="303" class="muted">Cadrage à valider en Phase 3</text>
+<text x="430" y="425" class="section">Ventilateur portable</text><text x="430" y="452" class="label">Prix à renseigner · FCFA</text>
+<text x="430" y="479" class="muted">Description et caractéristiques à fournir.</text>
+<text x="430" y="510" class="label">Variante / disponibilité</text><rect x="430" y="522" width="310" height="38" class="field"/><text x="443" y="546" class="muted">Options du catalogue à confirmer</text>
+<text x="430" y="592" class="label">Quantité</text><rect x="610" y="573" width="130" height="35" class="field"/><text x="629" y="596" class="label">−      1      +</text>
+<rect x="430" y="623" width="310" height="46" rx="8" fill="#214C3B"/><text x="524" y="652" class="white">Ajouter au panier</text>
+<text x="430" y="695" class="muted">Frais calculés selon votre zone à Dakar.</text>
+<!-- Checkout -->
+<rect x="780" y="136" width="342" height="588" rx="18" fill="white" stroke="#6F8175"/>
+<text x="796" y="171" class="section">Votre commande</text><text x="796" y="194" class="muted">Sans création de compte</text>
+<text x="796" y="223" class="label">Nom complet</text><rect x="796" y="233" width="310" height="36" class="field"/>
+<text x="796" y="293" class="label">Téléphone</text><rect x="796" y="303" width="310" height="36" class="field"/><text x="807" y="326" class="muted">+221</text>
+<text x="796" y="363" class="label">Zone de livraison</text><rect x="796" y="373" width="310" height="36" class="field"/><text x="807" y="396" class="muted">Sélectionnez votre zone</text>
+<text x="796" y="433" class="label">Quartier, adresse et repère</text><rect x="796" y="443" width="310" height="48" class="field"/>
+<text x="796" y="514" class="muted">+ Instructions de livraison (facultatif)</text>
+<rect x="796" y="529" width="310" height="47" rx="8" fill="#DCE9D8"/><text x="810" y="558" class="label">○ Paiement à la livraison</text>
+<text x="796" y="601" class="muted">Produits + livraison</text><text x="796" y="624" class="label">Total affiché après sélection de la zone</text>
+<rect x="796" y="640" width="310" height="46" rx="8" fill="#214C3B"/><text x="862" y="669" class="white">Confirmer la commande</text>
+<text x="796" y="709" class="small">Erreurs près des champs ; saisies conservées.</text>
+<!-- Notes -->
+<text x="1150" y="165" class="section">Intentions</text><text x="1150" y="201" class="muted">Une action principale</text><text x="1150" y="224" class="muted">par étape.</text>
+<text x="1150" y="269" class="muted">Prix et frais visibles</text><text x="1150" y="292" class="muted">avant confirmation.</text>
+<text x="1150" y="337" class="muted">Aucun avis, promotion</text><text x="1150" y="360" class="muted">ou délai inventé.</text>
+<text x="1150" y="405" class="muted">Wave / Orange Money</text><text x="1150" y="428" class="muted">si intégrations validées.</text>
+<rect x="1150" y="482" width="48" height="48" rx="10" fill="#214C3B"/><rect x="1210" y="482" width="48" height="48" rx="10" fill="#DCE9D8"/><rect x="1270" y="482" width="48" height="48" rx="10" fill="#182D24"/>
+<text x="1150" y="556" class="muted">Vert profond / sauge</text><text x="1150" y="579" class="muted">Fond ivoire, surfaces claires</text>
+<!-- Admin -->
+<text x="48" y="768" class="label">04 — Administration · Liste et détail d’une commande · Données fictives de structure</text>
+<rect x="48" y="786" width="1344" height="260" rx="14" fill="white" stroke="#6F8175"/>
+<path d="M62 786H240V1046H62Q48 1046 48 1032V800Q48 786 62 786" fill="#DCE9D8"/>
+<text x="68" y="820" class="label">MSD · Gestion</text><text x="68" y="859" class="muted">Vue d’ensemble</text><text x="68" y="890" class="label">Commandes</text><text x="68" y="921" class="muted">Produits et stock</text><text x="68" y="952" class="muted">Clients</text><text x="68" y="983" class="muted">Livraison</text><text x="68" y="1014" class="muted">Paramètres</text>
+<text x="264" y="822" class="section">Commandes</text><rect x="264" y="838" width="570" height="36" class="field"/><text x="276" y="861" class="muted">Recherche par référence · Filtrer par statut</text>
+<text x="264" y="901" class="label">Référence</text><text x="423" y="901" class="label">Commande</text><text x="623" y="901" class="label">Paiement</text><line x1="264" y1="913" x2="834" y2="913" class="line"/>
+<text x="264" y="942" class="muted">Exemple A</text><text x="423" y="942" class="muted">À confirmer</text><text x="623" y="942" class="muted">À encaisser</text>
+<text x="264" y="978" class="muted">Exemple B</text><text x="423" y="978" class="muted">Livrée</text><text x="623" y="978" class="muted">Encaissé</text>
+<text x="264" y="1022" class="small">Sur mobile : cartes lisibles, puis page de détail dédiée.</text>
+<line x1="862" y1="805" x2="862" y2="1028" class="line"/>
+<text x="888" y="822" class="section">Commande sélectionnée</text><text x="888" y="853" class="muted">Client et adresse · accès réservé au personnel</text><text x="888" y="883" class="muted">Lignes · quantités · total et frais figés</text><text x="888" y="913" class="label">Historique des statuts et opérations</text>
+<rect x="888" y="935" width="215" height="42" rx="8" fill="#214C3B"/><text x="909" y="962" class="white">Confirmer la commande</text>
+<rect x="1117" y="935" width="247" height="42" class="field"/><text x="1130" y="962" class="label">Annuler avec justification</text>
+<text x="888" y="1009" class="muted">Livraison et encaissement suivis séparément.</text>
+<text x="48" y="1085" class="muted">À valider : identité, parcours et hiérarchie. Responsive, contraste et interactions seront vérifiés sur l’application implémentée.</text>
+</svg>
