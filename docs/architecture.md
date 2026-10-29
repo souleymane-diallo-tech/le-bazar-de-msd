@@ -27,17 +27,17 @@ Cette arborescence est une cible, pas des dossiers applicatifs déjà initialis�
 
 ## Contrats métier proposés
 
-| Service | Entrée | Sortie et obligations |
-|---|---|---|
-| Catalog.listPublished | recherche, catégorie, tri, page validés | Données publiques paginées, tri secondaire stable par ID |
-| Orders.quote | variantes/quantités, zone | Total XOF serveur et anomalies ; aucune réservation |
-| Orders.place | clé idempotente, panier, adresse, moyen | Commande, total final, référence, accès confirmation ; transaction avec réservations |
-| Inventory.reserve | transaction, lignes, commande, échéance | Réservations atomiques ou échec global |
-| Orders.transition | acteur, commande, version, statut | Transition autorisée, historique et effets stock atomiques |
-| Payments.start | commande, moyen, clé tentative | Tentative persistée puis appel prestataire hors transaction |
-| Payments.handleEvent | corps brut, en-têtes, fournisseur | Authentification, validation, déduplication, mise à jour atomique |
-| Delivery.quote | zone active | Frais entiers XOF et identifiant de configuration |
-| Payments.recordCollection | acteur, montant, référence, clé | Encaissement journalisé ; aucun double encaissement |
+| Service                   | Entrée                                  | Sortie et obligations                                                                |
+| ------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------ |
+| Catalog.listPublished     | recherche, catégorie, tri, page validés | Données publiques paginées, tri secondaire stable par ID                             |
+| Orders.quote              | variantes/quantités, zone               | Total XOF serveur et anomalies ; aucune réservation                                  |
+| Orders.place              | clé idempotente, panier, adresse, moyen | Commande, total final, référence, accès confirmation ; transaction avec réservations |
+| Inventory.reserve         | transaction, lignes, commande, échéance | Réservations atomiques ou échec global                                               |
+| Orders.transition         | acteur, commande, version, statut       | Transition autorisée, historique et effets stock atomiques                           |
+| Payments.start            | commande, moyen, clé tentative          | Tentative persistée puis appel prestataire hors transaction                          |
+| Payments.handleEvent      | corps brut, en-têtes, fournisseur       | Authentification, validation, déduplication, mise à jour atomique                    |
+| Delivery.quote            | zone active                             | Frais entiers XOF et identifiant de configuration                                    |
+| Payments.recordCollection | acteur, montant, référence, clé         | Encaissement journalisé ; aucun double encaissement                                  |
 
 Erreurs stables : VALIDATION_ERROR, OUT_OF_STOCK, PRICE_CHANGED, DELIVERY_UNAVAILABLE, FORBIDDEN, CONFLICT, PAYMENT_UNAVAILABLE. Messages français côté UI ; détails internes dans les logs filtrés.
 

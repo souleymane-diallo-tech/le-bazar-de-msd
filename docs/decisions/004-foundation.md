@@ -4,9 +4,11 @@ Statut : mis en œuvre localement, dans le cadre de la Phase 2 validée le 29 oc
 
 ## Versions
 
-Registre npm consulté avant installation : Next.js 16.4.3, React 19.3.1, Better Auth 1.7.14, Prisma 7.10.1, Tailwind 4.3.3, Vitest 5.0.5, Playwright 1.64.1. Node local 24.16.0. Prisma latest indiquait 8.0.0-rc.28 : préversion écartée. TypeScript 5.9.3 et ESLint 9 retenus pour la compatibilité du socle, plutôt qu'un changement majeur supplémentaire. Dépendances directes exactes et lockfile versionné.
+Registre npm consulté avant installation : Next.js 16.4.3, React 19.3.1, Better Auth 1.7.14, Prisma 7.10.1, Tailwind 4.3.3, Vitest 5.0.5, Playwright 1.64.1. Node local 24.16.0. Prisma latest indiquait 8.0.0-rc.28 : préversion écartée. TypeScript 5.9.3 retenu pour la compatibilité du socle. ESLint 10.13.0 remplace ESLint 9 signalé hors support lors de l'installation. Dépendances directes exactes et lockfile versionné.
 
 ## Authentification
+
+La configuration ESLint compose directement les règles Next.js, TypeScript et React Hooks compatibles avec ESLint 10. Le preset eslint-config-next est écarté car trois de ses plugins déclarent encore une compatibilité limitée à ESLint 9. Aucun contournement par --force ou legacy-peer-deps n'est conservé. Les contrôles d'accessibilité manuels et navigateur restent requis.
 
 Better Auth avec adaptateur Prisma et identifiants e-mail/mot de passe pour le personnel seulement. Aucun signup public ; endpoints exposés limités à connexion, session et déconnexion. Provisionnement par CLI avec JSON sur stdin ; hachage fourni par la bibliothèque. Aucun compte par défaut ni mot de passe prévisible.
 

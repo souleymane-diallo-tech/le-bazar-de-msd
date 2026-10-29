@@ -4,27 +4,27 @@ Statut : tests spécifiés, non exécutés. Aucun code applicatif à cette phase
 
 ## Matrice de recette
 
-| ID | Scénario | Attendu | Niveau |
-|---|---|---|---|
-| T01 | Produit brouillon demandé directement | Non accessible au public | Intégration |
-| T02 | Prix navigateur modifié | Prix ignoré ; devis serveur et reconfirmation | Intégration/E2E |
-| T03 | Deux commandes concurrentes pour dernière unité | Une seule réserve réussit ; stock jamais négatif | Intégration PostgreSQL réel |
-| T04 | Même clé soumise deux fois | Une commande, même résultat autorisé | Intégration |
-| T05 | Même clé avec panier différent | Conflit sans mutation | Intégration |
-| T06 | Une ligne sur trois indisponible | Transaction intégralement annulée | Intégration |
-| T07 | Annulation répétée | Stock libéré une fois | Intégration |
-| T08 | Expiration concurrente avec paiement | Un résultat cohérent ; paiement tardif rapproché | Intégration |
-| T09 | Webhook invalide / rejoué / montant incorrect | Aucun paiement indu ; doublon sans effet | Intégration prestataire |
-| T10 | Retour navigateur succès sans preuve serveur | Paiement encore en attente | E2E |
-| T11 | Commande livrée non encaissée | Non comptée comme encaissement | Unitaire/intégration |
-| T12 | Retour physique confirmé deux fois | Un seul mouvement de réapprovisionnement | Intégration |
-| T13 | Remboursements cumulés dépassant encaissé | Dernière opération refusée | Intégration |
-| T14 | Gestionnaire appelle gestion des rôles directement | Refus côté serveur | Intégration |
-| T15 | Référence commande d'un tiers devinée | Aucune donnée exposée sans jeton valide | Intégration |
-| T16 | Changement frais après achat | Snapshot de la commande inchangé | Intégration |
-| T17 | Checkout clavier et mobile | Commande possible sans perte de saisie | E2E + manuel |
-| T18 | Refus consentement | Aucun traceur non essentiel lancé | E2E réseau |
-| T19 | Sauvegarde restaurée | Commandes et soldes vérifiés en environnement isolé | Exploitation |
+| ID  | Scénario                                           | Attendu                                             | Niveau                      |
+| --- | -------------------------------------------------- | --------------------------------------------------- | --------------------------- |
+| T01 | Produit brouillon demandé directement              | Non accessible au public                            | Intégration                 |
+| T02 | Prix navigateur modifié                            | Prix ignoré ; devis serveur et reconfirmation       | Intégration/E2E             |
+| T03 | Deux commandes concurrentes pour dernière unité    | Une seule réserve réussit ; stock jamais négatif    | Intégration PostgreSQL réel |
+| T04 | Même clé soumise deux fois                         | Une commande, même résultat autorisé                | Intégration                 |
+| T05 | Même clé avec panier différent                     | Conflit sans mutation                               | Intégration                 |
+| T06 | Une ligne sur trois indisponible                   | Transaction intégralement annulée                   | Intégration                 |
+| T07 | Annulation répétée                                 | Stock libéré une fois                               | Intégration                 |
+| T08 | Expiration concurrente avec paiement               | Un résultat cohérent ; paiement tardif rapproché    | Intégration                 |
+| T09 | Webhook invalide / rejoué / montant incorrect      | Aucun paiement indu ; doublon sans effet            | Intégration prestataire     |
+| T10 | Retour navigateur succès sans preuve serveur       | Paiement encore en attente                          | E2E                         |
+| T11 | Commande livrée non encaissée                      | Non comptée comme encaissement                      | Unitaire/intégration        |
+| T12 | Retour physique confirmé deux fois                 | Un seul mouvement de réapprovisionnement            | Intégration                 |
+| T13 | Remboursements cumulés dépassant encaissé          | Dernière opération refusée                          | Intégration                 |
+| T14 | Gestionnaire appelle gestion des rôles directement | Refus côté serveur                                  | Intégration                 |
+| T15 | Référence commande d'un tiers devinée              | Aucune donnée exposée sans jeton valide             | Intégration                 |
+| T16 | Changement frais après achat                       | Snapshot de la commande inchangé                    | Intégration                 |
+| T17 | Checkout clavier et mobile                         | Commande possible sans perte de saisie              | E2E + manuel                |
+| T18 | Refus consentement                                 | Aucun traceur non essentiel lancé                   | E2E réseau                  |
+| T19 | Sauvegarde restaurée                               | Commandes et soldes vérifiés en environnement isolé | Exploitation                |
 
 Tests unitaires : calcul total, transitions, permissions, normalisation et invariants. Intégration avec PostgreSQL, pas SQLite pour les tests de concurrence. E2E sur démo avec paiements simulés isolés ou sandbox officiellement disponible.
 
