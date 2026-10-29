@@ -21,6 +21,7 @@
     "db:validate": "prisma validate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed:demo": "tsx prisma/seed-demo.ts",
     "admin:provision": "tsx scripts/provision-admin.ts"
   },
   "dependencies": {

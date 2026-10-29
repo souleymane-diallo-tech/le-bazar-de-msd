@@ -4,13 +4,15 @@ Boutique mobile-first pour Dakar : catalogue inférieur à 50 produits, prix en 
 
 ## État
 
-Conception validée et Phase 2 autorisée le 29 octobre 2026. Socle Next.js, PostgreSQL, Better Auth et CI implémenté ; page d'ouverture prochaine et administration protégée. Aucun checkout ni paiement réel. Démonstration distante en attente de connexion Vercel et validation de l'hébergement.
+Phase 3 autorisée le 29 octobre 2026 : accueil, catalogue PostgreSQL, recherche/filtres/tri, fiches variantes et panier persistant avec devis serveur. Données de démonstration autorisées et signalées ; dépôt GitHub rendu public provisoirement par l'utilisateur. Aucun checkout ni paiement réel. Démonstration distante en attente de connexion Vercel et validation de l'hébergement.
 
 L'accord de démarrage ne confirme pas les tarifs, le budget exact, les comptes marchands ou les règles commerciales manquantes. Comptes personnels confirmés pour GitHub/Vercel. Voir [les décisions en attente](docs/decisions/pending.md).
 
 ## Développement
 
 Node 24, npm et PostgreSQL 18. `npm ci`, configuration privée `.env` depuis `.env.example`, `npm run db:generate`, `npm run db:migrate`, puis `npm run dev`. Instructions complètes et bases de test : [guide local](docs/deployment/local.md).
+
+Pour tester la collection : `npm run db:seed:demo` dans un environnement development/demo/test. Le seed ajoute les quatre produits photographiés avec des prix et stocks fictifs et n'écrase pas les données existantes. Il est refusé en production ; les lectures de production excluent aussi ces produits. Parcours : `/catalogue`, `/produits/distributeur`, `/panier`.
 
 Contrôles : `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:integration`, `npm run build`, `npm run test:e2e`. Les tests DB utilisent une base distincte ; Playwright utilise le build de production local.
 

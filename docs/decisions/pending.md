@@ -16,3 +16,7 @@ L'utilisateur a validé la conception et le démarrage de Phase 2, puis confirm�
 | D10 | Données et exploitation | Rétention, sauvegardes, RPO/RTO, maintenance, textes commerciaux                  | Avant production                      |
 
 Aucun prix, tarif de livraison, compte marchand, domaine ou délai promis ne sera inventé. Ces points n'empêchent pas la revue de conception, mais leurs dépendances doivent être respectées.
+
+## Accord complémentaire
+
+Phase 3 autorisée avec catalogue de démonstration (prix, stocks et variantes fictifs explicitement signalés). D04 reste ouvert pour les données commerciales réelles. Le dépôt GitHub public est accepté provisoirement ; aucun coût ni déploiement production n’est autorisé.

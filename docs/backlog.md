@@ -1,6 +1,19 @@
 # Backlog prêt à décliner en Issues
 
-Estimation relative : S = petit incrément, M = plusieurs tâches, L = épique à découper. Ces tailles ne sont pas des engagements de jours. Tous les éléments applicatifs sont non démarrés.
+Estimation relative : S = petit incrément, M = plusieurs tâches, L = épique à découper. Ces tailles ne sont pas des engagements de jours. État actualisé ci-dessous.
+
+## Avancement au 29 octobre 2026
+
+- B01 : conception validée. B02 : versions et authentification choisies ; fournisseurs distants en attente.
+- B03/B04 : dépôt et CI opérationnels, migrations PostgreSQL testées. Dépôt rendu public provisoirement par l'utilisateur.
+- B05 : sessions/permissions testées ; récupération de compte et MFA à finaliser avant production.
+- B06 : démonstration Vercel encore non déployée.
+- B07 : composants et responsive vérifiés ; audit WCAG complet réservé à la recette consolidée.
+- B08 : CRUD administrateur et uploads non commencés, prévus avec l'administration en Phase 4.
+- B09 : catalogue, fiches, variantes, recherche, filtre, tri et pagination implémentés sur données de démo. Dépendance B08 remplacée pour la recette par le schéma et un seed explicitement autorisé (ADR 005).
+- B10 : panier persistant, quantité/suppression, devis serveur, alertes de prix/stock implémentés. Livraison non chiffrée tant que zones et tarifs non fournis ; checkout non activé.
+- B16 : partage et métadonnées produit prêts ; WhatsApp conditionné à un vrai contact. SEO de production et sitemap restent dans la phase marketing.
+- B11–B15, B17–B22 : non commencés ; phases suivantes soumises à validation.
 
 | ID  | Priorité / taille | Travail                                            | Dépendances           | Acceptation                                                           |
 | --- | ----------------- | -------------------------------------------------- | --------------------- | --------------------------------------------------------------------- |

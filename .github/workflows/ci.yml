@@ -50,6 +50,7 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run test:integration
+      - run: npm run db:seed:demo
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

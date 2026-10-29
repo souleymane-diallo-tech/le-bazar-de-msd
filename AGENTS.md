@@ -2,7 +2,7 @@
 
 ## Autorité et périmètre
 
-Suivre la demande utilisateur et le découpage dans docs/roadmap.md. Phases 1 et 2 autorisées le 29 octobre 2026 ; les phases suivantes exigent l'accord utilisateur prévu dans le cahier des charges. Comptes personnels autorisés pour GitHub et Vercel ; aucun abonnement payant autorisé. Ne pas considérer les exemples, prix fictifs ou données d'images comme des informations commerciales validées.
+Suivre la demande utilisateur et le découpage dans docs/roadmap.md. Phases 1, 2 et 3 autorisées le 29 octobre 2026 ; les phases suivantes exigent l'accord utilisateur prévu dans le cahier des charges. Données de démonstration autorisées pour les quatre produits, signalées et exclues de production. Comptes personnels autorisés pour GitHub et Vercel ; aucun abonnement payant autorisé. Ne pas considérer les exemples, prix fictifs ou données d'images comme des informations commerciales validées.
 
 ## Architecture
 
@@ -10,7 +10,7 @@ Monolithe modulaire, TypeScript strict. Règles métier dans services serveur, v
 
 ## Git et secrets
 
-Dépôt privé à créer en Phase 2. main stable, branches courtes et PR revues ; pas de push destructif. Aucun secret, donnée personnelle réelle ou dump de production dans Git. Déploiement production sur accord explicite.
+Dépôt désormais public provisoirement à la demande de l'utilisateur. Ne pas modifier sa visibilité sans demande. main stable, branches courtes et PR revues ; pas de push destructif. Aucun secret, donnée personnelle réelle ou dump de production dans Git. Déploiement production sur accord explicite.
 
 ## Vérification
 

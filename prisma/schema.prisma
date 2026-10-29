@@ -90,6 +90,7 @@ model Product {
   name        String
   slug        String           @unique
   description String           @default("")
+  isDemo      Boolean          @default(false)
   status      ProductStatus    @default(DRAFT)
   archivedAt  DateTime?        @db.Timestamptz(3)
   variants    ProductVariant[]

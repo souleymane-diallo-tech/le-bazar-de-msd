@@ -14,3 +14,7 @@ Calendrier relatif proposé, non engagement de date : budget exact, jours calend
 | 7 · J28–30 | Migration, lancement, formation, transfert             | Recette et validation                  | Version livrée, responsabilités transférées       | Smoke tests et repli                          | Configuration ; recette post-déploiement                     |
 
 La QA accompagne chaque incrément. Tout glissement sur le chemin critique déclenche révision de périmètre, jamais suppression silencieuse des tests. Les intégrations indisponibles sont différées.
+
+## Actualisation du 29 octobre 2026
+
+L’utilisateur autorise la Phase 3 locale et les données de démonstration, avec dépôt GitHub public provisoire. La Preview distante de Phase 2 reste à réaliser ; elle ne bloque plus ce développement local. Le passage en Phase 4 reste soumis à validation. Voir ADR 005.

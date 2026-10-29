@@ -11,7 +11,7 @@ Prérequis : Node 24 (version testée dans .node-version), npm, PostgreSQL 18. B
 5. Appliquer la migration à la base de test en affectant DIRECT_URL à TEST_DATABASE_URL dans l'environnement du processus ; restaurer ensuite DIRECT_URL.
 6. `npm run dev` puis http://localhost:3000.
 
-L'accueil est une page d'ouverture prochaine. Les routes commerce ne sont pas encore implémentées. `/api/health` est une sonde applicative, pas une preuve de connexion DB. `/api/admin/status` vérifie la DB et exige un propriétaire authentifié.
+L'accueil, `/catalogue`, `/produits/[slug]` et `/panier` sont disponibles. Exécuter `npm run db:seed:demo` après la migration pour disposer des quatre produits de démonstration. Aucun compte permanent n'est créé. `/api/health` est une sonde applicative, pas une preuve de connexion DB. `/api/admin/status` vérifie la DB et exige un propriétaire authentifié.
 
 ## Compte administrateur
 
@@ -23,7 +23,7 @@ L'inscription publique est désactivée. La récupération automatique par e-mai
 
 `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:integration`, `npm run build`, puis `npx playwright install chromium` et `npm run test:e2e`.
 
-Les tests d'intégration refusent une URL ne se terminant pas par `_test`. Les tests E2E créent et suppriment leurs propres comptes éphémères dans une base `_dev` seulement. Aucun mot de passe de test n'est conservé.
+Les tests d'intégration refusent une URL ne se terminant pas par `_test`. Les tests E2E créent et suppriment leurs propres comptes éphémères dans une base `_dev` seulement. Le catalogue démo doit être chargé avant les tests E2E (la CI le fait automatiquement). Aucun mot de passe de test n'est conservé.
 
 ## Instance locale créée dans cette session
 

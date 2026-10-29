@@ -10,7 +10,7 @@ test("accueil lisible aux cinq largeurs prévues", async ({
       page.getByRole("heading", { name: /Les petits détails/ }),
     ).toBeVisible();
     await expect(
-      page.getByText("Ouverture prochaine", { exact: true }),
+      page.getByRole("link", { name: "Explorer la collection" }),
     ).toBeVisible();
     expect(
       await page.evaluate(
