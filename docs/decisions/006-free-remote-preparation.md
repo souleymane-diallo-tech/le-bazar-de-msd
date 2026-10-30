@@ -15,3 +15,7 @@ Les secrets de migration sont conservés uniquement dans un fichier local ignor�
 ## Actualisation : publication autorisée
 
 L’utilisateur a ensuite autorisé explicitement Production. Une page statique d’attente protégée a initialisé le projet ; la boutique a alors pu être publiée en Preview, sans modifier les garde-fous qui excluent la démo de production. L’API exige l’omission de target pour Preview (la chaîne preview n’est pas acceptée après initialisation). URL stable : https://le-bazar-de-msd-demo.vercel.app. Aucun abonnement modifié. La validation commerciale avant ouverture des ventes reste distincte de cette démonstration.
+
+## Accès public temporaire autorisé
+
+Le 30 octobre, l’utilisateur demande explicitement un accès depuis son téléphone sans authentification Vercel. La protection Vercel est donc désactivée au niveau du projet. L’administration conserve Better Auth et ses permissions serveur ; aucune vente n’est activée. Le catalogue reste fictif et noindex. Vérifications sans cookies réussies : pages 200, panier 200, API admin 401.

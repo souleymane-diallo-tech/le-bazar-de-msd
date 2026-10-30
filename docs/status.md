@@ -27,3 +27,9 @@ L’utilisateur autorise explicitement Production pour débloquer la mise en lig
 Adresse stable de la boutique : https://le-bazar-de-msd-demo.vercel.app (APP_URL identique). Fonctions et Neon à Francfort. Authentification Vercel conservée ; aucune offre payante activée. Aucun changement de code applicatif pour contourner les garde-fous production.
 
 Recette distante : health 200, catalogue 200 avec produits de démonstration, fiche horloge 200, panier 200, robots.txt interdit toute indexation et en-tête noindex présent. L’admin sans session mène au formulaire de connexion et /api/admin/status répond 401. Test navigateur : ajout d’une horloge et devis serveur à 18 000 XOF fictifs ; changement de quantité et persistance du panier contrôlés. Aucun achat ni paiement. La connexion d’un administrateur n’est pas testée à distance (aucun compte permanent provisionné).
+
+## Accès public temporaire — 30 octobre 2026
+
+À la demande explicite de l’utilisateur, la protection par connexion Vercel est désactivée pour le projet le-bazar-de-msd (ssoProtection=null). Le lien https://le-bazar-de-msd-demo.vercel.app est accessible sans compte Vercel. L’authentification applicative de l’administration reste inchangée.
+
+Vérification HTTP indépendante, sans cookies ni lien de partage : catalogue et fiche horloge 200 sans redirection ; devis panier POST 200, deux horloges = 36 000 XOF fictifs ; endpoint administrateur 401. En-tête noindex/nofollow conservé, commandes et paiements toujours désactivés. Cette décision remplace la protection Vercel mentionnée dans les étapes précédentes, sans activer d’abonnement ni changer les données.
