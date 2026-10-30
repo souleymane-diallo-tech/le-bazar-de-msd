@@ -11,3 +11,7 @@ Deux migrations et les seeds ont été appliqués sur cette base dédiée. La re
 Le compte Vercel est Hobby, réservé à l’usage personnel non commercial. Aucun plan payant, essai Pro, déploiement ou promotion n’est activé. Le choix d’un hébergement adapté au projet client reste ouvert. APP_URL sera fixé sur l’URL réellement déployée, puis testé avec les origines et cookies d’authentification.
 
 Les secrets de migration sont conservés uniquement dans un fichier local ignoré. Les migrations restent hors du build automatique des Previews pour éviter les modifications concurrentes de schéma.
+
+## Actualisation : publication autorisée
+
+L’utilisateur a ensuite autorisé explicitement Production. Une page statique d’attente protégée a initialisé le projet ; la boutique a alors pu être publiée en Preview, sans modifier les garde-fous qui excluent la démo de production. L’API exige l’omission de target pour Preview (la chaîne preview n’est pas acceptée après initialisation). URL stable : https://le-bazar-de-msd-demo.vercel.app. Aucun abonnement modifié. La validation commerciale avant ouverture des ventes reste distincte de cette démonstration.

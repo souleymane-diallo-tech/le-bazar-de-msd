@@ -48,3 +48,7 @@ Accès comptes, tarifs contractuels, test des API et compatibilité des versions
 ## État au 30 octobre 2026
 
 Projet Vercel créé et protégé, Node 24. Base Neon Free msd-demo à Francfort, connectée uniquement à Preview, migrations et catalogue fictif vérifiés. Aucun déploiement lancé : l’utilisateur maintient la préparation sans coût. APP_URL et recette HTTP restent en attente. Détails : ADR 006 et docs/status.md.
+
+## Adresse de démonstration disponible
+
+https://le-bazar-de-msd-demo.vercel.app — Preview protégée, commit f66ddf3, APP_ENV=demo et paiements désactivés. Une page d’attente statique occupe la cible Production après accord utilisateur ; ne pas confondre les deux déploiements. Recette et identifiants de déploiement dans docs/status.md.

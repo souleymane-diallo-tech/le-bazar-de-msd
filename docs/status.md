@@ -13,3 +13,17 @@
 ## Limites
 
 Aucun abonnement payant ni déploiement effectué. Prix/stocks fictifs ; livraison non configurée ; aucune vente. CRUD administrateur et checkout attendent Phase 4. Aucun compte administrateur permanent créé. Récupération/MFA, WCAG complète, performances terrain et exploitation restent à finaliser. Les connexions de migration locales sont ignorées par Git ; aucun secret n’est publié.
+
+## Tentative de Preview du 30 octobre 2026
+
+L’utilisateur demande maintenant la mise en ligne temporaire. APP_URL Preview configuré sur https://le-bazar-de-msd-demo.vercel.app (alias non encore attribué), fonctions alignées sur fra1. L’API a classé la première tentative en Production malgré target=preview ; déploiement dpl_F97VG7XfUWoA3EHFfPZWbgVM4nyR annulé avant publication. Le contrôle automatique refuse une relance avec cible omise en raison du risque de Production non autorisée. Aucune URL fonctionnelle revendiquée.
+
+Le comportement est signalé dans vercel/vercel#17069. Une page statique d’attente sans DB, secret ni paiement est préparée localement comme initialisation possible du projet, avec protection Vercel conservée ; son déploiement dans la cible Production nécessite l’accord explicite avant exécution. Le succès d’une Preview après cette initialisation n’est pas garanti.
+
+## Mise en ligne vérifiée — 30 octobre 2026
+
+L’utilisateur autorise explicitement Production pour débloquer la mise en ligne temporaire. La page statique protégée d’attente est READY en Production (dpl_Hv5s27okjmF32eG5BxfEueQYjHsT), sans base ni secret. Après cette initialisation, la boutique a pu être déployée en Preview (target null), READY : dpl_HALVv82bfJZqkDVG2KCVZ57XVZ9g, commit f66ddf39bb2241b3b2ff011dba6b524ed6005d7d.
+
+Adresse stable de la boutique : https://le-bazar-de-msd-demo.vercel.app (APP_URL identique). Fonctions et Neon à Francfort. Authentification Vercel conservée ; aucune offre payante activée. Aucun changement de code applicatif pour contourner les garde-fous production.
+
+Recette distante : health 200, catalogue 200 avec produits de démonstration, fiche horloge 200, panier 200, robots.txt interdit toute indexation et en-tête noindex présent. L’admin sans session mène au formulaire de connexion et /api/admin/status répond 401. Test navigateur : ajout d’une horloge et devis serveur à 18 000 XOF fictifs ; changement de quantité et persistance du panier contrôlés. Aucun achat ni paiement. La connexion d’un administrateur n’est pas testée à distance (aucun compte permanent provisionné).

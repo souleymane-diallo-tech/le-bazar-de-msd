@@ -45,3 +45,5 @@ Estimation relative : S = petit incrément, M = plusieurs tâches, L = épique �
 Contexte, résultat attendu, périmètre/exclusions, dépendances, critères d'acceptation observables, tests requis, risque de migration/sécurité, taille, responsable et liens ADR. Aucun agent parallèle avant stabilisation des contrats et du schéma.
 
 Actualisation du 30 octobre 2026 : B04 dispose désormais d’une base Neon Free de démo migrée et initialisée ; B06 reste partiel (projet/variables/protection prêts, aucun déploiement, offre d’hébergement et APP_URL à résoudre). Voir ADR 006.
+
+B06 — 30 octobre 2026 : boutique Preview désormais READY sur https://le-bazar-de-msd-demo.vercel.app ; smoke tests HTTP et panier réalisés. Recette de connexion administrateur distante restante. Production contient uniquement une page d’attente protégée autorisée.
