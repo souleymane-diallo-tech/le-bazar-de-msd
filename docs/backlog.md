@@ -43,3 +43,5 @@ Estimation relative : S = petit incrément, M = plusieurs tâches, L = épique �
 ## Format d'Issue
 
 Contexte, résultat attendu, périmètre/exclusions, dépendances, critères d'acceptation observables, tests requis, risque de migration/sécurité, taille, responsable et liens ADR. Aucun agent parallèle avant stabilisation des contrats et du schéma.
+
+Actualisation du 30 octobre 2026 : B04 dispose désormais d’une base Neon Free de démo migrée et initialisée ; B06 reste partiel (projet/variables/protection prêts, aucun déploiement, offre d’hébergement et APP_URL à résoudre). Voir ADR 006.

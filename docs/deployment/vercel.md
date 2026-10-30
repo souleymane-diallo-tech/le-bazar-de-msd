@@ -44,3 +44,7 @@ Sources vérifiées lors du cadrage le 29 octobre 2026, à revalider avant insta
 - https://developer.orange.com/apis/om-webpay?hl=fr-fr
 
 Accès comptes, tarifs contractuels, test des API et compatibilité des versions exactes restent à obtenir. Pas de coût global d'exploitation présenté comme vérifié.
+
+## État au 30 octobre 2026
+
+Projet Vercel créé et protégé, Node 24. Base Neon Free msd-demo à Francfort, connectée uniquement à Preview, migrations et catalogue fictif vérifiés. Aucun déploiement lancé : l’utilisateur maintient la préparation sans coût. APP_URL et recette HTTP restent en attente. Détails : ADR 006 et docs/status.md.
