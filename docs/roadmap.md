@@ -15,6 +15,10 @@ Calendrier relatif proposé, non engagement de date : budget exact, jours calend
 
 La QA accompagne chaque incrément. Tout glissement sur le chemin critique déclenche révision de périmètre, jamais suppression silencieuse des tests. Les intégrations indisponibles sont différées.
 
+## Actualisation du 30 octobre 2026
+
+L’utilisateur autorise le démarrage de la Phase 4 après la mise en ligne publique de la Phase 3. Zones/tarifs fictifs et expiration des commandes non confirmées après 24 heures sont validés pour la démonstration seulement. Développement isolé sur `features/phase-4-orders`, aucun paiement réel ni abonnement payant. Voir ADR 007 et le suivi de recette dans `docs/status.md`.
+
 ## Actualisation du 29 octobre 2026
 
 L’utilisateur autorise la Phase 3 locale et les données de démonstration, avec dépôt GitHub public provisoire. La Preview distante de Phase 2 reste à réaliser ; elle ne bloque plus ce développement local. Le passage en Phase 4 reste soumis à validation. Voir ADR 005.

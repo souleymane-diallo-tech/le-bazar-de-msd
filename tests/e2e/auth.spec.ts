@@ -10,6 +10,7 @@ const url = process.env.DATABASE_URL;
 if (
   !url ||
   !new URL(url).pathname.endsWith("_dev") ||
+  !["localhost", "127.0.0.1"].includes(new URL(url).hostname) ||
   !["development", "test"].includes(process.env.APP_ENV ?? "")
 ) {
   throw new Error(
@@ -27,6 +28,10 @@ const ownerEmail = `${ownerId}@example.test`;
 const managerEmail = `${managerId}@example.test`;
 
 test.beforeAll(async () => {
+  // Isolate successive local runs; the rate-limit behavior has its own E2E test.
+  await db.rateLimit.deleteMany({
+    where: { key: { endsWith: "|/sign-in/email" } },
+  });
   const hashed = await hashPassword(password);
   for (const [id, email, roleId] of [
     [ownerId, ownerEmail, "OWNER"],
@@ -62,7 +67,14 @@ test("connexion propriétaire, déconnexion et refus d'une session révoquée", 
   await page.goto("/connexion");
   await page.getByLabel("Adresse e-mail").fill(ownerEmail);
   await page.getByLabel("Mot de passe", { exact: true }).fill(password);
+  const signedIn = page.waitForResponse(
+    (response) =>
+      response.url().endsWith("/api/auth/sign-in/email") &&
+      response.request().method() === "POST",
+  );
   await page.getByRole("button", { name: "Se connecter", exact: true }).click();
+  expect((await signedIn).status()).toBe(200);
+  await expect(page).toHaveURL(/\/admin$/);
   await expect(
     page.getByRole("heading", { name: "Bienvenue, Équipe test" }),
   ).toBeVisible();

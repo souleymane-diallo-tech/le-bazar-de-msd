@@ -22,6 +22,7 @@
     "db:migrate": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:demo": "tsx prisma/seed-demo.ts",
+    "db:seed:delivery-demo": "tsx prisma/seed-delivery-demo.ts",
     "admin:provision": "tsx scripts/provision-admin.ts"
   },
   "dependencies": {

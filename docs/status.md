@@ -1,6 +1,21 @@
-# Suivi — 30 octobre 2026
+# Suivi — 31 octobre 2026
 
-- Phase actuelle : 3, boutique de démonstration prête pour revue ; Phase 4 non commencée.
+## État courant : phase 4 de démonstration prête pour revue
+
+- Autorisation : phase 4, livraison fictive et expiration à 24 h validées ; maintien des quatre photos confirmé le 31 octobre. Aucun abonnement ni import de médias supplémentaire.
+- Branche : `features/phase-4-orders`, issue de `feat/phase-3-storefront`. `main` inchangée, PR précédentes non fusionnées.
+- Implémenté : checkout invité de démonstration, devis signé/reconfirmation, idempotence et accès privé à la confirmation ; réservations transactionnelles ; administration catalogue/variantes/stock, zones, commandes, corrections d’adresse, collecte et remboursements fictifs ; dashboard et audit.
+- Garde-fous : `CHECKOUT_MODE=disabled` par défaut, `demo` interdit en production ; services limités aux données fictives ; aucune vente réelle ni paiement électronique. Import de photos hors périmètre de cette démo à la demande utilisateur.
+- Données : migration additive `202610300001_demo_orders` appliquée seulement aux bases locales de développement et test. Zones fictives locales : 1 500 / 2 500 XOF. Base Neon et variables Vercel non modifiées.
+- Vérifié : build final réussi, TypeScript, lint, format et `git diff --check` ; **60 tests passants : 20 unitaires, 22 PostgreSQL, 18 Playwright**. Les trois scénarios checkout ont aussi réussi cinq répétitions chacun (15 exécutions). Recette aux largeurs 320/375/390/768/1440, parcours checkout clavier et inspection des captures mobile. Aucun audit WCAG complet revendiqué.
+- Corrections de recette : attente explicite de réponse/navigation lors de la connexion à froid ; isolation des compteurs de tentatives entre exécutions E2E dans la seule base locale, sans désactiver le limiteur applicatif. Première reconstruction Turbopack bloquée par son cache/processus CSS, puis builds réussis après nettoyage du seul dossier `.next`.
+- Site public : https://le-bazar-de-msd-demo.vercel.app reste sur la Phase 3 précédemment déployée, commandes désactivées. Cet incrément local n’est pas une mise en ligne ni une activation commerciale.
+- Limites : expiration opportuniste/bouton admin, pas de tâche planifiée hors trafic ; aucun compte permanent provisionné ; médias limités aux quatre photos ; paramètres commerciaux réels, récupération/MFA et recette de lancement restent à finaliser.
+- Guide : `docs/admin-demo.md`. Décisions : ADR 007. Les phases 5 et suivantes ne sont pas engagées.
+
+## Historique de la préparation et du déploiement de phase 3
+
+- État au 30 octobre avant autorisation de phase 4 : boutique de démonstration prête pour revue.
 - Autorisé : phases 1–3, comptes personnels GitHub/Vercel, dépôt public provisoire, catalogue fictif signalé. Neon Free et ses conditions explicitement acceptés ; stockage des secrets dédiés dans Preview autorisé. L’utilisateur maintient la préparation sans coût.
 - Application : accueil, recherche/filtres/tri/pagination, fiches et variantes, panier persistant avec prix et disponibilité calculés côté serveur. Aucune commande ni paiement activé.
 - Git : feat/phase-3-storefront, PR #2 empilée sur la PR #1 ; main inchangée. Version applicative 3cef825.

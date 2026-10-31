@@ -8,7 +8,11 @@ import { parseCart, type CartQuote } from "@/modules/cart/rules";
 import { formatPrice } from "@/modules/catalog/rules";
 import { Button } from "@/components/ui/button";
 
-export function CartContent() {
+export function CartContent({
+  checkoutEnabled = false,
+}: {
+  checkoutEnabled?: boolean;
+}) {
   const { raw, items } = useCart();
   const [revision, setRevision] = useState(0);
   const [result, setResult] = useState<{
@@ -234,12 +238,19 @@ export function CartContent() {
           Les frais seront affichés selon votre zone avant validation de la
           commande. Aucun stock n’est réservé par le panier.
         </p>
-        <Button className="mt-6 w-full" disabled>
-          Commandes bientôt disponibles
-        </Button>
+        {checkoutEnabled ? (
+          <Button asChild className="mt-6 w-full">
+            <Link href="/commande">Tester la commande</Link>
+          </Button>
+        ) : (
+          <Button className="mt-6 w-full" disabled>
+            Commandes bientôt disponibles
+          </Button>
+        )}
         <p className="mt-3 text-sm">
-          Ce parcours s’arrête au panier pour le moment. Aucun paiement ne sera
-          demandé.
+          {checkoutEnabled
+            ? "Checkout de démonstration : aucune vente ni livraison réelle."
+            : "Ce parcours s’arrête au panier pour le moment. Aucun paiement ne sera demandé."}
         </p>
         {quote?.lines.some((line) => line.isDemo) && (
           <p className="mt-4 border-t border-primary/20 pt-4 text-xs font-semibold">

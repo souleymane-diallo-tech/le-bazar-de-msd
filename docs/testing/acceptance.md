@@ -1,6 +1,6 @@
 # Plan de vérification
 
-Statut : tests spécifiés, non exécutés. Aucun code applicatif à cette phase.
+Statut au 31 octobre 2026 : recette locale de démonstration phase 4 réussie, 60 tests passants et trois scénarios checkout répétés cinq fois. Résultats et limites actualisés dans `docs/status.md`. Les scénarios de paiements électroniques T08 (paiement concurrent)/T09 sont réservés à la phase 5 ; la concurrence expiration/confirmation COD est couverte en phase 4. T19 et la recette de lancement restent à réaliser.
 
 ## Matrice de recette
 
