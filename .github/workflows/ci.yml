@@ -2,7 +2,7 @@ name: Quality
 on:
   pull_request:
   push:
-    branches: [main, "feat/**"]
+    branches: [main, "feat/**", "features/**"]
 permissions:
   contents: read
 concurrency:
@@ -30,6 +30,7 @@ jobs:
       TEST_DATABASE_URL: postgresql://msd:ci-only-password@localhost:5432/msd_test
       BETTER_AUTH_SECRET: ci-only-not-production-secret-at-least-32-characters
       PAYMENT_MODE: disabled
+      CHECKOUT_MODE: demo
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v7
@@ -51,6 +52,7 @@ jobs:
       - run: npm test
       - run: npm run test:integration
       - run: npm run db:seed:demo
+      - run: npm run db:seed:delivery-demo
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

@@ -2,7 +2,7 @@
 
 ## Autorité et périmètre
 
-Suivre la demande utilisateur et le découpage dans docs/roadmap.md. Phases 1, 2 et 3 autorisées le 29 octobre 2026 ; les phases suivantes exigent l'accord utilisateur prévu dans le cahier des charges. Données de démonstration autorisées pour les quatre produits, signalées et exclues de production. Comptes personnels autorisés pour GitHub et Vercel ; aucun abonnement payant autorisé. Ne pas considérer les exemples, prix fictifs ou données d'images comme des informations commerciales validées.
+Suivre la demande utilisateur et le découpage dans docs/roadmap.md. Phases 1, 2 et 3 autorisées le 29 octobre 2026 ; Phase 4 autorisée le 30 octobre 2026. Zones et frais fictifs, expiration à 24 heures autorisés uniquement en démonstration. Les phases 5 et suivantes exigent l'accord utilisateur prévu dans le cahier des charges. Données de démonstration autorisées pour les quatre produits, signalées et exclues de production. Comptes personnels autorisés pour GitHub et Vercel ; aucun abonnement payant autorisé. Ne pas considérer les exemples, prix fictifs ou données d'images comme des informations commerciales validées.
 
 ## Architecture
 

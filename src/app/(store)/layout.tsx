@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MapPin, ArrowUpRight } from "lucide-react";
 import { CartLink } from "@/components/store/cart-link";
+import { getOrderPolicy } from "@/modules/orders/runtime";
 
 export default function StoreLayout({
   children,
@@ -10,7 +11,9 @@ export default function StoreLayout({
   return (
     <>
       <div className="bg-primary px-4 py-2 text-center text-xs leading-relaxed text-white">
-        Version découverte · Commandes et paiements désactivés
+        {getOrderPolicy().enabled
+          ? "Démonstration · Commandes fictives, aucune vente réelle"
+          : "Version découverte · Commandes et paiements désactivés"}
       </div>
       <header className="mx-auto max-w-7xl px-5 sm:px-10">
         <div className="flex flex-wrap items-center justify-between gap-3 py-5">

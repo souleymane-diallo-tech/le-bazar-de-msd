@@ -200,6 +200,7 @@ model CustomerAddress {
 
 model Order {
   id              String               @id @default(cuid())
+  isDemo          Boolean              @default(false)
   customerId      String
   customer        Customer             @relation(fields: [customerId], references: [id], onDelete: Restrict)
   reference       String               @unique
@@ -312,6 +313,7 @@ model Refund {
 
 model DeliveryZone {
   id        String            @id @default(cuid())
+  isDemo    Boolean           @default(false)
   name      String            @unique
   feeXof    Int
   active    Boolean           @default(true)

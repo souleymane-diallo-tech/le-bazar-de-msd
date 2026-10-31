@@ -8,6 +8,17 @@ const base = {
   BETTER_AUTH_SECRET: "a".repeat(48),
   PAYMENT_MODE: "disabled",
 };
+it("checkout désactivé par défaut et démo interdite en production", () => {
+  expect(parseEnvironment(base).CHECKOUT_MODE).toBe("disabled");
+  expect(() =>
+    parseEnvironment({
+      ...base,
+      APP_ENV: "production",
+      APP_URL: "https://example.test",
+      CHECKOUT_MODE: "demo",
+    }),
+  ).toThrow("checkout");
+});
 
 it("autorise une configuration locale valide", () => {
   expect(parseEnvironment(base).APP_ENV).toBe("development");

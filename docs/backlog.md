@@ -2,6 +2,18 @@
 
 Estimation relative : S = petit incrément, M = plusieurs tâches, L = épique à découper. Ces tailles ne sont pas des engagements de jours. État actualisé ci-dessous.
 
+## Avancement courant au 31 octobre 2026
+
+- B06 : Phase 3 accessible publiquement sur l’alias Vercel de démo ; aucun déploiement Phase 4 effectué.
+- B08 : administration catalogue, catégories, variantes, publication/archivage, ajustement de stock et sélection des photos existantes implémentés. L’utilisateur conserve les quatre photos pour cette démo ; nouvel upload/stockage explicitement hors de cet incrément.
+- B11/B12 : checkout fictif, devis signé, confirmation privée, idempotence, réservations SERIALIZABLE et reprise réseau implémentés. Aucun checkout commercial activé.
+- B13/B14 : transitions de commandes, annulation, expédition, retour physique, zones et snapshots, correction d’adresse, collecte/remboursement simulés et audit implémentés.
+- B15 : dashboard démo, collecte nette, liste des derniers clients distincts et audit propriétaire implémentés.
+- Recette locale réussie : 60 tests (20 unitaires, 22 PostgreSQL, 18 navigateur), plus cinq répétitions des trois scénarios checkout. Build/types/lint/format passants. Incrément prêt pour revue ; pas de déploiement Phase 4.
+- Avant exploitation réelle : tâche d’expiration planifiée, paramètres commerciaux, médias supplémentaires si demandés, compte permanent et récupération/MFA, validation globale. B17–B22 ne sont pas engagés par cet incrément.
+
+Les sections datées ci-dessous constituent l’historique et ne remplacent pas cet état courant.
+
 ## Avancement au 29 octobre 2026
 
 - B01 : conception validée. B02 : versions et authentification choisies ; fournisseurs distants en attente.

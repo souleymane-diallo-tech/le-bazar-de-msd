@@ -47,8 +47,8 @@ test("fiche, panier persistant, quantités et suppression", async ({ page }) => 
     page.getByText("37 500 FCFA", { exact: true }).first(),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Commandes bientôt disponibles" }),
-  ).toBeDisabled();
+    page.getByRole("link", { name: "Tester la commande" }),
+  ).toHaveAttribute("href", "/commande");
   await page
     .getByRole("button", { name: "Retirer Distributeur de savon" })
     .click();
