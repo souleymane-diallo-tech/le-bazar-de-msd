@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@/generated/prisma/client";
 import type { CatalogProduct } from "./types";
 
-// Only known local assets are currently served; object-storage URLs require a validated allowlist in a later phase.
+// Public assets and normalized local uploads only; never accept arbitrary URLs or paths.
 const imagePaths = new Set([
   "/images/maison.jpg",
   "/images/distributeur.jpg",
@@ -9,7 +9,10 @@ const imagePaths = new Set([
   "/images/horloge.jpg",
 ]);
 export function safeImage(value: string): string | null {
-  return imagePaths.has(value) ? value : null;
+  return imagePaths.has(value) ||
+    /^\/media\/products\/[a-f0-9]{64}\.webp$/.test(value)
+    ? value
+    : null;
 }
 
 export async function readPublicCatalog(

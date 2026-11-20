@@ -4,6 +4,8 @@ import { z } from "zod";
 import { getActor } from "@/modules/identity/session";
 import { getDb } from "@/lib/db";
 import { getEnvironment } from "@/lib/env";
+import { ImageUploadError, storeProductImage } from "@/modules/catalog/uploads";
+import { savePublicSettings } from "@/modules/settings/service";
 import {
   CommerceError,
   errorMessages,
@@ -37,7 +39,15 @@ export async function adminAction(
     data.active = form.get("active") === "on";
     const db = getDb();
     switch (data.action) {
+      case "public-settings":
+        await savePublicSettings(db, actor.id, data);
+        break;
       case "product":
+        if (
+          form.get("photo") instanceof File &&
+          (form.get("photo") as File).size > 0
+        )
+          data.image = await storeProductImage(form.get("photo") as File);
         await saveProduct(db, actor.id, data);
         break;
       case "variant":
@@ -96,11 +106,13 @@ export async function adminAction(
   } catch (e) {
     return {
       message:
-        e instanceof CommerceError
-          ? (errorMessages[e.code] ?? "Opération refusée.")
-          : e instanceof z.ZodError
-            ? "Vérifiez les champs et les limites du formulaire."
-            : "Impossible d’enregistrer. Vérifiez les identifiants uniques puis actualisez la page.",
+        e instanceof ImageUploadError
+          ? e.message
+          : e instanceof CommerceError
+            ? (errorMessages[e.code] ?? "Opération refusée.")
+            : e instanceof z.ZodError
+              ? "Vérifiez les champs et les limites du formulaire."
+              : "Impossible d’enregistrer. Vérifiez les identifiants uniques puis actualisez la page.",
       ok: false,
     };
   }

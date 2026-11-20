@@ -8,13 +8,16 @@ import { formatPrice } from "@/modules/catalog/rules";
 import { addToCart } from "@/modules/cart/client";
 import { MAX_CART_QUANTITY } from "@/modules/cart/rules";
 import { Button } from "@/components/ui/button";
+import { whatsappLink } from "@/modules/settings/rules";
 
 export function ProductDetails({
   product,
   whatsapp,
+  productUrl,
 }: {
   product: CatalogProduct;
   whatsapp: string | null;
+  productUrl: string;
 }) {
   const [variantId, setVariantId] = useState(product.variants[0].id);
   const [quantity, setQuantity] = useState(1);
@@ -26,15 +29,21 @@ export function ProductDetails({
   const [shareMessage, setShareMessage] = useState("");
   const variant = product.variants.find((v) => v.id === variantId)!;
   const image = product.images[imageIndex];
+  const contactUrl = whatsapp
+    ? whatsappLink(
+        whatsapp,
+        `${product.isDemo ? "Bonjour, je teste la démonstration. " : "Bonjour, "}Je souhaite des informations sur ${product.name} (modèle ${variant.label}, réf. ${variant.sku}). ${productUrl}`,
+      )
+    : null;
   async function share() {
     try {
       if (navigator.share)
         await navigator.share({
           title: product.name,
-          url: window.location.href,
+          url: productUrl,
         });
       else {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(productUrl);
         setShareMessage("Lien du produit copié.");
       }
     } catch (error) {
@@ -223,8 +232,8 @@ export function ProductDetails({
             Livraison à Dakar : zones et tarifs à confirmer avant l’ouverture.
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            L’ajout au panier ne réserve pas le stock. Les commandes ne sont pas
-            encore ouvertes.
+            L’ajout au panier ne réserve pas le stock. Les ventes réelles ne
+            sont pas encore ouvertes.
           </p>
         </div>
         <div className="mt-5 flex flex-wrap gap-5">
@@ -236,9 +245,9 @@ export function ProductDetails({
             <Share2 size={16} aria-hidden="true" />
             Partager ce produit
           </button>
-          {whatsapp && (
+          {contactUrl && (
             <a
-              href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Bonjour, je souhaite des informations sur ${product.name} (réf. ${variant.sku}).`)}`}
+              href={contactUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-11 items-center text-sm underline"

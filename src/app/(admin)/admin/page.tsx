@@ -56,6 +56,36 @@ export default async function AdminPage() {
         </div>
         <SignOut />
       </div>
+      {actor.accessExpiresAt && (
+        <p className="mt-5 rounded-lg bg-secondary p-4 text-sm">
+          Accès temporaire jusqu’au{" "}
+          {actor.accessExpiresAt.toLocaleString("fr-FR", { timeZone: "UTC" })}{" "}
+          UTC.
+        </p>
+      )}
+      <nav
+        aria-label="Actions de gestion"
+        className="mt-6 grid gap-4 sm:grid-cols-2"
+      >
+        {[
+          ["/admin/catalogue", "Gérer les produits, prix et stocks"],
+          ["/admin/commandes", "Consulter et traiter les commandes"],
+          ...(actor.roleId === "OWNER"
+            ? [
+                ["/admin/livraison", "Configurer les zones et frais"],
+                ["/admin/parametres", "Modifier WhatsApp et les contacts"],
+              ]
+            : []),
+        ].map(([href, label]) => (
+          <Link
+            key={href}
+            href={href}
+            className="rounded-xl border border-border bg-white p-5 font-semibold hover:bg-secondary"
+          >
+            {label} →
+          </Link>
+        ))}
+      </nav>
       <div className="mt-10 rounded-xl border border-border bg-white p-6">
         <h2 className="text-lg font-semibold">Pilotage de la démonstration</h2>
         <p className="mt-3 text-muted-foreground">

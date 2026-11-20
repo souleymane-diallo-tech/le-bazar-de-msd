@@ -351,6 +351,7 @@ model User {
   roleId         String               @default("MANAGER")
   role           Role                 @relation(fields: [roleId], references: [id], onDelete: Restrict)
   active         Boolean              @default(true)
+  accessExpiresAt DateTime?            @db.Timestamptz(3)
   createdAt      DateTime             @default(now()) @db.Timestamptz(3)
   updatedAt      DateTime             @updatedAt @db.Timestamptz(3)
   sessions       Session[]

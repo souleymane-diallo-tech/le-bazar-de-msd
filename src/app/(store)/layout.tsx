@@ -2,12 +2,20 @@ import Link from "next/link";
 import { MapPin, ArrowUpRight } from "lucide-react";
 import { CartLink } from "@/components/store/cart-link";
 import { getOrderPolicy } from "@/modules/orders/runtime";
+import { getPublicSettings } from "@/modules/settings/read";
+export const dynamic = "force-dynamic";
 
-export default function StoreLayout({
+export default async function StoreLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getPublicSettings();
+  const socials = [
+    ["Facebook", settings.facebook],
+    ["Instagram", settings.instagram],
+    ["TikTok", settings.tiktok],
+  ].filter(([, url]) => url);
   return (
     <>
       <div className="bg-primary px-4 py-2 text-center text-xs leading-relaxed text-white">
@@ -66,6 +74,29 @@ export default function StoreLayout({
             </p>
           </div>
           <div className="flex flex-wrap gap-x-7 sm:justify-end">
+            <Link
+              href="/contact"
+              className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+            >
+              Contact
+            </Link>
+            <Link
+              href="/demonstration"
+              className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+            >
+              À propos de la démo
+            </Link>
+            {socials.map(([name, url]) => (
+              <a
+                key={name}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
+              >
+                {name}
+              </a>
+            ))}
             <Link
               href="/catalogue"
               className="inline-flex min-h-11 items-center gap-1 text-sm underline underline-offset-4"

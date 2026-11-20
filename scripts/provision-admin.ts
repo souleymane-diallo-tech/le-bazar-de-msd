@@ -22,6 +22,14 @@ const input = z
     name: z.string().min(1).max(100),
     password: z.string().min(12).max(128),
     role: z.enum(["OWNER", "MANAGER"]).default("OWNER"),
+    accessExpiresAt: z.iso
+      .datetime()
+      .transform((value) => new Date(value))
+      .refine(
+        (value) => value.getTime() > Date.now(),
+        "Expiration future requise",
+      )
+      .optional(),
   })
   .safeParse(payload);
 if (!input.success)
@@ -47,6 +55,7 @@ try {
         name: input.data.name,
         email: input.data.email,
         roleId: input.data.role,
+        accessExpiresAt: input.data.accessExpiresAt,
         emailVerified: false,
         accounts: {
           create: { providerId: "credential", accountId: id, password },

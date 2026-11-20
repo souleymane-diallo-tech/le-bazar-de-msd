@@ -21,7 +21,10 @@ export default async function AdminLayout({
           ["/admin/catalogue", "Catalogue & stock"],
           ["/admin/commandes", "Commandes"],
           ...(actor.roleId === "OWNER"
-            ? [["/admin/livraison", "Livraison"]]
+            ? [
+                ["/admin/livraison", "Livraison"],
+                ["/admin/parametres", "Contacts & visibilité"],
+              ]
             : []),
           ["/catalogue", "Voir la boutique"],
         ].map(([href, title]) => (

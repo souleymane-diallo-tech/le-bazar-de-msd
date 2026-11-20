@@ -1,6 +1,12 @@
 # Plan de vérification
 
-Statut au 31 octobre 2026 : recette locale de démonstration phase 4 réussie, 60 tests passants et trois scénarios checkout répétés cinq fois. Résultats et limites actualisés dans `docs/status.md`. Les scénarios de paiements électroniques T08 (paiement concurrent)/T09 sont réservés à la phase 5 ; la concurrence expiration/confirmation COD est couverte en phase 4. T19 et la recette de lancement restent à réaliser.
+Préparation Blob : 37 tests unitaires, 24 PostgreSQL et 22 navigateur réussis (83). Tests de sélection du stockage et contrat SDK privé simulé ; la recette du stockage réel reste à exécuter après création. Build/TypeScript, lint et format réussis. Inventaire local sans transfert : quatre photos versionnées, zéro import référencé.
+
+Incrément photos : 33 tests unitaires passants ; recette navigateur d’import JPEG, rejet de faux contenu, remplacement, conservation de la photo sélectionnée et affichage public réussi. Les brouillons et photos archivées ne sont pas accessibles au visiteur. Build/types/lint/format validés ; aucune recette distante revendiquée.
+
+Actualisation du 19 novembre 2026 : 30 tests unitaires, 24 PostgreSQL et 22 scénarios navigateur distincts vérifiés sur l’incrément admin/WhatsApp (un sélecteur de test corrigé puis les quatre scénarios checkout rejoués). Deux parcours critiques répétés cinq fois avec succès. Connexion du compte temporaire, refus après expiration, publication/archivage, prix/stock, commande et contenu WhatsApp contrôlés. Aucun message externe envoyé. Tableau de bord temporaire vérifié à 320/375/390/768/1440 px ; capture mobile inspectée. Build/types/lint/format validés, voir ADR 009.
+
+Statut au 31 octobre 2026 : recette locale de démonstration phase 5 réussie, 72 tests passants. Trois scénarios checkout de phase 4, puis trois scénarios visibilité/contact de phase 5, ont chacun été répétés cinq fois. Résultats et limites actualisés dans `docs/status.md`. T08 (paiement électronique concurrent)/T09 sont explicitement reportés faute d’accès marchands ; la concurrence expiration/confirmation COD est couverte en phase 4. T19 et la recette de lancement restent à réaliser.
 
 ## Matrice de recette
 

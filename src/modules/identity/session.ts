@@ -10,11 +10,15 @@ export async function getActor() {
   // Re-read current role/activity; don't trust a stale cookie or client-supplied role.
   const user = await getDb().user.findUnique({
     where: { id: session.user.id },
-    select: { id: true, name: true, roleId: true, active: true },
+    select: {
+      id: true,
+      name: true,
+      roleId: true,
+      active: true,
+      accessExpiresAt: true,
+    },
   });
-  return user?.active && ["OWNER", "MANAGER"].includes(user.roleId)
-    ? user
-    : null;
+  return hasPermission(user, "catalog:write") ? user : null;
 }
 
 export async function requirePermission(permission: Permission) {

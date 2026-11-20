@@ -198,6 +198,38 @@ export function CheckoutForm({
         >
           Retour au catalogue
         </Link>
+        {confirmation.whatsappUrl ? (
+          <div className="mt-6 rounded-xl border border-border bg-white p-5">
+            <p className="text-sm">
+              Transmettre au gérant les articles, le total et vos coordonnées de
+              test. WhatsApp s’ouvrira avec le récapitulatif : appuyez ensuite
+              sur « Envoyer ». Aucun message n’est envoyé automatiquement.
+            </p>
+            <a
+              href={confirmation.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              referrerPolicy="no-referrer"
+              className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-primary px-5 py-3 font-semibold text-primary-foreground"
+            >
+              Envoyer le récapitulatif sur WhatsApp
+            </a>
+            <p className="mt-3 text-xs">
+              La commande est déjà enregistrée. L’ouverture de WhatsApp ne
+              prouve pas sa réception par le gérant.
+            </p>
+          </div>
+        ) : (
+          <p className="mt-6 text-sm">
+            La commande est disponible dans l’administration. Le contact
+            WhatsApp n’est pas encore configuré.
+          </p>
+        )}
+        {error && (
+          <p role="alert" className="mt-4 text-red-800">
+            {error}
+          </p>
+        )}
       </section>
     );
   return (

@@ -6,6 +6,8 @@ import {
 } from "node:crypto";
 import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import { hasPermission, type Permission } from "@/modules/identity/permissions";
+import { publicSettingsFromJson } from "@/modules/settings/rules";
+import { orderWhatsAppLink } from "./whatsapp";
 import {
   basketSchema,
   checkoutSchema,
@@ -270,8 +272,16 @@ export async function readConfirmation(
     include: { items: true, payments: true },
   });
   if (!order) throw new CommerceError("NOT_FOUND", 404);
-  // Public confirmation deliberately excludes addresses and phone numbers.
+  const settings = await db.storeSettings.findUnique({
+    where: { id: "store" },
+  });
+  // Only the private access token can retrieve the prepared message. Never include it in WhatsApp.
   return {
+    whatsappUrl: orderWhatsAppLink(
+      publicSettingsFromJson(settings?.contacts, settings?.socialLinks)
+        .whatsapp,
+      order,
+    ),
     reference: order.reference,
     status: order.status,
     totalXof: order.totalXof,
