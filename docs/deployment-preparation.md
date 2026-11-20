@@ -1,5 +1,9 @@
 # Préparation du déploiement de démonstration — 19 novembre 2026
 
+## Résultat du 20 novembre 2026
+
+Plan exécuté pour la démonstration. Blob privé connecté en Preview par OIDC ; migrations Neon appliquées après sauvegarde. Déploiement READY `dpl_E2KRQGBDKSJKwszS9gZSrAk2TU1v` (commit `ddfafde`), alias https://le-bazar-de-msd-demo.vercel.app déplacé après recette HTTP de l’administration, de l’import réel et du checkout. Compte distant valable jusqu’au 27 novembre 2026, 08:54 UTC ; fichier privé `.local/acces-admin-vercel.md`. Ancien déploiement conservé pour repli. Aucune vente ni message WhatsApp réel. Les sections suivantes conservent le plan préparatoire historique.
+
 ## Proposition de stockage
 
 Vercel Blob **privé**, région Francfort, connecté au projet `le-bazar-de-msd` uniquement pour Preview. Neon garde les données métier et les références `/media/products/<empreinte>.webp`. Les fichiers restent indépendants des déploiements. Notre route vérifie publication ou droits administrateur avant lecture. SDK `@vercel/blob` 2.9.0 ; aucune URL Blob ni clé transmise au navigateur.

@@ -6,7 +6,9 @@
 - Blob privé `msd-demo-product-images` créé en fra1 et connecté uniquement à Preview par OIDC ; variables de stockage, checkout démo et noindex configurées.
 - Neon sauvegardé dans une archive locale ignorée (63 132 octets, inventaire pg_restore lisible). Deux migrations additives appliquées ; seeds idempotents et zones fictives initialisés.
 - Compte propriétaire distant créé pour sept jours ; expiration le 27 novembre 2026 à 08:54 UTC, identifiants dans `.local/acces-admin-vercel.md`. Contact WhatsApp autorisé enregistré en base distante, hors Git.
-- Construction et recette distante encore à effectuer ; alias public conservé sur la précédente version à ce stade.
+- Déploiement Preview READY `dpl_E2KRQGBDKSJKwszS9gZSrAk2TU1v`, commit `ddfafde4c11578568d8620025233fbaf5dbbd45c`. Alias public basculé après recette ; PR brouillon #4, main inchangée, CI du push réussie.
+- Recette HTTP distante réussie : connexion propriétaire, import Blob réel et décodage WebP (1080 px), refus anonyme du brouillon, lecture après publication, refus après archivage. Commande fictive créée, récapitulatif WhatsApp vérifié sans envoi, commande annulée et stock intégralement restitué. Produit technique conservé archivé.
+- Lien final vérifié : accueil, catalogue, contact, santé et robots HTTP 200 ; quatre produits visibles dans le navigateur sans authentification Vercel. Administration anonyme refusée, session de recette fermée. Identifiants uniquement dans le fichier local ignoré.
 
 ## Préparation du stockage durable et du déploiement (historique du 19 novembre)
 

@@ -12,4 +12,4 @@ La préparation ne vaut pas validation du store réel, migration Neon, activatio
 
 ## Exécution du 20 novembre 2026
 
-Stockage privé créé et connecté au projet en Preview par OIDC. Sauvegarde Neon locale vérifiée, migrations additives appliquées et accès propriétaire distant temporaire créé. Déploiement et recette distante en cours ; pas encore de changement d’alias.
+Stockage privé créé et connecté au projet en Preview par OIDC. Sauvegarde Neon locale vérifiée, migrations additives appliquées et accès propriétaire distant temporaire créé. Recette distante réussie et alias publié : écriture/lecture réelle Blob, protection du brouillon, publication puis archivage du produit technique, commande fictive et récapitulatif WhatsApp sans envoi. Stock restitué après annulation de la commande de recette. Aucun abonnement activé.

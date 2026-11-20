@@ -74,4 +74,4 @@ B06 — 30 octobre 2026 : boutique Preview désormais READY sur https://le-bazar
 B06 : accès public temporaire demandé et vérifié sans session Vercel le 30 octobre ; authentification administrateur préservée.
 
 - [x] Connecter le Blob privé à Preview et préparer Neon après sauvegarde (20 novembre).
-- [ ] Valider le déploiement distant avec import réel Blob avant publication de l’alias.
+- [x] Valider le déploiement distant avec import réel Blob avant publication de l’alias (20 novembre).
