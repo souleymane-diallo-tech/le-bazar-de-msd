@@ -2,6 +2,8 @@
 
 L'utilisateur a validé la conception et le démarrage de Phase 2, puis confirmé ses comptes personnels pour GitHub et Vercel. Les données commerciales et les frais récurrents non renseignés restent ouverts.
 
+Actualisation au 31 octobre 2026 : phases 4 et 5 autorisées ; prix/stocks et frais de livraison fictifs acceptés seulement en démonstration, échéance 24 h acceptée pour les commandes de test. WhatsApp Business de test fourni et configuré en local ; numéro client et profils sociaux restent à fournir. D07 : utilisateur confirme l’absence d’accès mobile, Wave/Orange Money explicitement reportés. Neon Free et déploiement public de phase 3 réalisés précédemment, sans abonnement payant ; les mentions historiques contraires plus bas ne décrivent plus l’état courant.
+
 | ID  | Décision                | Proposition / information manquante                                               | Échéance                              |
 | --- | ----------------------- | --------------------------------------------------------------------------------- | ------------------------------------- |
 | D01 | MVP et architecture     | Validés pour le démarrage de Phase 2                                              | Accord reçu                           |

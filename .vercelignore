@@ -1,0 +1,8 @@
+.local/
+.env*
+!.env.example
+msf/
+msf.zip
+test-results/
+playwright-report/
+coverage/

@@ -1,15 +1,26 @@
 # Backlog prêt à décliner en Issues
 
+Stockage durable : proposition Vercel Blob privé, adaptateur et script de transfert préparés, activation distante et recette avant bascule encore à effectuer. Procédure dans `docs/deployment-preparation.md`, ADR 011.
+
+Photos, 19 novembre : import local de la photo principale et miniatures réalisés, formats et dimensions contrôlés. Stockage durable distant et transfert des fichiers requis avant déploiement de cet incrément. WhatsApp remplaçable dans les paramètres existants. ADR 010.
+
+Itération du 19 novembre 2026 : accès propriétaire temporaire, recherche/pagination catalogue, recette CRUD et commande vers WhatsApp par bouton client réalisés et vérifiés localement. Voir ADR 009 et status.md ; lancement commercial toujours distinct.
+
 Estimation relative : S = petit incrément, M = plusieurs tâches, L = épique à découper. Ces tailles ne sont pas des engagements de jours. État actualisé ci-dessous.
 
 ## Avancement courant au 31 octobre 2026
+
+- B16 : SEO technique préparé, canonical et partage propres, paramètres WhatsApp/socials sécurisés, numéro de test configuré seulement en local ; indexation désactivée pour la démo. Recette phase 5 réussie : 72 tests, build/types/lint/format ; 15 répétitions supplémentaires de visibilité/contact. Aucun déploiement Phase 5.
+- B17/B18 : explicitement reportés, aucun accès marchand mobile disponible selon l’utilisateur. Aucun adaptateur/webhook ni test prestataire revendiqué. Reprise décrite dans `docs/payments-readiness.md`.
+- B19 : pixels et flux Meta non retenus dans cet incrément faute de comptes/configuration validés ; aucun tracking chargé. Simples liens sociaux prêts, vides par défaut.
+- B20–B22 : phases 6–7 non engagées. Aucune nouvelle mise en ligne effectuée.
 
 - B06 : Phase 3 accessible publiquement sur l’alias Vercel de démo ; aucun déploiement Phase 4 effectué.
 - B08 : administration catalogue, catégories, variantes, publication/archivage, ajustement de stock et sélection des photos existantes implémentés. L’utilisateur conserve les quatre photos pour cette démo ; nouvel upload/stockage explicitement hors de cet incrément.
 - B11/B12 : checkout fictif, devis signé, confirmation privée, idempotence, réservations SERIALIZABLE et reprise réseau implémentés. Aucun checkout commercial activé.
 - B13/B14 : transitions de commandes, annulation, expédition, retour physique, zones et snapshots, correction d’adresse, collecte/remboursement simulés et audit implémentés.
 - B15 : dashboard démo, collecte nette, liste des derniers clients distincts et audit propriétaire implémentés.
-- Recette locale réussie : 60 tests (20 unitaires, 22 PostgreSQL, 18 navigateur), plus cinq répétitions des trois scénarios checkout. Build/types/lint/format passants. Incrément prêt pour revue ; pas de déploiement Phase 4.
+- Recette de phase 4 réussie : 60 tests (20 unitaires, 22 PostgreSQL, 18 navigateur), plus cinq répétitions des trois scénarios checkout. Build/types/lint/format passants. Incrément dans la PR #3 ; pas de déploiement Phase 4.
 - Avant exploitation réelle : tâche d’expiration planifiée, paramètres commerciaux, médias supplémentaires si demandés, compte permanent et récupération/MFA, validation globale. B17–B22 ne sont pas engagés par cet incrément.
 
 Les sections datées ci-dessous constituent l’historique et ne remplacent pas cet état courant.
@@ -61,3 +72,6 @@ Actualisation du 30 octobre 2026 : B04 dispose désormais d’une base Neon Free
 B06 — 30 octobre 2026 : boutique Preview désormais READY sur https://le-bazar-de-msd-demo.vercel.app ; smoke tests HTTP et panier réalisés. Recette de connexion administrateur distante restante. Production contient uniquement une page d’attente protégée autorisée.
 
 B06 : accès public temporaire demandé et vérifié sans session Vercel le 30 octobre ; authentification administrateur préservée.
+
+- [x] Connecter le Blob privé à Preview et préparer Neon après sauvegarde (20 novembre).
+- [ ] Valider le déploiement distant avec import réel Blob avant publication de l’alias.

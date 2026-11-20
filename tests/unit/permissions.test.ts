@@ -2,6 +2,26 @@ import { describe, expect, it } from "vitest";
 import { hasPermission, permissions } from "@/modules/identity/permissions";
 
 describe("permissions serveur", () => {
+  it("refuse tous les droits après expiration même pour un propriétaire actif", () => {
+    for (const permission of permissions) {
+      expect(
+        hasPermission(
+          { active: true, roleId: "OWNER", accessExpiresAt: new Date(0) },
+          permission,
+        ),
+      ).toBe(false);
+      expect(
+        hasPermission(
+          {
+            active: true,
+            roleId: "OWNER",
+            accessExpiresAt: new Date(Date.now() + 60000),
+          },
+          permission,
+        ),
+      ).toBe(true);
+    }
+  });
   it("refuse les visiteurs, comptes désactivés et rôles inconnus", () => {
     for (const permission of permissions) {
       expect(hasPermission(null, permission)).toBe(false);

@@ -12,6 +12,10 @@ const schema = z.object({
   BETTER_AUTH_SECRET: z.string().min(32),
   PAYMENT_MODE: z.enum(["disabled", "sandbox", "live"]).default("disabled"),
   CHECKOUT_MODE: z.enum(["disabled", "demo"]).default("disabled"),
+  SEO_INDEXING: z.enum(["disabled", "enabled"]).default("disabled"),
+  PRODUCT_IMAGE_STORAGE: z
+    .enum(["local", "vercel-blob", "disabled"])
+    .default("local"),
 });
 
 export function parseEnvironment(input: Record<string, string | undefined>) {
@@ -23,6 +27,12 @@ export function parseEnvironment(input: Record<string, string | undefined>) {
     );
   }
   const env = result.data;
+  if (
+    env.SEO_INDEXING === "enabled" &&
+    (env.APP_ENV !== "production" || input.VERCEL_ENV === "preview")
+  ) {
+    throw new Error("L’indexation est réservée à une production validée.");
+  }
   if (env.APP_ENV === "production" && env.CHECKOUT_MODE !== "disabled") {
     throw new Error("Le checkout de démonstration est interdit en production.");
   }

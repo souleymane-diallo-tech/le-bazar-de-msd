@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
+import { indexingAllowed } from "./src/modules/seo/rules";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: { serverActions: { bodySizeLimit: "4mb" } },
   async headers() {
     return [
       {
@@ -14,9 +16,22 @@ const nextConfig: NextConfig = {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
           },
-          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          ...(!indexingAllowed(process.env)
+            ? [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]
+            : []),
         ],
       },
+      ...[
+        "/admin/:path*",
+        "/api/:path*",
+        "/connexion",
+        "/commande",
+        "/panier",
+        "/demonstration",
+      ].map((source) => ({
+        source,
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      })),
     ];
   },
 };

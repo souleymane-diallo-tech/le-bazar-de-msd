@@ -1,6 +1,51 @@
-# Suivi — 31 octobre 2026
+# Suivi — 20 novembre 2026
 
-## État courant : phase 4 de démonstration prête pour revue
+## Activation distante du 20 novembre 2026
+
+- Autorisation explicite : créer/connecter le stockage privé et déployer la démonstration, sans coût.
+- Blob privé `msd-demo-product-images` créé en fra1 et connecté uniquement à Preview par OIDC ; variables de stockage, checkout démo et noindex configurées.
+- Neon sauvegardé dans une archive locale ignorée (63 132 octets, inventaire pg_restore lisible). Deux migrations additives appliquées ; seeds idempotents et zones fictives initialisés.
+- Compte propriétaire distant créé pour sept jours ; expiration le 27 novembre 2026 à 08:54 UTC, identifiants dans `.local/acces-admin-vercel.md`. Contact WhatsApp autorisé enregistré en base distante, hors Git.
+- Construction et recette distante encore à effectuer ; alias public conservé sur la précédente version à ce stade.
+
+## Préparation du stockage durable et du déploiement (historique du 19 novembre)
+
+- Proposition : Vercel Blob privé, connexion Preview uniquement. Adaptateur serveur préparé et références d’images conservées. Aucun store créé, variable distante modifiée ou coût engagé.
+- Projet/équipe/dernière Preview READY vérifiés via connecteur. Région `fra1` dans `vercel.json`, exclusion explicite des secrets et fichiers privés du paquet Vercel.
+- Inventaire sans effet exécuté : quatre photos versionnées, zéro import référencé, aucun fichier à transférer actuellement. Les images des tests ne seront pas copiées.
+- Plan de migration additive, accès administrateur distant distinct, configuration WhatsApp, tests et repli détaillés dans `docs/deployment-preparation.md`. Pas de mise en ligne de cette version. ADR 011.
+- Préparation vérifiée : build/TypeScript, lint/format, **83 tests locaux réussis (37 unitaires, 24 PostgreSQL, 22 navigateur)**. Adaptateur Blob vérifié avec SDK simulé, pas avec un store distant. `npm audit --omit=dev` : zéro avis ; neuf avis modérés des outils de développement demeurent. Aucun secret ni numéro fourni trouvé dans les fichiers suivis ou non ignorés.
+
+## Itération photographies de produits
+
+- Import autorisé à la création et modification : photo principale JPEG/PNG/WebP, 3 Mo et 20 mégapixels maximum, décodage puis normalisation WebP. Miniatures dans le catalogue administrateur ; maintien des quatre photos initiales disponibles.
+- Fichiers dans `.local/product-images/`, hors Git. Accès public seulement aux photos référencées par un produit publié actif ; brouillons accessibles aux administrateurs. Stockage distant à configurer avant déploiement, import désactivé sur Vercel. Voir ADR 010.
+- Numéro WhatsApp fourni conservé en base locale ; remplacement possible dans Contacts & visibilité. Aucun numéro ajouté au code ni au dépôt.
+- Build et TypeScript réussis, lint/format validés, 33 tests unitaires passants. Parcours navigateur : faux fichier rejeté, import valide, image décodée dans la fiche publique, remplacement, conservation de la sélection et refus public après archivage réussis. Aucun envoi WhatsApp ni déploiement.
+- Stabilité : cinq répétitions du parcours d’import réussies. Miniatures des quatre produits existants décodées ; administration vérifiée à 320/375/390/768/1440 px, capture mobile inspectée. Numéro WhatsApp fourni confirmé en base via la page Contact, sans divulgation dans les sorties. Serveur local redémarré avec cet incrément.
+
+## Itération administration et commande WhatsApp
+
+- Autorisation : accès temporaire, gestion de la boutique et recette par itérations. Bouton WhatsApp validé par le client retenu, sans service supplémentaire.
+- Compte propriétaire local créé pour sept jours ; identifiants uniquement dans `.local/acces-admin-temporaire.md`. Migration `202611190001_temporary_admin` appliquée aux bases locales dev/test. Expiration contrôlée à chaque accès et autorisation transactionnelle.
+- Administration : raccourcis, recherche et pagination des produits ; gestion existante des produits, variantes, prix, stocks, catégories, zones et commandes conservée. Archivage sans effacer les commandes. Quatre photos fournies conservées.
+- Commande : récapitulatif WhatsApp construit sur les snapshots, accessible avec le jeton privé seulement. Articles/SKU, total, livraison et coordonnées inclus ; aucun jeton dans le lien. Envoi manuel requis, aucune réception ni paiement déclaré automatiquement.
+- Vérification : 30 tests unitaires et 24 PostgreSQL réussis. 21 scénarios navigateur passés initialement, puis les quatre scénarios checkout/admin passés après correction d’un sélecteur de test : 22 scénarios distincts couverts. Build Next.js 16.4.6 réussi. Contrôles complémentaires consignés ci-dessous.
+- Correctif Next.js 16.4.3 → 16.4.6, plugin ESLint aligné ; audit d’exécution sans avis restant. Neuf avis modérés des outils de développement restent hors de cet incrément. Voir ADR 009.
+- Aucun push, PR, déploiement, migration Neon ou compte distant. Vercel reste sur la phase 3. Paiements et ventes réelles désactivés. Travaux Phase 5 précédents conservés sur `features/phase-5-discovery`.
+- Contrôles finaux : les deux scénarios critiques admin/checkout ont passé cinq répétitions chacun (10 exécutions). Types, lint, format et diff vérifiés. Connexion avec le compte temporaire vérifiée ; tableau de bord aux cinq largeurs, capture mobile inspectée ; numéro local WhatsApp confirmé sans affichage ni envoi. Serveur lancé sur la boucle locale, `http://localhost:3000`. Expiration du compte le 26 novembre 2026 à 18:24:49 UTC.
+
+## Historique : phase 5 prête pour revue le 31 octobre
+
+- Autorisée le 31 octobre : SEO, WhatsApp et réglages publics ; paiements mobiles explicitement reportés faute d’accès. Numéro Business de test fourni, enregistré uniquement dans la base locale et jamais dans Git. Aucun message envoyé.
+- Branche `features/phase-5-discovery`, empilée sur la phase 4. `main`, Vercel et Neon inchangés ; aucune migration ni dépendance ajoutée.
+- Implémenté : contacts publics modifiables par propriétaire avec version/audit, liens WhatsApp contextualisés, page Contact et informations de démonstration, liens sociaux facultatifs, canonical/Open Graph/cartes sociales, robots/sitemap et JSON-LD préparés avec verrou d’indexation.
+- Protection : `SEO_INDEXING=disabled` par défaut, activation interdite hors production ou en Preview ; démo noindex, sitemap vide, aucun JSON-LD commercial fictif. Aucun pixel, widget ou appel à un service publicitaire.
+- Vérifié : build/types/lint/format réussis ; **72 tests passants : 27 unitaires, 24 PostgreSQL, 21 Playwright**. Les trois scénarios de visibilité/contact ont réussi cinq répétitions chacun (15 exécutions supplémentaires). Contrôle des liens sans ouverture de WhatsApp, aucun appel publicitaire détecté, captures Contact inspectées à 390/1440 px ; Contact/informations/réglages aux cinq largeurs prévues.
+- Paiements : aucun adaptateur Wave/Orange Money déclaré opérationnel. `PAYMENT_MODE=disabled` conservé, COD simulé uniquement. Voir `docs/payments-readiness.md` et ADR 008 pour les prérequis de reprise.
+- Les limites de phase 4 restent applicables : pas de compte administrateur permanent ni cron de fond, pas de ventes réelles. Site public toujours sur la phase 3. Les phases 6–7 attendent autorisation.
+
+## Phase 4 — état livré avant l’autorisation de phase 5
 
 - Autorisation : phase 4, livraison fictive et expiration à 24 h validées ; maintien des quatre photos confirmé le 31 octobre. Aucun abonnement ni import de médias supplémentaire.
 - Branche : `features/phase-4-orders`, issue de `feat/phase-3-storefront`. `main` inchangée, PR précédentes non fusionnées.
@@ -11,7 +56,7 @@
 - Corrections de recette : attente explicite de réponse/navigation lors de la connexion à froid ; isolation des compteurs de tentatives entre exécutions E2E dans la seule base locale, sans désactiver le limiteur applicatif. Première reconstruction Turbopack bloquée par son cache/processus CSS, puis builds réussis après nettoyage du seul dossier `.next`.
 - Site public : https://le-bazar-de-msd-demo.vercel.app reste sur la Phase 3 précédemment déployée, commandes désactivées. Cet incrément local n’est pas une mise en ligne ni une activation commerciale.
 - Limites : expiration opportuniste/bouton admin, pas de tâche planifiée hors trafic ; aucun compte permanent provisionné ; médias limités aux quatre photos ; paramètres commerciaux réels, récupération/MFA et recette de lancement restent à finaliser.
-- Guide : `docs/admin-demo.md`. Décisions : ADR 007. Les phases 5 et suivantes ne sont pas engagées.
+- Guide : `docs/admin-demo.md`. Décisions : ADR 007. Phase 4 publiée dans la PR #3, contrôles GitHub de la version applicative 2a2e31a réussis.
 
 ## Historique de la préparation et du déploiement de phase 3
 

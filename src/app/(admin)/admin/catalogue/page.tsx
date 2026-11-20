@@ -2,20 +2,41 @@ import { getDb } from "@/lib/db";
 import { requirePermission } from "@/modules/identity/session";
 import { AdminForm } from "@/components/admin/form";
 import { Active, Field, Hidden, inputClass } from "@/components/admin/fields";
-export default async function AdminCatalog() {
+import Link from "next/link";
+import Image from "next/image";
+import { uploadsEnabled } from "@/modules/catalog/uploads";
+import { safeImage } from "@/modules/catalog/repository";
+export default async function AdminCatalog({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; q?: string }>;
+}) {
   await requirePermission("catalog:write");
+  const params = await searchParams;
+  const page = Math.max(
+    1,
+    Math.min(100000, Math.floor(Number(params.page) || 1)),
+  );
+  const q = (params.q ?? "").trim().slice(0, 100);
+  const where = {
+    isDemo: true,
+    ...(q ? { name: { contains: q, mode: "insensitive" as const } } : {}),
+  };
   const db = getDb();
-  const [products, categories] = await Promise.all([
+  const canUpload = uploadsEnabled();
+  const [products, categories, total] = await Promise.all([
     db.product.findMany({
-      where: { isDemo: true },
+      where,
       include: {
         variants: { include: { inventory: true }, orderBy: { sku: "asc" } },
         images: true,
       },
-      orderBy: { createdAt: "desc" },
-      take: 100,
+      orderBy: [{ createdAt: "desc" }, { id: "asc" }],
+      take: 20,
+      skip: (page - 1) * 20,
     }),
     db.category.findMany({ orderBy: { name: "asc" }, take: 100 }),
+    db.product.count({ where }),
   ]);
   function productFields(p?: (typeof products)[number]) {
     return (
@@ -72,9 +93,15 @@ export default async function AdminCatalog() {
           Photographie fournie
           <select
             name="image"
+            key={p?.images[0]?.objectKey ?? "new"}
             defaultValue={p?.images[0]?.objectKey}
             className={inputClass}
           >
+            {p?.images[0]?.objectKey.startsWith("/media/products/") && (
+              <option value={p.images[0].objectKey}>
+                Conserver la photo importée
+              </option>
+            )}
             {[
               ["distributeur", "Distributeur"],
               ["maison", "Rangements"],
@@ -86,6 +113,21 @@ export default async function AdminCatalog() {
               </option>
             ))}
           </select>
+        </label>
+        <label className="block text-sm">
+          Importer une photo du produit
+          <input
+            type="file"
+            name="photo"
+            accept="image/jpeg,image/png,image/webp"
+            disabled={!canUpload}
+            className="mt-2 block w-full min-w-0 text-sm"
+          />
+          <span className="mt-2 block text-xs text-muted-foreground">
+            {canUpload
+              ? "JPEG, PNG ou WebP · 3 Mo maximum. La photo importée remplace la photo sélectionnée à l’enregistrement."
+              : "Import indisponible : stockage distant à configurer."}
+          </span>
         </label>
         <Field
           name="alt"
@@ -99,9 +141,26 @@ export default async function AdminCatalog() {
     <>
       <h1 className="editorial text-4xl">Catalogue & stock</h1>
       <p className="my-4 text-sm text-muted-foreground">
-        Produits de démonstration uniquement. Médias : les quatre photographies
-        fournies. Liste limitée aux 100 produits les plus récents.
+        Produits de démonstration uniquement. Photos fournies ou importées.{" "}
+        {total} produit(s) correspondant(s).
       </p>
+      <form
+        className="my-5 flex flex-wrap items-end gap-3"
+        action="/admin/catalogue"
+      >
+        <label className="min-w-0 flex-1">
+          Rechercher un produit
+          <input
+            name="q"
+            defaultValue={q}
+            maxLength={100}
+            className={inputClass}
+          />
+        </label>
+        <button className="min-h-11 rounded-lg bg-primary px-5 text-primary-foreground">
+          Rechercher
+        </button>
+      </form>
       <details className="my-6 rounded-xl border border-border bg-white p-5">
         <summary className="min-h-11 cursor-pointer font-semibold">
           Créer un produit de démonstration
@@ -117,6 +176,16 @@ export default async function AdminCatalog() {
             className="rounded-xl border border-border bg-white p-5"
           >
             <summary className="min-h-11 cursor-pointer font-semibold">
+              {safeImage(p.images[0]?.objectKey ?? "") && (
+                <Image
+                  src={p.images[0].objectKey}
+                  alt={p.images[0].alt}
+                  width={72}
+                  height={72}
+                  unoptimized
+                  className="mr-3 inline-block rounded-lg object-cover"
+                />
+              )}
               {p.name} ·{" "}
               {
                 {
@@ -193,6 +262,30 @@ export default async function AdminCatalog() {
           </details>
         ))}
       </div>
+      <nav
+        aria-label="Pages du catalogue"
+        className="my-6 flex flex-wrap items-center gap-5"
+      >
+        {page > 1 && (
+          <Link
+            className="min-h-11 py-3 underline"
+            href={`/admin/catalogue?page=${page - 1}&q=${encodeURIComponent(q)}`}
+          >
+            Précédente
+          </Link>
+        )}
+        <span>
+          Page {page} sur {Math.max(1, Math.ceil(total / 20))}
+        </span>
+        {page * 20 < total && (
+          <Link
+            className="min-h-11 py-3 underline"
+            href={`/admin/catalogue?page=${page + 1}&q=${encodeURIComponent(q)}`}
+          >
+            Suivante
+          </Link>
+        )}
+      </nav>
       <h2 className="editorial mb-5 mt-10 text-3xl">Catégories</h2>
       <div className="grid gap-5 md:grid-cols-2">
         {[...categories, null].map((c) => (

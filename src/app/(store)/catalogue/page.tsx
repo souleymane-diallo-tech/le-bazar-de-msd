@@ -4,8 +4,20 @@ import { getCatalog } from "@/modules/catalog/service";
 import { parseCatalogQuery, selectCatalog } from "@/modules/catalog/rules";
 import { ProductCard } from "@/components/store/product-card";
 import { Button } from "@/components/ui/button";
+import { pageMetadata } from "@/modules/seo/metadata";
 export const dynamic = "force-dynamic";
-export const metadata = { title: "La collection" };
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  return pageMetadata(
+    "La collection",
+    "Objets utiles pour la maison, la salle de bain et le quotidien. Parcourez la collection du Bazar de MSD.",
+    "/catalogue",
+    { noindex: Object.keys(await searchParams).length > 0 },
+  );
+}
 
 export default async function CatalogPage({
   searchParams,

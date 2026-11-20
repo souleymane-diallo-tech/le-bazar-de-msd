@@ -4,7 +4,15 @@ import { ArrowRight, Leaf } from "lucide-react";
 import { getCatalog } from "@/modules/catalog/service";
 import { ProductCard } from "@/components/store/product-card";
 import { Button } from "@/components/ui/button";
+import { pageMetadata } from "@/modules/seo/metadata";
 export const dynamic = "force-dynamic";
+export function generateMetadata() {
+  return pageMetadata(
+    "Les essentiels du quotidien",
+    "Des idées utiles pour organiser et embellir le quotidien. Découvrez la collection du Bazar de MSD à Dakar.",
+    "/",
+  );
+}
 
 export default async function HomePage() {
   const products = await getCatalog();
