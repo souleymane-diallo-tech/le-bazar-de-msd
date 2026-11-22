@@ -1,5 +1,9 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { retryNotification } from "@/modules/notifications/admin";
+import { dispatchNotifications } from "@/modules/notifications/queue";
+import { hasPermission } from "@/modules/identity/permissions";
 import { z } from "zod";
 import { getActor } from "@/modules/identity/session";
 import { getDb } from "@/lib/db";
@@ -39,6 +43,31 @@ export async function adminAction(
     data.active = form.get("active") === "on";
     const db = getDb();
     switch (data.action) {
+      case "notification-retry":
+        await retryNotification(
+          db,
+          actor.id,
+          z.string().min(1).max(100).parse(data.notificationId),
+        );
+        after(async () => {
+          try {
+            await dispatchNotifications(db);
+          } catch {
+            console.error("NOTIFICATION_DISPATCH_PENDING");
+          }
+        });
+        break;
+      case "notification-dispatch":
+        if (!hasPermission(actor, "settings:write"))
+          throw new CommerceError("FORBIDDEN", 403);
+        after(async () => {
+          try {
+            await dispatchNotifications(db);
+          } catch {
+            console.error("NOTIFICATION_DISPATCH_PENDING");
+          }
+        });
+        break;
       case "public-settings":
         await savePublicSettings(db, actor.id, data);
         break;

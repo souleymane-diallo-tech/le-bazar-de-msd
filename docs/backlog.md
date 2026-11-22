@@ -1,5 +1,7 @@
 # Backlog prêt à décliner en Issues
 
+22 novembre : notifications automatiques autorisées et implémentées (outbox transactionnelle, file, reprise, signature webhook, suivi administrateur). Tests locaux : 43 unitaires, 27 PostgreSQL et 22 navigateur passants. Restent configuration du webhook Meta, approbation du modèle français, migration Neon et recette d’un déploiement avant activation réelle. Token temporaire de test enregistré comme secret Preview. Voir ADR 012 et status.md.
+
 Stockage durable : proposition Vercel Blob privé, adaptateur et script de transfert préparés, activation distante et recette avant bascule encore à effectuer. Procédure dans `docs/deployment-preparation.md`, ADR 011.
 
 Photos, 19 novembre : import local de la photo principale et miniatures réalisés, formats et dimensions contrôlés. Stockage durable distant et transfert des fichiers requis avant déploiement de cet incrément. WhatsApp remplaçable dans les paramètres existants. ADR 010.

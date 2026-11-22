@@ -8,6 +8,8 @@ import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import { hasPermission, type Permission } from "@/modules/identity/permissions";
 import { publicSettingsFromJson } from "@/modules/settings/rules";
 import { orderWhatsAppLink } from "./whatsapp";
+import { recordNotification } from "@/modules/notifications/service";
+import type { NotificationMode } from "@/modules/notifications/config";
 import {
   basketSchema,
   checkoutSchema,
@@ -17,7 +19,11 @@ import {
 } from "./rules";
 
 type Tx = Prisma.TransactionClient;
-export type DemoPolicy = { enabled: boolean; secret: string };
+export type DemoPolicy = {
+  enabled: boolean;
+  secret: string;
+  notificationMode?: NotificationMode;
+};
 export const digest = (value: string) =>
   createHash("sha256").update(value).digest("hex");
 function enabled(policy: DemoPolicy) {
@@ -259,6 +265,11 @@ export async function placeOrder(
         },
       });
     }
+    await recordNotification(
+      tx,
+      order.id,
+      policy.notificationMode ?? "disabled",
+    );
     return { reference: order.reference };
   });
 }
@@ -269,7 +280,7 @@ export async function readConfirmation(
 ) {
   const order = await db.order.findFirst({
     where: { reference, accessTokenHash: digest(accessToken), isDemo: true },
-    include: { items: true, payments: true },
+    include: { items: true, payments: true, notifications: true },
   });
   if (!order) throw new CommerceError("NOT_FOUND", 404);
   const settings = await db.storeSettings.findUnique({
@@ -277,6 +288,7 @@ export async function readConfirmation(
   });
   // Only the private access token can retrieve the prepared message. Never include it in WhatsApp.
   return {
+    automaticNotification: order.notifications.some((n) => n.mode === "meta"),
     whatsappUrl: orderWhatsAppLink(
       publicSettingsFromJson(settings?.contacts, settings?.socialLinks)
         .whatsapp,

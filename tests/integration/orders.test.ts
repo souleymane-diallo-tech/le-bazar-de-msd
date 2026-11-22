@@ -1,6 +1,11 @@
 import "dotenv/config";
 import { randomBytes, randomUUID } from "node:crypto";
-import { afterAll, beforeAll, expect, it } from "vitest";
+import { afterAll, beforeAll, expect, it, vi } from "vitest";
+import {
+  processNotification,
+  applyStatus,
+  recoverExpiredLeases,
+} from "@/modules/notifications/service";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import {
@@ -425,4 +430,111 @@ it("rôle et activité relus en transaction, démo désactivée refusée", async
     code: "FORBIDDEN",
   });
   await db.user.update({ where: { id: manager }, data: { active: true } });
+});
+
+it("enregistre une seule notification avec la commande idempotente", async () => {
+  const { input } = await fixture();
+  const notificationPolicy = {
+    ...policy,
+    notificationMode: "simulated" as const,
+  };
+  const [a, b] = await Promise.all([
+    placeOrder(db, input, notificationPolicy),
+    placeOrder(db, input, notificationPolicy),
+  ]);
+  expect(a.reference).toBe(b.reference);
+  expect(
+    await db.orderNotification.count({
+      where: { order: { reference: a.reference } },
+    }),
+  ).toBe(1);
+});
+
+it("verrouille les envois concurrents et traite les webhooks hors ordre", async () => {
+  const initial = await db.storeSettings.findUnique({ where: { id: "store" } });
+  await db.storeSettings.upsert({
+    where: { id: "store" },
+    create: { name: "Test", contacts: { whatsapp: "12025550123" } },
+    update: { contacts: { whatsapp: "12025550123" } },
+  });
+  try {
+    const { input } = await fixture();
+    const result = await placeOrder(db, input, {
+      ...policy,
+      notificationMode: "meta",
+    });
+    const n = await db.orderNotification.findFirstOrThrow({
+      where: { order: { reference: result.reference } },
+    });
+    const sender = vi.fn(async () => ({
+      kind: "accepted" as const,
+      messageId: `wamid.${n.id}`,
+    }));
+    await Promise.all([
+      processNotification(db, n.id, "meta", sender),
+      processNotification(db, n.id, "meta", sender),
+    ]);
+    expect(sender).toHaveBeenCalledTimes(1);
+    const event = {
+      messageId: `wamid.${n.id}`,
+      recipient: n.recipient,
+      timestamp: new Date(),
+    };
+    await applyStatus(db, { ...event, status: "read" });
+    await applyStatus(db, { ...event, status: "sent" });
+    await applyStatus(db, { ...event, status: "failed" });
+    expect(
+      (await db.orderNotification.findUniqueOrThrow({ where: { id: n.id } }))
+        .state,
+    ).toBe("READ");
+  } finally {
+    await db.storeSettings.update({
+      where: { id: "store" },
+      data: { contacts: initial?.contacts ?? {} },
+    });
+  }
+});
+
+it("ne renvoie pas un résultat réseau incertain ni un envoi abandonné", async () => {
+  const initial = await db.storeSettings.findUnique({ where: { id: "store" } });
+  await db.storeSettings.upsert({
+    where: { id: "store" },
+    create: { name: "Test", contacts: { whatsapp: "12025550123" } },
+    update: { contacts: { whatsapp: "12025550123" } },
+  });
+  try {
+    const { input } = await fixture();
+    const result = await placeOrder(db, input, {
+      ...policy,
+      notificationMode: "meta",
+    });
+    const n = await db.orderNotification.findFirstOrThrow({
+      where: { order: { reference: result.reference } },
+    });
+    const sender = vi.fn(async () => ({
+      kind: "uncertain" as const,
+      code: "NETWORK_OUTCOME_UNKNOWN",
+    }));
+    await processNotification(db, n.id, "meta", sender);
+    await processNotification(db, n.id, "meta", sender);
+    expect(sender).toHaveBeenCalledTimes(1);
+    expect(
+      (await db.orderNotification.findUniqueOrThrow({ where: { id: n.id } }))
+        .state,
+    ).toBe("UNCERTAIN");
+    await db.orderNotification.update({
+      where: { id: n.id },
+      data: { state: "PROCESSING", leaseUntil: new Date(0) },
+    });
+    await recoverExpiredLeases(db);
+    expect(
+      (await db.orderNotification.findUniqueOrThrow({ where: { id: n.id } }))
+        .state,
+    ).toBe("UNCERTAIN");
+  } finally {
+    await db.storeSettings.update({
+      where: { id: "store" },
+      data: { contacts: initial?.contacts ?? {} },
+    });
+  }
 });

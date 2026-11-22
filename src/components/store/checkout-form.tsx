@@ -198,7 +198,14 @@ export function CheckoutForm({
         >
           Retour au catalogue
         </Link>
-        {confirmation.whatsappUrl ? (
+        {confirmation.automaticNotification ? (
+          <p className="mt-6 rounded-xl border border-border bg-white p-5 text-sm">
+            Votre commande est enregistrée. Une notification WhatsApp au gérant
+            est prise en charge par la boutique. Vous n’avez aucun message à
+            envoyer ; la notification ne confirme ni la livraison ni le
+            paiement.
+          </p>
+        ) : confirmation.whatsappUrl ? (
           <div className="mt-6 rounded-xl border border-border bg-white p-5">
             <p className="text-sm">
               Transmettre au gérant les articles, le total et vos coordonnées de

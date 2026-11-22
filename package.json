@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "overrides": {
+    "@vercel/queue": {
+      "minimatch": "11.0.1"
+    },
     "@vercel/cli-config": {
       "zod": "4.6.7"
     },
@@ -38,6 +41,7 @@
     "@prisma/client": "7.10.1",
     "@radix-ui/react-slot": "1.5.0",
     "@vercel/blob": "2.9.0",
+    "@vercel/queue": "0.11.0",
     "better-auth": "1.7.14",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",

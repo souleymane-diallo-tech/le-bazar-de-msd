@@ -369,6 +369,30 @@ test("checkout clavier mobile, confirmation privée, traitement et collecte sép
     ).toBe(true);
   }
   await page.setViewportSize({ width: 390, height: 844 });
+  for (const width of [320, 375, 390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/admin/notifications");
+    await expect(
+      page.getByRole("heading", { name: "Notifications WhatsApp" }),
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+  await page
+    .getByRole("button", { name: "Reprendre les notifications en attente" })
+    .focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("status")).toContainText(
+    "Modification enregistrée.",
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({
+    path: testInfo.outputPath("whatsapp-notifications-390.png"),
+    fullPage: true,
+  });
   await page.goto(`/admin/commandes/${order.id}`);
   for (const [status, label] of [
     ["CONFIRMED", "Confirmée"],

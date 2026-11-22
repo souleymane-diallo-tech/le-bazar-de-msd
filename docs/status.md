@@ -1,4 +1,12 @@
-# Suivi — 20 novembre 2026
+# Suivi — 22 novembre 2026
+
+## Notifications WhatsApp automatiques — en préparation
+
+- Branche `features/whatsapp-order-notifications` : outbox transactionnelle, worker Vercel Queues, reprise planifiée, webhook signé, suivi et relance propriétaire. Les résultats ambigus ne sont pas renvoyés automatiquement.
+- Meta : application de démonstration créée dans le portefeuille autorisé ; compte et destinataire de test vérifiés, token temporaire enregistré en secret Preview. Le projet n’étant pas lié à Git, Vercel refuse la restriction des variables par branche ; la variable est limitée à Preview et l’envoi reste désactivé.
+- Modèle français `msd_order_created` soumis en catégorie UTILITY, en attente de validation au moment de cette note. Clé de signature et jeton de vérification configurés comme secrets Preview après réauthentification utilisateur.
+- Vérification locale : lint réussi, 43 tests unitaires, 27 PostgreSQL et 22 navigateur passants, incluant administration WhatsApp aux cinq largeurs et clavier. Audit production : zéro vulnérabilité signalée. Build final Webpack et TypeScript réussis après protection supplémentaire des journaux de worker (Turbopack Windows a rencontré une erreur interne CSS).
+- Sauvegarde Neon vérifiée (67 331 octets), migration additive appliquée ; mode distant configuré en simulation pour la recette. Aucun envoi automatique réel ni déploiement de cet incrément revendiqué. La boutique publique conserve la version du 20 novembre jusqu’à recette. Aucun abonnement ni paiement activé.
 
 ## Activation distante du 20 novembre 2026
 
