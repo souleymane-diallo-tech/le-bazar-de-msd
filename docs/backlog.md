@@ -1,6 +1,6 @@
 # Backlog prêt à décliner en Issues
 
-22 novembre : notifications automatiques autorisées et implémentées (outbox transactionnelle, file, reprise, signature webhook, suivi administrateur). Tests locaux : 43 unitaires, 27 PostgreSQL et 22 navigateur passants. Restent configuration du webhook Meta, approbation du modèle français, migration Neon et recette d’un déploiement avant activation réelle. Token temporaire de test enregistré comme secret Preview. Voir ADR 012 et status.md.
+22 novembre : suivi WhatsApp déployé en simulation, migration Neon appliquée après sauvegarde, webhook Meta configuré et abonnement du compte vérifié. Une commande distante a traversé Vercel Queues sans doublon, puis a été annulée avec restitution du stock. Tests locaux : 43 unitaires, 27 PostgreSQL et 22 navigateur passants ; CI réussie, PR #5. Restent approbation Meta du modèle français (PENDING), recette de livraison réelle, déclenchement planifié et token durable avant activation continue. Token de test renouvelé en secret Preview, à charger au prochain déploiement. Voir ADR 012 et status.md.
 
 Stockage durable : proposition Vercel Blob privé, adaptateur et script de transfert préparés, activation distante et recette avant bascule encore à effectuer. Procédure dans `docs/deployment-preparation.md`, ADR 011.
 

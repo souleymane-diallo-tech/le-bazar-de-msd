@@ -1,6 +1,14 @@
 # Suivi — 22 novembre 2026
 
-## Notifications WhatsApp automatiques — en préparation
+## Notifications WhatsApp — déployées en simulation
+
+- Preview READY `dpl_H45aXLXaKPjKdH5siYo3Ed3avY7a`, commit `2763f4d`, alias public basculé après recette. PR brouillon #5, CI GitHub réussie ; aucune fusion main.
+- Recette distante : accès propriétaire et protection anonyme vérifiés, commande fictive rejouée sans doublon, une notification passée par Vercel Queues et terminée SIMULATED en une tentative. Commande annulée et stock libéré. Catalogue, santé, contact et robots vérifiés sur l’alias final.
+- Webhook : challenge vérifié sur la Preview et URL enregistrée par Meta sur l’alias ; champ messages abonné. Application ajoutée à subscribed_apps du compte de test et présence vérifiée par API. Requêtes non signées refusées (401). Un callback de test a été déclenché dans Meta ; aucune livraison réelle ni traitement de statut réel n’est revendiqué.
+- Blocage externe : modèle français toujours PENDING le 22 novembre après renouvellement du token temporaire. Mode `simulated` maintenu ; bouton manuel disponible. Le token renouvelé est enregistré en secret Preview mais sera chargé par le prochain déploiement. L’application Meta non publiée peut limiter les callbacks ; recette de livraison réelle et accès serveur durable nécessaires avant activation continue.
+- La reprise Schedules toutes les quinze minutes est incluse dans la configuration déployée ; son déclenchement autonome n’est pas encore attesté. Aucun abonnement ni paiement activé.
+
+### Préparation et vérifications
 
 - Branche `features/whatsapp-order-notifications` : outbox transactionnelle, worker Vercel Queues, reprise planifiée, webhook signé, suivi et relance propriétaire. Les résultats ambigus ne sont pas renvoyés automatiquement.
 - Meta : application de démonstration créée dans le portefeuille autorisé ; compte et destinataire de test vérifiés, token temporaire enregistré en secret Preview. Le projet n’étant pas lié à Git, Vercel refuse la restriction des variables par branche ; la variable est limitée à Preview et l’envoi reste désactivé.
