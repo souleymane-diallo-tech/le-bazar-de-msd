@@ -1,4 +1,15 @@
-# Suivi — 22 novembre 2026
+# Suivi — 23 novembre 2026
+
+## WhatsApp automatique — recette réelle réussie le 23 novembre 2026
+
+- Token SYSTEM_USER valide, limité aux éléments de test autorisés, enregistré en secret Preview et chargé par le déploiement READY dpl_8eeKAWeZKUCeED6GUGafmFPW4T9L (commit 2283f1c, Next.js, fra1, target null). Expiration confirmée : 22 janvier 2027 à 12:16:36 UTC ; renouvellement et redéploiement requis avant échéance.
+- Modèle français msd_order_created APPROVED ; numéro émetteur de test CONNECTED. Le premier envoi a été explicitement refusé META_10 : accès granulaire insuffisant. Après accord distinct, accès total accordé au seul Test Messaging Account ; rôle Employee du portefeuille conservé. Voir ADR 012.
+- Nouvelle commande fictive via le checkout distant, rejeu idempotent sans doublon : notification passée par Vercel Queues, acceptée puis DELIVERED en une tentative. Le callback réel signé a mis à jour PostgreSQL ; aucune simulation de statut utilisée. Aucune donnée personnelle client réelle transmise.
+- Alias public https://le-bazar-de-msd-demo.vercel.app basculé sur cette Preview après recette. Mode meta actif pour les nouvelles commandes de démonstration. Aucun lancement commercial ni paiement activé.
+- Les deux commandes techniques ont été annulées et leurs stocks libérés. Santé, accueil, catalogue, contact, robots, connexion propriétaire et refus anonyme vérifiés après bascule ; sessions de recette fermées.
+- Limites : reprise planifiée autonome non encore attestée ; une relance immédiate dans la même fenêtre de déduplication de cinq minutes peut attendre la reprise. Le compte de test reste limité aux destinataires vérifiés. Migration vers un numéro commercial et paramètres définitifs à autoriser séparément.
+
+### Historique du 22 novembre
 
 ## Notifications WhatsApp — déployées en simulation
 
