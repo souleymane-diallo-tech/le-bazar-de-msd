@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@media (max-width: 1023px) {
+  .product-page ~ footer {
+    padding-bottom: calc(110px + env(safe-area-inset-bottom));
+  }
+  .product-page :is(input, button, a, summary) {
+    scroll-margin-block: 190px 110px;
+  }
+}
+
 :root {
   --background: #f7f6f0;
   --foreground: #182d24;

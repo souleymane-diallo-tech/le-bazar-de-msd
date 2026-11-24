@@ -7,9 +7,11 @@ import { formatPrice, minPrice } from "@/modules/catalog/rules";
 export function ProductCard({
   product,
   compact = false,
+  returnTo,
 }: {
   product: CatalogProduct;
   compact?: boolean;
+  returnTo?: string;
 }) {
   const image = product.images[0];
   const available = product.variants.some((v) => v.available > 0);
@@ -22,7 +24,7 @@ export function ProductCard({
       }
     >
       <Link
-        href={`/produits/${product.slug}`}
+        href={`/produits/${product.slug}${returnTo ? `?${new URLSearchParams({ retour: returnTo })}` : ""}`}
         className="block rounded-xl"
         aria-label={`Découvrir ${product.name}`}
       >

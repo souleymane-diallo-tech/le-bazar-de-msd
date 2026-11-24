@@ -103,7 +103,12 @@ export default async function CatalogPage({
       {result.items.length ? (
         <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
           {result.items.map((p) => (
-            <ProductCard key={p.id} product={p} compact />
+            <ProductCard
+              key={p.id}
+              product={p}
+              compact
+              returnTo={pageHref(result.page)}
+            />
           ))}
         </div>
       ) : (

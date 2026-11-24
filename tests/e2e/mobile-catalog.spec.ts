@@ -78,7 +78,7 @@ test("filtres mobiles conservés, suppression indépendante et retour fiche", as
   await page
     .getByRole("link", { name: "Découvrir Rangements muraux", exact: true })
     .click();
-  await expect(page).toHaveURL(/\/produits\/rangements$/);
+  await expect(page).toHaveURL(/\/produits\/rangements\?/);
   await page.goBack();
   await expect(page).toHaveURL(filteredUrl);
   await expect(page.getByRole("article")).toHaveCount(2);

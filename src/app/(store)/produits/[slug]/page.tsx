@@ -35,9 +35,16 @@ export async function generateMetadata({
 }
 export default async function ProductPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const { retour } = await searchParams;
+  const returnTo =
+    typeof retour === "string" && /^\/catalogue(?:\?|$)/.test(retour)
+      ? retour
+      : "/catalogue";
   const { slug } = await params;
   const [product, products, settings] = await Promise.all([
     getProduct(slug),
@@ -64,7 +71,10 @@ export default async function ProductPage({
     )
     .slice(0, 3);
   return (
-    <main id="contenu" className="mx-auto max-w-7xl px-5 pb-10 pt-5 sm:px-10">
+    <main
+      id="contenu"
+      className="product-page mx-auto max-w-7xl px-4 pb-10 pt-2 sm:px-8"
+    >
       {structuredData && (
         <script
           type="application/ld+json"
@@ -73,17 +83,17 @@ export default async function ProductPage({
       )}
       <nav
         aria-label="Fil d’Ariane"
-        className="mb-7 flex flex-wrap gap-2 text-xs text-muted-foreground"
+        className="mb-3 flex flex-wrap gap-2 text-xs text-muted-foreground"
       >
         <Link href="/" className="inline-flex min-h-11 items-center underline">
           Accueil
         </Link>
         <span className="self-center">/</span>
         <Link
-          href="/catalogue"
+          href={returnTo}
           className="inline-flex min-h-11 items-center underline"
         >
-          Collection
+          Retour à la collection
         </Link>
         <span className="self-center">/</span>
         <span className="self-center">{product.name}</span>
@@ -96,15 +106,15 @@ export default async function ProductPage({
       />
       {related.length > 0 && (
         <section
-          className="mt-16 border-t border-primary/15 pt-10"
+          className="mt-8 border-t border-primary/15 pt-6"
           aria-labelledby="related-title"
         >
-          <h2 id="related-title" className="editorial mb-7 text-3xl">
+          <h2 id="related-title" className="mb-4 text-xl font-bold sm:text-2xl">
             À découvrir aussi
           </h2>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
             {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} compact />
             ))}
           </div>
         </section>

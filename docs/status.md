@@ -1,5 +1,11 @@
 # Suivi — 24 novembre 2026
 
+## UX mobile — itération 3, fiche produit
+
+- Photo contenue, titre/prix compacts, variantes avant description, mention d’épuisement. Quantité et ajout persistants sur mobile ; confirmation amenée à l’écran, pied de page dégagé. Retour explicite au catalogue avec filtres/tri conservés, destination limitée à `/catalogue`.
+- Build Webpack et TypeScript réussis, lint réussi. Treize scénarios navigateur vérifiés : douze passants au premier lancement, puis le scénario recherche/tri passant après synchronisation du test sur la fin de la réinitialisation des filtres. Tests : cinq largeurs, CTA persistant, prix visible à 390 px, ajout/quantité/confirmation, rupture, retour filtré, prix et stock serveur, panier corrompu et produit absent.
+- Captures `.local/ux-product-mobile.jpg` et `.local/ux-product-desktop.jpg`. Aperçu local `/produits/distributeur`. Aucun déploiement ; prochaine interface après validation : panier.
+
 ## UX mobile — itération 2, catalogue
 
 - Accueil validé par l’utilisateur ; catalogue refondu avec grille compacte, filtres repliables sur mobile, tri accessible, suppression indépendante des filtres et état de chargement à deux colonnes.

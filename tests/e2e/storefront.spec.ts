@@ -14,6 +14,8 @@ test("recherche, filtre et tri du catalogue", async ({ page }) => {
     page.getByRole("heading", { name: "Horloge numérique", exact: true }),
   ).toHaveCount(0);
   await page.getByRole("link", { name: "Effacer les filtres" }).click();
+  await expect(page).toHaveURL(/\/catalogue$/);
+  await expect(page.getByLabel("Rechercher un produit")).toHaveValue("");
   await page
     .getByLabel("Catégorie", { exact: true })
     .selectOption("salle-de-bain");

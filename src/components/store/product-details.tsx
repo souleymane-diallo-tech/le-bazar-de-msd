@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Share2, Check, Truck } from "lucide-react";
@@ -27,6 +27,10 @@ export function ProductDetails({
     message: string;
   } | null>(null);
   const [shareMessage, setShareMessage] = useState("");
+  const feedbackRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (message) feedbackRef.current?.scrollIntoView({ block: "center" });
+  }, [message]);
   const variant = product.variants.find((v) => v.id === variantId)!;
   const image = product.images[imageIndex];
   const contactUrl = whatsapp
@@ -54,9 +58,9 @@ export function ProductDetails({
     }
   }
   return (
-    <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-16">
+    <div className="grid items-start gap-5 lg:grid-cols-2 lg:gap-12">
       <div>
-        <div className="relative aspect-square overflow-hidden rounded-2xl bg-white">
+        <div className="relative h-60 overflow-hidden rounded-2xl border border-primary/10 bg-white sm:h-80 lg:aspect-square lg:h-auto">
           {image ? (
             <Image
               src={image.src}
@@ -101,25 +105,24 @@ export function ProductDetails({
       <div>
         <Link
           href={`/catalogue?category=${product.category.slug}`}
-          className="text-xs uppercase tracking-widest text-muted-foreground underline underline-offset-4"
+          className="inline-flex min-h-11 items-center text-xs font-semibold text-muted-foreground underline underline-offset-4"
         >
           {product.category.name}
         </Link>
-        <h1 className="editorial mt-4 text-4xl sm:text-5xl">{product.name}</h1>
-        <p className="mt-5 text-2xl font-semibold">
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          {product.name}
+        </h1>
+        <p className="mt-3 text-2xl font-bold" aria-live="polite">
           {formatPrice(variant.priceXof)}
         </p>
         {product.isDemo && (
-          <p className="mt-4 rounded-lg bg-secondary px-4 py-3 text-sm">
+          <p className="mt-3 rounded-lg bg-secondary px-3 py-2 text-xs leading-relaxed">
             <strong>Démonstration.</strong> Prix, variantes et stocks fictifs.
             Aucune vente réelle.
           </p>
         )}
-        <p className="mt-6 leading-relaxed text-muted-foreground">
-          {product.description}
-        </p>
         <form
-          className="mt-7 border-t border-primary/15 pt-6"
+          className="mt-4 border-t border-primary/15 pt-4"
           onSubmit={(event) => {
             event.preventDefault();
             setMessage(
@@ -157,6 +160,7 @@ export function ProductDetails({
                     className="accent-primary"
                   />
                   {v.label}
+                  {v.available === 0 ? " · Épuisé" : ""}
                 </label>
               ))}
             </div>
@@ -175,7 +179,7 @@ export function ProductDetails({
               "Ce modèle est épuisé."
             )}
           </p>
-          <div className="mt-5 flex flex-wrap items-end gap-3">
+          <div className="fixed inset-x-0 bottom-0 z-40 flex items-end gap-3 border-t border-primary/15 bg-background px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-2 shadow-lg lg:static lg:mt-5 lg:flex-wrap lg:border-0 lg:p-0 lg:shadow-none">
             <div>
               <label
                 htmlFor="quantity"
@@ -195,20 +199,23 @@ export function ProductDetails({
                 }}
                 required
                 disabled={!variant.available}
-                className="min-h-12 w-24 rounded-lg border border-border bg-white px-3"
+                className="min-h-12 w-20 rounded-lg border border-border bg-white px-3 text-base"
               />
             </div>
             <Button
               type="submit"
               disabled={!variant.available}
-              className="grow"
+              className="grow px-3"
             >
               <ShoppingBag size={18} aria-hidden="true" />
               {variant.available ? "Ajouter au panier" : "Épuisé"}
             </Button>
           </div>
           {message && (
-            <div className="mt-4">
+            <div
+              ref={feedbackRef}
+              className="mt-4 rounded-xl border border-primary/20 bg-secondary p-4"
+            >
               <p
                 role={message.ok ? "status" : "alert"}
                 className={`text-sm ${message.ok ? "text-primary" : "text-red-800"}`}
@@ -226,6 +233,17 @@ export function ProductDetails({
             </div>
           )}
         </form>
+        <section
+          className="mt-6 border-t border-primary/15 pt-5"
+          aria-labelledby="description-title"
+        >
+          <h2 id="description-title" className="font-bold">
+            À propos de cet article
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {product.description}
+          </p>
+        </section>
         <div className="mt-6 border-t border-primary/15 pt-5">
           <p className="flex gap-2 text-sm">
             <Truck size={18} className="shrink-0" aria-hidden="true" />

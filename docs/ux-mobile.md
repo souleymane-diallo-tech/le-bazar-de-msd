@@ -39,12 +39,20 @@ Accueil validé par l’utilisateur. Le catalogue reprend les cartes compactes e
 
 Pas de modification des règles de recherche, prix, stocks ou pagination. Le retour testé est celui du navigateur ; la fiche produit fera l’objet de l’itération suivante. Captures privées : `.local/ux-catalog-mobile.jpg`, `.local/ux-catalog-filters.jpg`, `.local/ux-catalog-desktop.jpg`. Tous les critères ci-dessus sont vérifiés au 24 novembre : huit tests navigateur passants sur build compilé, lint/types/build réussis. Détails dans `status.md`.
 
-## Séquence des interfaces suivantes
+## Itération 3 — Fiche produit (24 novembre)
 
-1. **Catalogue** : deux colonnes lisibles, filtres mobiles repliables, nombre de résultats, filtres actifs effaçables, tri accessible ; vérifier recherche vide et absence de résultats, maintien des filtres et retour produit.
-2. **Fiche produit** : photo, nom, prix, disponibilité et variantes hiérarchisés ; ajout au panier accessible et confirmation explicite ; vérifier épuisement, quantité, variantes et retour catalogue.
-3. **Panier** : modification simple, total explicite, CTA de commande ; vérifier suppression, stock modifié, panier vide et persistance.
-4. **Commande et confirmation** : champs regroupés, erreurs près des champs, frais avant validation, prévention des doublons et statut compréhensible ; vérifier clavier mobile, reprise après erreur et consentement WhatsApp facultatif.
-5. **Administration** : tableau de commandes prioritaire, statuts lisibles, recherche et actions adaptées au mobile ; formulaire produit progressif avec photo, prix, stock et validation ; vérifier accès, erreurs, sauvegarde et prévention de perte des modifications.
+Objectif : identifier l’article et son prix, choisir un modèle et ajouter au panier sans rechercher le bouton sur téléphone. Photo contenue sans recadrage, titre compact, prix dynamique, variantes avec mention d’épuisement, description après les choix. Quantité et action fixes sous 1024 px, espace réservé en bas du pied de page et marge de défilement pour les contrôles. La confirmation est amenée dans la zone visible après ajout ; partage et contact restent secondaires.
+
+Critères : pas de débordement aux cinq largeurs ; prix visible à 390 × 844 ; bouton d’au moins 44 px visible avant et après défilement sur mobile ; quantité transmise au panier ; confirmation visible ; variante épuisée désactive quantité et ajout. Le retour explicite à la collection conserve les filtres et le tri grâce à un paramètre limité au chemin interne `/catalogue`. Une destination externe est ignorée. Tests dans `mobile-product.spec.ts`, régression catalogue dans `mobile-catalog.spec.ts` et règles de stock dans `storefront.spec.ts`.
+
+Pas de paiement, commande ou notification déclenchés par cette recette. La sélection initiale reste le premier modèle comme auparavant. Les limites de stock et les prix serveur sont inchangés.
+
+Recette terminée : treize scénarios passants, dont recherche/tri après attente explicite de la fin de navigation dans le test. Build/TypeScript et lint réussis. Revue visuelle mobile et ordinateur ; captures `.local/ux-product-mobile.jpg` et `.local/ux-product-desktop.jpg`. Validation utilisateur et tests avec des clients réels restent distincts de cette recette technique.
+
+## Interfaces restantes
+
+1. **Panier** : modification simple, total explicite, CTA de commande ; vérifier suppression, stock modifié, panier vide et persistance.
+2. **Commande et confirmation** : champs regroupés, erreurs près des champs, frais avant validation, prévention des doublons et statut compréhensible ; vérifier clavier mobile, reprise après erreur et consentement WhatsApp facultatif.
+3. **Administration** : tableau de commandes prioritaire, statuts lisibles, recherche et actions adaptées au mobile ; formulaire produit progressif avec photo, prix, stock et validation ; vérifier accès, erreurs, sauvegarde et prévention de perte des modifications.
 
 Pour chaque interface : établir les critères avant modification, implémenter, vérifier les cinq largeurs et les états d’erreur pertinents, consigner les preuves et présenter l’aperçu avant l’itération suivante. Ne pas annoncer une amélioration d’adoption sans observation utilisateur.
