@@ -1,4 +1,10 @@
-# Suivi — 23 novembre 2026
+# Suivi — 24 novembre 2026
+
+## UX mobile — itération 2, catalogue
+
+- Accueil validé par l’utilisateur ; catalogue refondu avec grille compacte, filtres repliables sur mobile, tri accessible, suppression indépendante des filtres et état de chargement à deux colonnes.
+- Recette finale du 24 novembre : huit tests navigateur réussis sur la version compilée (55,2 s), couvrant les cinq largeurs, filtres combinés, tri conservé, retour fiche, recherche longue/sans résultat et non-régression accueil/panier. Lint, types et build Webpack réussis. Le dépassement de délai initial du test responsive en développement ne se reproduit pas sur le build.
+- Captures locales actualisées ; critères dans `docs/ux-mobile.md`. Aperçu local `/catalogue`, aucun déploiement de cet incrément. Prochaine interface après validation : fiche produit.
 
 ## UX mobile — itération 1, accueil et navigation
 

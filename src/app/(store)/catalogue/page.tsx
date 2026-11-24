@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { X } from "lucide-react";
 import { getCatalog } from "@/modules/catalog/service";
 import { parseCatalogQuery, selectCatalog } from "@/modules/catalog/rules";
 import { ProductCard } from "@/components/store/product-card";
-import { Button } from "@/components/ui/button";
+import { CatalogFilters } from "@/components/store/catalog-filters";
 import { pageMetadata } from "@/modules/seo/metadata";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({
@@ -32,91 +32,64 @@ export default async function CatalogPage({
   const result = selectCatalog(products, query);
   const pageHref = (page: number) =>
     `/catalogue?${new URLSearchParams({ ...query, page: String(page) })}`;
+  const filterHref = (changes: Partial<typeof query>) =>
+    `/catalogue?${new URLSearchParams({ ...query, ...changes, page: "1" })}`;
   return (
-    <main id="contenu" className="mx-auto max-w-7xl px-5 pb-10 pt-9 sm:px-10">
-      <p className="text-xs font-semibold uppercase tracking-[.18em] text-muted-foreground">
-        Les essentiels du quotidien
-      </p>
-      <h1 className="editorial mt-3 text-4xl sm:text-5xl">La collection</h1>
-      <p className="mt-4 max-w-xl text-muted-foreground">
-        Pour organiser, simplifier et embellir les petits moments de la vie.
-      </p>
-      {products.some((p) => p.isDemo) && (
-        <p className="mt-5 rounded-lg bg-secondary px-4 py-3 text-sm">
-          Catalogue de démonstration : prix, variantes et stocks fictifs. Aucune
-          vente réelle.
-        </p>
-      )}
-      <form
-        action="/catalogue"
-        className="my-8 grid items-end gap-4 rounded-xl border border-primary/15 bg-white p-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_auto]"
-      >
-        <div>
-          <label className="mb-2 block text-sm font-semibold" htmlFor="q">
-            Rechercher un produit
-          </label>
-          <div className="relative">
-            <Search
-              className="absolute left-3 top-3.5 text-muted-foreground"
-              size={18}
-              aria-hidden="true"
-            />
-            <input
-              key={query.q}
-              defaultValue={query.q}
-              id="q"
-              name="q"
-              maxLength={100}
-              type="search"
-              placeholder="Savon, rangement, horloge…"
-              className="min-h-12 w-full rounded-lg border border-border py-2 pl-10 pr-3"
-            />
-          </div>
-        </div>
-        <div>
-          <label
-            htmlFor="category"
-            className="mb-2 block text-sm font-semibold"
-          >
-            Catégorie
-          </label>
-          <select
-            key={query.category}
-            name="category"
-            id="category"
-            defaultValue={query.category}
-            className="min-h-12 w-full rounded-lg border border-border px-3"
-          >
-            <option value="">Toutes les catégories</option>
-            {categories.map((c) => (
-              <option key={c.slug} value={c.slug}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="sort" className="mb-2 block text-sm font-semibold">
-            Trier par
-          </label>
-          <select
-            key={query.sort}
-            id="sort"
-            name="sort"
-            defaultValue={query.sort}
-            className="min-h-12 w-full rounded-lg border border-border px-3"
-          >
-            <option value="recent">Nouveautés</option>
-            <option value="price-asc">Prix croissant</option>
-            <option value="price-desc">Prix décroissant</option>
-          </select>
-        </div>
-        <Button type="submit">Afficher</Button>
-      </form>
-      <div className="mb-6 flex items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground" aria-live="polite">
+    <main
+      id="contenu"
+      className="mx-auto max-w-7xl px-4 pb-10 pt-5 sm:px-8 sm:pt-8"
+    >
+      <div className="flex items-baseline justify-between gap-3">
+        <h1 className="text-2xl font-bold tracking-tight sm:text-4xl">
+          La collection
+        </h1>
+        <p
+          className="shrink-0 text-sm text-muted-foreground"
+          aria-live="polite"
+        >
           {result.total} produit{result.total > 1 ? "s" : ""}
-          {query.q ? ` pour « ${query.q} »` : ""}
+        </p>
+      </div>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Des objets utiles, à portée de main.
+      </p>
+      <CatalogFilters
+        key={JSON.stringify(query)}
+        query={query}
+        categories={categories}
+      />
+      {(query.q || query.category) && (
+        <div aria-label="Filtres actifs" className="mb-3 flex flex-wrap gap-2">
+          {query.q && (
+            <Link
+              aria-label="Retirer la recherche"
+              href={filterHref({ q: "" })}
+              className="inline-flex min-h-11 max-w-full items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-sm"
+            >
+              <span className="min-w-0 break-words">Recherche : {query.q}</span>
+              <X size={16} className="shrink-0" aria-hidden="true" />
+            </Link>
+          )}
+          {query.category && (
+            <Link
+              aria-label="Retirer la catégorie"
+              href={filterHref({ category: "" })}
+              className="inline-flex min-h-11 max-w-full items-center gap-2 rounded-lg bg-secondary px-3 py-2 text-sm"
+            >
+              <span className="min-w-0 break-words">
+                {categories.find((c) => c.slug === query.category)?.name ??
+                  query.category}
+              </span>
+              <X size={16} className="shrink-0" aria-hidden="true" />
+            </Link>
+          )}
+        </div>
+      )}
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm text-muted-foreground" aria-live="polite">
+          {products.some((p) => p.isDemo)
+            ? "Prix et stocks fictifs · Aucune vente réelle."
+            : "Découvrez les articles disponibles."}
         </p>
         {(query.q || query.category) && (
           <Link
@@ -128,9 +101,9 @@ export default async function CatalogPage({
         )}
       </div>
       {result.items.length ? (
-        <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
           {result.items.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.id} product={p} compact />
           ))}
         </div>
       ) : (

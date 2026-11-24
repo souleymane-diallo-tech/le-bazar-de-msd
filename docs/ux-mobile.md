@@ -22,6 +22,23 @@ Tests : `tests/e2e/mobile-home.spec.ts` et tests accueil/évitement de `foundati
 
 Limites : critères techniques et revue visuelle, pas encore de test avec des clients réels ni de mesure de conversion. Le seuil du premier prix concerne 390 × 844 ; les écrans plus petits peuvent demander un défilement. Le header est partagé : recherche/navigation bénéficient à toutes les pages, mais les autres interfaces ne sont pas encore refondues. Aucun nouveau service ou changement métier.
 
+## Itération 2 — Catalogue
+
+Accueil validé par l’utilisateur. Le catalogue reprend les cartes compactes et les alignements de l’accueil. Les champs recherche/catégorie sont repliables sur mobile, visibles à partir de 768 px ; le tri et le bouton Afficher restent accessibles. La validation est explicite pour éviter les navigations à chaque changement de champ. Les paramètres restent dans l’URL et les filtres actifs disposent de liens de suppression indépendants conservant le tri et remettant la pagination à 1.
+
+| Critère d’acceptation                                                                                | Preuve prévue                                      |
+| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Deux colonnes à 320/375/390/768, quatre à 1440 ; aucun débordement                                   | `mobile-catalog.spec.ts`, mesures de cartes        |
+| Premier prix entièrement visible à 390 × 844, filtres repliés                                        | Assertion viewport et capture                      |
+| Filtres ouvrables au clavier, état développé annoncé, champs masqués non accessibles avant ouverture | Entrée sur le bouton, aria-expanded et visibilité  |
+| Champs et bouton Afficher d’au moins 44 px de hauteur                                                | Mesures aux cinq largeurs                          |
+| Recherche et catégorie combinables, tri conservé après suppression d’un seul filtre                  | Recherche savon + salle de bain + prix décroissant |
+| Retour navigateur depuis une fiche conserve URL, résultats et catégorie                              | Parcours fiche/rangements puis retour              |
+| Recherche sans résultat et mot de 100 caractères sans débordement ; retour à toute la collection     | Parcours à 320 px                                  |
+| État de chargement cohérent avec la grille responsive                                                | Revue visuelle du squelette                        |
+
+Pas de modification des règles de recherche, prix, stocks ou pagination. Le retour testé est celui du navigateur ; la fiche produit fera l’objet de l’itération suivante. Captures privées : `.local/ux-catalog-mobile.jpg`, `.local/ux-catalog-filters.jpg`, `.local/ux-catalog-desktop.jpg`. Tous les critères ci-dessus sont vérifiés au 24 novembre : huit tests navigateur passants sur build compilé, lint/types/build réussis. Détails dans `status.md`.
+
 ## Séquence des interfaces suivantes
 
 1. **Catalogue** : deux colonnes lisibles, filtres mobiles repliables, nombre de résultats, filtres actifs effaçables, tri accessible ; vérifier recherche vide et absence de résultats, maintien des filtres et retour produit.

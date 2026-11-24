@@ -1,5 +1,7 @@
 # Backlog prêt à décliner en Issues
 
+UX mobile, 24 novembre : accueil validé par l’utilisateur ; catalogue implémenté et recette finale réussie (huit tests navigateur, lint, types, build). Filtres mobiles, tri, suppression indépendante et retour fiche vérifiés. Aperçu local en attente de validation utilisateur avant la fiche produit ; aucun déploiement de ces incréments.
+
 UX mobile, 23 novembre : première interface accueil/navigation implémentée et vérifiée localement. Suivre `docs/ux-mobile.md` : catalogue, fiche produit, panier, commande/confirmation puis administration, avec critères d’acceptation à chaque étape. Recette utilisateur et déploiement de cette interface restent à planifier.
 
 Confirmation client, 23 novembre : consentement facultatif et preuve serveur, notification transactionnelle distincte, liste privée de test et modèle UTILITY soumis. Validation locale : 45 unitaires, 30 PostgreSQL, 5 navigateur ciblés. Activation distante conditionnée à l’approbation Meta et à la recette réelle ; modèle encore PENDING. Expédition/livraison client hors de cet incrément.
