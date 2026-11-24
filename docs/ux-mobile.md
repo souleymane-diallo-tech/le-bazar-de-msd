@@ -59,9 +59,16 @@ La barre affiche « À vérifier » pendant la vérification ou en cas d’erreu
 
 Recette : onze tests navigateur passants (17,8 s), lint/build/TypeScript réussis. Captures locales `.local/ux-cart-mobile.jpg` et `.local/ux-cart-desktop.jpg`. Validation utilisateur encore attendue avant l’interface suivante.
 
-## Interfaces suivantes
+## Itération 5 — Commande et confirmation (24 novembre)
 
-1. **Commande et confirmation** : champs regroupés, erreurs près des champs, frais avant validation, prévention des doublons et statut compréhensible ; vérifier clavier mobile, reprise après erreur et consentement WhatsApp facultatif.
-2. **Administration** : tableau de commandes prioritaire, statuts lisibles, recherche et actions adaptées au mobile ; formulaire produit progressif avec photo, prix, stock et validation ; vérifier accès, erreurs, sauvegarde et prévention de perte des modifications.
+Objectif : remplir les coordonnées fictives, vérifier le coût livré puis confirmer en connaissance du montant. Étapes visibles, formulaire regroupé coordonnées/livraison, champs à 16 px et 48 px de hauteur, bouton de vérification sur toute la largeur mobile. Les erreurs de saisie sont associées aux champs via aria-describedby/aria-invalid. Le récapitulatif reçoit le focus et est amené à l’écran après calcul ; la confirmation bénéficie du même comportement. Articles et montants sont séparés visuellement, actions de suivi/catalogue adaptées au mobile.
+
+Critères : champs invalides signalés près de la saisie ; devis et frais visibles avant confirmation ; modification d’une coordonnée invalide le devis ; récapitulatif et confirmation sans débordement aux cinq largeurs ; focus clavier au bon panneau ; commande récupérable après perte de réponse sans doublon ; consentement WhatsApp facultatif inchangé. Tests dans `mobile-checkout.spec.ts` et `checkout.spec.ts`, exclusivement en mode simulé, base locale avec données de recette nettoyées. Aucun envoi WhatsApp réel.
+
+## Interfaces à venir
+
+Recette de l’itération 5 : six scénarios navigateur réussis (46,5 s), build/TypeScript validés. Captures locales `.local/ux-checkout-mobile.jpg`, `.local/ux-confirmation-mobile.png` et `.local/ux-checkout-desktop.png`. Les notifications sont simulées dans cette recette ; aucun message externe envoyé.
+
+1. **Administration** : tableau de commandes prioritaire, statuts lisibles, recherche et actions adaptées au mobile ; formulaire produit progressif avec photo, prix, stock et validation ; vérifier accès, erreurs, sauvegarde et prévention de perte des modifications.
 
 Pour chaque interface : établir les critères avant modification, implémenter, vérifier les cinq largeurs et les états d’erreur pertinents, consigner les preuves et présenter l’aperçu avant l’itération suivante. Ne pas annoncer une amélioration d’adoption sans observation utilisateur.

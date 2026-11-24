@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useCart, setCartQuantity } from "@/modules/cart/client";
 import { formatPrice } from "@/modules/catalog/rules";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 type Quote = Awaited<ReturnType<typeof createQuote>>;
 type Confirmation = Awaited<ReturnType<typeof readConfirmation>>;
 const field =
-  "mt-1 min-h-11 w-full rounded-lg border border-border bg-white px-3 py-2";
+  "mt-1 min-h-12 w-full rounded-lg border border-primary/30 bg-white px-3 py-2 text-base aria-invalid:border-red-700";
 async function call(action: string, data: unknown) {
   const response = await fetch("/api/checkout", {
     method: "POST",
@@ -40,6 +40,25 @@ export function CheckoutForm({
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const summaryRef = useRef<HTMLElement>(null);
+  const receiptRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const target = confirmation
+      ? receiptRef.current
+      : quote || error
+        ? summaryRef.current
+        : null;
+    target?.focus({ preventScroll: true });
+    target?.scrollIntoView({ block: "start" });
+  }, [quote, confirmation, error]);
+  function fieldError(name: string) {
+    return fieldErrors[name] ? (
+      <span id={`error-${name}`} className="mt-1 block text-sm text-red-800">
+        {fieldErrors[name]}
+      </span>
+    ) : null;
+  }
   const [placed, setPlaced] = useState<{
     reference: string;
     accessToken: string;
@@ -159,13 +178,16 @@ export function CheckoutForm({
   if (confirmation)
     return (
       <section
-        className="rounded-2xl bg-secondary p-6 sm:p-10"
+        ref={receiptRef}
+        tabIndex={-1}
+        aria-label="Confirmation de commande"
+        className="scroll-mt-48 rounded-2xl border border-primary/15 bg-secondary p-4 sm:p-8"
         aria-live="polite"
       >
         <p className="text-sm font-semibold">
           Simulation enregistrée · Aucun achat réel
         </p>
-        <h2 className="editorial mt-4 text-3xl">
+        <h2 className="mt-3 text-2xl font-bold sm:text-3xl">
           Votre commande de test est reçue.
         </h2>
         <p className="mt-4 break-all text-sm">
@@ -177,10 +199,15 @@ export function CheckoutForm({
             ? "Collecte simulée enregistrée"
             : "Non encaissée"}
         </p>
-        <ul className="my-6 space-y-3">
+        <ul className="my-5 divide-y divide-primary/15 rounded-xl bg-white px-3">
           {confirmation.items.map((item, i) => (
-            <li key={i}>
-              {item.quantity} × {item.name} — {formatPrice(item.lineTotalXof)}
+            <li key={i} className="flex justify-between gap-3 py-3 text-sm">
+              <span>
+                {item.quantity} × {item.name}
+              </span>
+              <strong className="shrink-0">
+                {formatPrice(item.lineTotalXof)}
+              </strong>
             </li>
           ))}
         </ul>
@@ -192,12 +219,16 @@ export function CheckoutForm({
           Aucune livraison ni collecte réelle. La réservation de test expire
           après 24 h si elle n’est pas confirmée.
         </p>
-        <Button className="mt-6" onClick={recover} disabled={busy}>
+        <Button
+          className="mt-6 w-full sm:w-auto"
+          onClick={recover}
+          disabled={busy}
+        >
           Actualiser le suivi
         </Button>{" "}
         <Link
           href="/catalogue"
-          className="ml-3 inline-flex min-h-11 items-center underline"
+          className="mt-2 inline-flex min-h-11 w-full items-center justify-center underline sm:ml-3 sm:w-auto"
         >
           Retour au catalogue
         </Link>
@@ -260,26 +291,70 @@ export function CheckoutForm({
       </section>
     );
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
+    <div className="grid gap-5 lg:grid-cols-[1.2fr_1fr] lg:gap-8">
+      <ol
+        aria-label="Étapes de la commande"
+        className="grid grid-cols-3 gap-2 text-center text-xs font-semibold lg:col-span-2"
+      >
+        {["Coordonnées", "Vérification", "Confirmation"].map((label, index) => (
+          <li
+            key={label}
+            aria-current={(quote ? 1 : 0) === index ? "step" : undefined}
+            className={`rounded-lg px-2 py-3 ${(quote ? 1 : 0) === index ? "bg-primary text-white" : "bg-secondary"}`}
+          >
+            {index + 1}. {label}
+          </li>
+        ))}
+      </ol>
       <form
         onSubmit={prepare}
-        onChange={() => {
+        onInvalid={(event) => {
+          const input = event.target;
+          if (!(
+            input instanceof HTMLInputElement ||
+            input instanceof HTMLSelectElement ||
+            input instanceof HTMLTextAreaElement
+          ))
+            return;
+          if (input.name)
+            setFieldErrors((errors) => ({
+              ...errors,
+              [input.name]:
+                input.name === "phone"
+                  ? "Saisissez un numéro fictif au format +221770000000."
+                  : "Complétez ce champ en respectant le format demandé.",
+            }));
+        }}
+        onChange={(event) => {
+          const input = event.target;
+          if (!(
+            input instanceof HTMLInputElement ||
+            input instanceof HTMLSelectElement ||
+            input instanceof HTMLTextAreaElement
+          ))
+            return;
+          setFieldErrors((errors) => ({ ...errors, [input.name]: "" }));
           if (!attempted) setQuote(null);
         }}
-        className="space-y-5 rounded-2xl border border-border bg-white p-5 sm:p-8"
+        className="space-y-5 rounded-2xl border border-primary/15 bg-white p-4 sm:p-6"
       >
-        <fieldset disabled={attempted || busy} className="space-y-5">
-          <h2 className="editorial text-2xl">Coordonnées de test</h2>
+        <fieldset
+          disabled={attempted || busy || !items.length}
+          className="space-y-4"
+        >
+          <h2 className="text-xl font-bold">Coordonnées de test</h2>
           <p className="text-sm text-muted-foreground">
             Utilisez des coordonnées de livraison fictives. Seul le numéro
             WhatsApp de test autorisé peut être réel. Aucun achat, paiement ou
             livraison réelle. Les notifications WhatsApp activées sont
             réellement envoyées.
           </p>
-          <label className="block">
+          <label className="block text-sm font-semibold">
             Nom fictif
             <input
               name="name"
+              aria-invalid={Boolean(fieldErrors.name)}
+              aria-describedby={fieldErrors.name ? "error-name" : undefined}
               required
               minLength={2}
               maxLength={100}
@@ -287,10 +362,13 @@ export function CheckoutForm({
               className={field}
             />
           </label>
-          <label className="block">
+          {fieldError("name")}
+          <label className="block text-sm font-semibold">
             Téléphone fictif
             <input
               name="phone"
+              aria-invalid={Boolean(fieldErrors.phone)}
+              aria-describedby={fieldErrors.phone ? "error-phone" : undefined}
               type="tel"
               required
               pattern="\+2217[05678][0-9]{7}"
@@ -299,6 +377,7 @@ export function CheckoutForm({
             />
             <span className="text-xs">Format : +221 suivi de 9 chiffres.</span>
           </label>
+          {fieldError("phone")}
           {customerWhatsappEnabled && (
             <fieldset className="rounded-lg border p-4 space-y-3">
               <legend className="px-1 font-semibold">
@@ -323,14 +402,17 @@ export function CheckoutForm({
                 <input
                   name="customerWhatsappConsent"
                   type="checkbox"
-                  className="mt-1 size-5"
+                  className="mt-1 size-5 shrink-0"
                 />
                 J’accepte de recevoir sur ce numéro, via WhatsApp (Meta), la
                 confirmation de cette commande avec ses articles et son montant.
               </label>
             </fieldset>
           )}
-          <label className="block">
+          <h3 className="border-t border-primary/15 pt-5 text-lg font-bold">
+            Livraison de démonstration
+          </h3>
+          <label className="block text-sm font-semibold">
             Zone de livraison
             <select name="zoneId" required className={field}>
               {zones.map((z) => (
@@ -344,22 +426,32 @@ export function CheckoutForm({
             Quartier fictif
             <input
               name="district"
+              aria-invalid={Boolean(fieldErrors.district)}
+              aria-describedby={
+                fieldErrors.district ? "error-district" : undefined
+              }
               required
               minLength={2}
               maxLength={100}
               className={field}
             />
           </label>
+          {fieldError("district")}
           <label className="block">
             Adresse fictive
             <textarea
               name="address"
+              aria-invalid={Boolean(fieldErrors.address)}
+              aria-describedby={
+                fieldErrors.address ? "error-address" : undefined
+              }
               required
               minLength={5}
               maxLength={300}
               className={field}
             />
           </label>
+          {fieldError("address")}
           <label className="block">
             Repère ou instructions
             <textarea name="instructions" maxLength={300} className={field} />
@@ -370,6 +462,7 @@ export function CheckoutForm({
           </label>
           <Button
             type="submit"
+            className="w-full"
             disabled={
               busy || !items.length || !zones.length || !!placed || attempted
             }
@@ -379,10 +472,13 @@ export function CheckoutForm({
         </fieldset>
       </form>
       <section
-        className="self-start rounded-2xl bg-secondary p-6 sm:p-8"
+        ref={summaryRef}
+        tabIndex={-1}
+        aria-label="Récapitulatif avant confirmation"
+        className="scroll-mt-48 self-start rounded-2xl border border-primary/15 bg-secondary p-4 sm:p-6 lg:sticky lg:top-40"
         aria-live="polite"
       >
-        <h2 className="editorial text-2xl">Avant de confirmer</h2>
+        <h2 className="text-xl font-bold">Avant de confirmer</h2>
         {!items.length && (
           <p className="mt-4">
             Votre panier est vide.{" "}
@@ -393,11 +489,16 @@ export function CheckoutForm({
         )}
         {quote && (
           <>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 divide-y divide-primary/15 rounded-xl bg-white px-3">
               {quote.lines.map((l) => (
-                <li key={l.variantId}>
-                  {l.quantity} × {l.name}
-                  <strong className="block">
+                <li
+                  key={l.variantId}
+                  className="flex justify-between gap-3 py-3 text-sm"
+                >
+                  <span>
+                    {l.quantity} × {l.name}
+                  </span>
+                  <strong className="shrink-0">
                     {formatPrice(l.lineTotalXof)}
                   </strong>
                 </li>

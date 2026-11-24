@@ -314,6 +314,22 @@ test("checkout clavier mobile, confirmation privée, traitement et collecte sép
     page.getByRole("heading", { name: "Votre commande de test est reçue." }),
   ).toBeVisible();
   await expect(page.getByText("À confirmer · Non encaissée")).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Confirmation de commande" }),
+  ).toBeFocused();
+  for (const width of [320, 375, 390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 844 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({
+    path: testInfo.outputPath("confirmation-390.png"),
+    fullPage: true,
+  });
   const order = await db.order.findFirstOrThrow({
     where: { items: { some: { variantId: id } } },
     orderBy: { createdAt: "desc" },

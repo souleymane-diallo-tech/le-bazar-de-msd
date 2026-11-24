@@ -1,5 +1,11 @@
 # Suivi — 24 novembre 2026
 
+## UX mobile — itération 5, commande et confirmation
+
+- Étapes visibles, coordonnées/livraison regroupées, champs tactiles, erreurs associées aux champs. Devis et confirmation reçoivent le focus et deviennent visibles après leur chargement ; lignes d’articles et montants séparés, actions mobiles sur toute la largeur.
+- Six scénarios navigateur réussis (46,5 s) en mode simulé sur PostgreSQL local : création/gestion de produit, commande au clavier, confirmation privée, traitement/collecte séparés, réponse perdue sans doublon, cinq largeurs, consentement client facultatif, erreurs de saisie et invalidation du devis après modification. Données de recette nettoyées par la suite. Aucun WhatsApp réel envoyé.
+- Build/TypeScript réussis après correction du typage de la cible des événements de formulaire. Aperçu local `/commande` ; captures `.local/ux-checkout-mobile.jpg`, `.local/ux-confirmation-mobile.png` et `.local/ux-checkout-desktop.png`. Aucun déploiement ; prochaine interface après validation : administration.
+
 ## UX mobile — itération 4, panier
 
 - Articles en cartes, commandes de quantité/suppression séparées, sous-total hors livraison et accès à la commande fixes sur mobile. Récapitulatif latéral sur ordinateur, état vide et messages de prix/stock lisibles.
