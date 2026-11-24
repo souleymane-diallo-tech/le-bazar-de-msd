@@ -100,3 +100,31 @@ describe("WhatsApp boundary", () => {
     });
   });
 });
+
+it("client sans lien admin et modele distinct, resume borne", () => {
+  const p = templatePayload(
+    {
+      ...message,
+      audience: "customer",
+      itemsSummary: "1 × Horloge\n".repeat(200),
+    },
+    { ...config, WHATSAPP_CUSTOMER_TEMPLATE_NAME: "customer_receipt" },
+  );
+  expect(p.template.name).toBe("customer_receipt");
+  expect(p.template.components[0].parameters).toHaveLength(3);
+  expect(
+    p.template.components[0].parameters[1].text.length,
+  ).toBeLessThanOrEqual(920);
+  expect(JSON.stringify(p)).not.toContain("/admin/");
+  expect(p.template.components[0].parameters[1].text).not.toContain("\n");
+});
+it("refuse un envoi client sans modele avant toute requete", async () => {
+  Object.entries(config).forEach(([k, v]) => vi.stubEnv(k, v));
+  const fetcher = vi.fn();
+  vi.stubGlobal("fetch", fetcher);
+  expect(await sendMeta({ ...message, audience: "customer" })).toEqual({
+    kind: "failed",
+    code: "CONFIGURATION_REQUIRED",
+  });
+  expect(fetcher).not.toHaveBeenCalled();
+});

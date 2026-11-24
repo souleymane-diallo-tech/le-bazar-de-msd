@@ -1,5 +1,13 @@
 # Suivi — 23 novembre 2026
 
+## Confirmation WhatsApp client — préparation du 23 novembre 2026
+
+- Autorisée : confirmation de commande uniquement, avec consentement facultatif, numéro WhatsApp de test séparé des coordonnées fictives, référence/articles/total. Notifications gérant et client distinctes ; aucun lien administrateur dans le message client.
+- Preuve de consentement horodatée et versionnée dans contactSnapshot ; outbox transactionnelle et unicité commande/type existantes réutilisées, sans migration. Liste privée de destinataires vérifiés contrôlée côté serveur à la commande et à l’envoi. Aucun numéro réel dans Git.
+- Modèle msd_customer_order_received soumis à Meta en français, catégorie UTILITY ; dernier état PENDING. Configuration Preview préparée, activation client false. Le numéro sénégalais du gérant reste en attente de vérification ; numéro actuel inchangé.
+- Vérification : 45 tests unitaires et 30 PostgreSQL passants ; cinq tests navigateur checkout/admin passants, incluant consentement clavier, absence de doublon, reprise après perte de réponse et largeurs 320/375/390/768/1440. Lint, format et build Webpack/TypeScript réussis. PostgreSQL local redémarré après récupération automatique.
+- Restant : approbation du modèle, activation explicite dans la Preview, recette de livraison client réelle avant annonce de fonctionnement. Aucune confirmation client réelle envoyée à cette étape.
+
 ## WhatsApp automatique — recette réelle réussie le 23 novembre 2026
 
 - Token SYSTEM_USER valide, limité aux éléments de test autorisés, enregistré en secret Preview et chargé par le déploiement READY dpl_8eeKAWeZKUCeED6GUGafmFPW4T9L (commit 2283f1c, Next.js, fra1, target null). Expiration confirmée : 22 janvier 2027 à 12:16:36 UTC ; renouvellement et redéploiement requis avant échéance.

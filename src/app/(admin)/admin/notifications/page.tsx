@@ -43,6 +43,7 @@ export default async function NotificationsPage() {
               {n.order.reference}
             </Link>
             <p>
+              {n.kind === "CUSTOMER_ORDER_RECEIVED" ? "Client" : "Gérant"} ·{" "}
               {notificationLabels[n.state]} · {n.attempts} tentative(s)
             </p>
             <p className="text-sm">

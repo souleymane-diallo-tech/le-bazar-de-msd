@@ -538,3 +538,138 @@ it("ne renvoie pas un résultat réseau incertain ni un envoi abandonné", async
     });
   }
 });
+
+it("consentement client facultatif et destinataires de test controles avant transaction", async () => {
+  const { input } = await fixture();
+  const p = {
+    ...policy,
+    notificationMode: "meta" as const,
+    customerRecipients: ["12025550123"],
+  };
+  await expect(
+    placeOrder(
+      db,
+      {
+        ...input,
+        customerWhatsappConsent: true,
+        customerWhatsapp: "12025550124",
+      },
+      p,
+    ),
+  ).rejects.toMatchObject({ code: "WHATSAPP_TEST_RECIPIENT" });
+  expect(
+    await db.order.count({ where: { idempotencyKey: input.idempotencyKey } }),
+  ).toBe(0);
+  const a = await placeOrder(
+    db,
+    { ...input, customerWhatsapp: "12025550123" },
+    p,
+  );
+  expect(
+    await db.orderNotification.count({
+      where: {
+        order: { reference: a.reference },
+        kind: "CUSTOMER_ORDER_RECEIVED",
+      },
+    }),
+  ).toBe(0);
+});
+it("cree une seule confirmation client avec preuve de consentement et envoi concurrent unique", async () => {
+  vi.stubEnv("WHATSAPP_CUSTOMER_ENABLED", "true");
+  vi.stubEnv("WHATSAPP_CUSTOMER_TEST_RECIPIENTS", "12025550123");
+  try {
+    const { input } = await fixture();
+    const request = {
+      ...input,
+      customerWhatsappConsent: true,
+      customerWhatsapp: "+1 2025550123",
+    };
+    const p = {
+      ...policy,
+      notificationMode: "meta" as const,
+      customerRecipients: ["12025550123"],
+    };
+    const [a, b] = await Promise.all([
+      placeOrder(db, request, p),
+      placeOrder(db, request, p),
+    ]);
+    expect(a.reference).toBe(b.reference);
+    const order = await db.order.findUniqueOrThrow({
+      where: { reference: a.reference },
+      include: { notifications: true },
+    });
+    expect(order.notifications).toHaveLength(2);
+    expect(order.contactSnapshot).toMatchObject({
+      whatsappConsent: {
+        recipient: "12025550123",
+        version: "order-confirmation-v1",
+        at: expect.any(String),
+      },
+    });
+    const n = order.notifications.find(
+      (n) => n.kind === "CUSTOMER_ORDER_RECEIVED",
+    )!;
+    const sender = vi.fn(async () => ({
+      kind: "accepted" as const,
+      messageId: "customer." + n.id,
+    }));
+    await Promise.all([
+      processNotification(db, n.id, "meta", sender),
+      processNotification(db, n.id, "meta", sender),
+    ]);
+    expect(sender).toHaveBeenCalledTimes(1);
+    expect(sender).toHaveBeenCalledWith(
+      expect.objectContaining({
+        audience: "customer",
+        recipient: "12025550123",
+        itemsSummary: expect.stringContaining("Produit test"),
+      }),
+    );
+    await applyStatus(db, {
+      messageId: "customer." + n.id,
+      recipient: n.recipient,
+      status: "delivered",
+      timestamp: new Date(),
+    });
+    expect(
+      (await readConfirmation(db, a.reference, input.accessToken))
+        .customerNotification,
+    ).toBe("DELIVERED");
+  } finally {
+    vi.unstubAllEnvs();
+  }
+});
+it("bloque un destinataire client retire de la liste avant envoi", async () => {
+  const { input } = await fixture();
+  const a = await placeOrder(
+    db,
+    {
+      ...input,
+      customerWhatsappConsent: true,
+      customerWhatsapp: "12025550123",
+    },
+    {
+      ...policy,
+      notificationMode: "meta",
+      customerRecipients: ["12025550123"],
+    },
+  );
+  const n = await db.orderNotification.findFirstOrThrow({
+    where: {
+      order: { reference: a.reference },
+      kind: "CUSTOMER_ORDER_RECEIVED",
+    },
+  });
+  vi.stubEnv("WHATSAPP_CUSTOMER_ENABLED", "false");
+  try {
+    const sender = vi.fn();
+    await processNotification(db, n.id, "meta", sender);
+    expect(sender).not.toHaveBeenCalled();
+    expect(
+      (await db.orderNotification.findUniqueOrThrow({ where: { id: n.id } }))
+        .state,
+    ).toBe("FAILED");
+  } finally {
+    vi.unstubAllEnvs();
+  }
+});

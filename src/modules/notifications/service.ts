@@ -1,13 +1,18 @@
 import { randomUUID } from "node:crypto";
 import type { Prisma, PrismaClient } from "@/generated/prisma/client";
 import { publicSettingsFromJson } from "@/modules/settings/rules";
-import type { NotificationMode } from "./config";
+import {
+  customerTestRecipients,
+  CUSTOMER_CONSENT_VERSION,
+  type NotificationMode,
+} from "./config";
 import type { Sender } from "./provider";
 
 export async function recordNotification(
   tx: Prisma.TransactionClient,
   orderId: string,
   mode: NotificationMode,
+  customerRecipient?: string,
 ) {
   if (mode === "disabled") return;
   const settings = await tx.storeSettings.findUnique({
@@ -27,6 +32,15 @@ export async function recordNotification(
         : {}),
     },
   });
+  if (customerRecipient)
+    await tx.orderNotification.create({
+      data: {
+        orderId,
+        kind: "CUSTOMER_ORDER_RECEIVED",
+        recipient: customerRecipient,
+        mode,
+      },
+    });
 }
 
 export async function recoverExpiredLeases(db: PrismaClient, now = new Date()) {
@@ -85,6 +99,27 @@ export async function processNotification(
     await finish({ state: "CANCELLED" });
     return;
   }
+  const customer = record.kind === "CUSTOMER_ORDER_RECEIVED";
+  if (!customer && record.kind !== "ORDER_CREATED") {
+    await finish({ state: "FAILED", errorCode: "UNKNOWN_NOTIFICATION_KIND" });
+    return;
+  }
+  const contact = record.order.contactSnapshot as Record<string, unknown>;
+  const consent = contact.whatsappConsent as
+    { recipient?: string; at?: string; version?: string } | undefined;
+  if (
+    customer &&
+    (!consent?.at ||
+      consent.version !== CUSTOMER_CONSENT_VERSION ||
+      consent.recipient !== record.recipient ||
+      !customerTestRecipients().includes(record.recipient))
+  ) {
+    await finish({
+      state: "FAILED",
+      errorCode: "CUSTOMER_CONSENT_OR_RECIPIENT_REQUIRED",
+    });
+    return;
+  }
   const settings = await db.storeSettings.findUnique({
     where: { id: "store" },
   });
@@ -92,7 +127,10 @@ export async function processNotification(
     settings?.contacts,
     settings?.socialLinks,
   ).whatsapp;
-  if (!record.recipient || currentRecipient !== record.recipient) {
+  if (
+    !record.recipient ||
+    (!customer && currentRecipient !== record.recipient)
+  ) {
     await finish({ state: "FAILED", errorCode: "RECIPIENT_CHANGED" });
     return;
   }
@@ -103,6 +141,10 @@ export async function processNotification(
   const address = record.order.addressSnapshot as Record<string, unknown>;
   const result = await sender({
     attemptId,
+    audience: customer ? "customer" : "manager",
+    itemsSummary: record.order.items
+      .map((i) => i.quantity + " × " + i.nameSnapshot.replace(/\s+/g, " "))
+      .join(" ; "),
     recipient: record.recipient,
     orderId: record.orderId,
     reference: record.order.reference,

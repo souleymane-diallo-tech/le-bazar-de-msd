@@ -9,7 +9,10 @@ import { hasPermission, type Permission } from "@/modules/identity/permissions";
 import { publicSettingsFromJson } from "@/modules/settings/rules";
 import { orderWhatsAppLink } from "./whatsapp";
 import { recordNotification } from "@/modules/notifications/service";
-import type { NotificationMode } from "@/modules/notifications/config";
+import {
+  CUSTOMER_CONSENT_VERSION,
+  type NotificationMode,
+} from "@/modules/notifications/config";
 import {
   basketSchema,
   checkoutSchema,
@@ -23,6 +26,7 @@ export type DemoPolicy = {
   enabled: boolean;
   secret: string;
   notificationMode?: NotificationMode;
+  customerRecipients?: readonly string[];
 };
 export const digest = (value: string) =>
   createHash("sha256").update(value).digest("hex");
@@ -168,10 +172,20 @@ export async function placeOrder(
 ) {
   enabled(policy);
   const data = checkoutSchema.parse(input);
-  const { idempotencyKey, accessToken, quoteToken, ...content } = data;
+  const {
+    idempotencyKey,
+    accessToken,
+    quoteToken,
+    customerWhatsappConsent,
+    customerWhatsapp,
+    ...content
+  } = data;
   const requestHash = digest(
     JSON.stringify({
       ...content,
+      ...(customerWhatsappConsent
+        ? { customerWhatsappConsent, customerWhatsapp }
+        : {}),
       items: [...content.items].sort((a, b) =>
         a.variantId.localeCompare(b.variantId),
       ),
@@ -187,6 +201,20 @@ export async function placeOrder(
         throw new CommerceError("CONFLICT");
       return { reference: existing.reference };
     }
+    if (
+      customerWhatsappConsent &&
+      (!policy.customerRecipients?.includes(customerWhatsapp) ||
+        !policy.notificationMode ||
+        policy.notificationMode === "disabled")
+    )
+      throw new CommerceError("WHATSAPP_TEST_RECIPIENT", 400);
+    const consent = customerWhatsappConsent
+      ? {
+          recipient: customerWhatsapp,
+          at: new Date().toISOString(),
+          version: CUSTOMER_CONSENT_VERSION,
+        }
+      : null;
     const quote = await calculate(tx, data);
     verifyQuote(quoteToken, quote, policy.secret);
     const addressSnapshot = {
@@ -206,7 +234,11 @@ export async function placeOrder(
         deliveryXof: quote.deliveryXof,
         totalXof: quote.totalXof,
         addressSnapshot,
-        contactSnapshot: { name: data.name, phone: data.phone },
+        contactSnapshot: {
+          name: data.name,
+          phone: data.phone,
+          ...(consent ? { whatsappConsent: consent } : {}),
+        },
         customer: { create: { name: data.name, phoneNormalized: data.phone } },
         statusHistory: {
           create: {
@@ -269,6 +301,7 @@ export async function placeOrder(
       tx,
       order.id,
       policy.notificationMode ?? "disabled",
+      consent?.recipient,
     );
     return { reference: order.reference };
   });
@@ -288,7 +321,12 @@ export async function readConfirmation(
   });
   // Only the private access token can retrieve the prepared message. Never include it in WhatsApp.
   return {
-    automaticNotification: order.notifications.some((n) => n.mode === "meta"),
+    automaticNotification: order.notifications.some(
+      (n) => n.kind === "ORDER_CREATED" && n.mode === "meta",
+    ),
+    customerNotification:
+      order.notifications.find((n) => n.kind === "CUSTOMER_ORDER_RECEIVED")
+        ?.state ?? null,
     whatsappUrl: orderWhatsAppLink(
       publicSettingsFromJson(settings?.contacts, settings?.socialLinks)
         .whatsapp,

@@ -75,6 +75,14 @@ export const checkoutSchema = basketSchema.extend({
   accessToken: z.string().regex(/^[a-f0-9]{64}$/),
   quoteToken: z.string().min(1).max(16000),
   demoAcknowledged: z.literal(true),
+  customerWhatsappConsent: z.boolean().default(false),
+  customerWhatsapp: z
+    .string()
+    .trim()
+    .max(40)
+    .transform((s) => s.replace(/[\s()+-]/g, ""))
+    .pipe(z.string().regex(/^(?:[1-9]\d{7,14})?$/))
+    .default(""),
 });
 export class CommerceError extends Error {
   constructor(
@@ -85,6 +93,8 @@ export class CommerceError extends Error {
   }
 }
 export const errorMessages: Record<string, string> = {
+  WHATSAPP_TEST_RECIPIENT:
+    "Ce numéro WhatsApp n’est pas autorisé pour la démonstration. Utilisez un numéro vérifié ou décochez la confirmation WhatsApp.",
   RATE_LIMIT: "Trop de demandes. Patientez une minute avant de réessayer.",
   DISABLED: "Les commandes sont désactivées.",
   INVALID: "Vérifiez les champs du formulaire.",

@@ -293,7 +293,9 @@ test("checkout clavier mobile, confirmation privée, traitement et collecte sép
     .getByLabel("Repère ou instructions")
     .fill("Test sans livraison réelle");
   await page.keyboard.press("Tab");
-  await expect(page.getByRole("checkbox")).toBeFocused();
+  await expect(
+    page.getByRole("checkbox", { name: /Je comprends/ }),
+  ).toBeFocused();
   await page.keyboard.press("Space");
   await page.keyboard.press("Tab");
   await page.keyboard.press("Enter");
@@ -437,7 +439,7 @@ test("réponse perdue puis rechargement : récupération sans double commande", 
   await page
     .getByLabel("Adresse fictive", { exact: true })
     .fill("Adresse fictive de reprise");
-  await page.getByRole("checkbox").check();
+  await page.getByRole("checkbox", { name: /Je comprends/ }).check();
   await page.getByRole("button", { name: "Vérifier le total" }).click();
   await expect(
     page.getByRole("button", { name: "Confirmer la commande de test" }),
@@ -496,4 +498,51 @@ test("checkout lisible aux cinq largeurs et origine étrangère refusée", async
       })
     ).status(),
   ).toBe(403);
+});
+
+test("confirmation client facultative, consentement explicite au clavier et notification separee", async ({
+  page,
+}) => {
+  await page.goto(`/produits/${id}`);
+  await page.getByRole("button", { name: /Ajouter au panier/ }).click();
+  await page.goto("/commande");
+  await page
+    .getByLabel("Nom fictif", { exact: true })
+    .fill("Client WhatsApp fictif");
+  await page.getByLabel("Téléphone fictif").fill("+221770000000");
+  await page.getByLabel("Quartier fictif").fill("Quartier test");
+  await page
+    .getByLabel("Adresse fictive", { exact: true })
+    .fill("Adresse fictive de test");
+  const consent = page.getByRole("checkbox", { name: /J’accepte de recevoir/ });
+  await expect(consent).not.toBeChecked();
+  await page.getByLabel("Votre numéro WhatsApp de test").fill("+12025550123");
+  await consent.focus();
+  await page.keyboard.press("Space");
+  await expect(consent).toBeChecked();
+  await page.getByRole("checkbox", { name: /Je comprends/ }).check();
+  await page.getByRole("button", { name: "Vérifier le total" }).click();
+  await page
+    .getByRole("button", { name: "Confirmer la commande de test" })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Votre commande de test est reçue." }),
+  ).toBeVisible();
+  await expect(page.getByText(/Confirmation WhatsApp client/)).toBeVisible();
+  const order = await db.order.findFirstOrThrow({
+    where: {
+      items: { some: { variantId: id } },
+      customer: { name: "Client WhatsApp fictif" },
+    },
+    include: { notifications: true },
+  });
+  expect(
+    order.notifications.filter((n) => n.kind === "CUSTOMER_ORDER_RECEIVED"),
+  ).toHaveLength(1);
+  expect(order.contactSnapshot).toMatchObject({
+    whatsappConsent: {
+      recipient: "12025550123",
+      version: "order-confirmation-v1",
+    },
+  });
 });
