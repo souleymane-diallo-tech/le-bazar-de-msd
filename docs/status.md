@@ -6,7 +6,8 @@
 - Preuve de consentement horodatée et versionnée dans contactSnapshot ; outbox transactionnelle et unicité commande/type existantes réutilisées, sans migration. Liste privée de destinataires vérifiés contrôlée côté serveur à la commande et à l’envoi. Aucun numéro réel dans Git.
 - Modèle msd_customer_order_received soumis à Meta en français, catégorie UTILITY ; dernier état PENDING. Configuration Preview préparée, activation client false. Le numéro sénégalais du gérant reste en attente de vérification ; numéro actuel inchangé.
 - Vérification : 45 tests unitaires et 30 PostgreSQL passants ; cinq tests navigateur checkout/admin passants, incluant consentement clavier, absence de doublon, reprise après perte de réponse et largeurs 320/375/390/768/1440. Lint, format et build Webpack/TypeScript réussis. PostgreSQL local redémarré après récupération automatique.
-- Restant : approbation du modèle, activation explicite dans la Preview, recette de livraison client réelle avant annonce de fonctionnement. Aucune confirmation client réelle envoyée à cette étape.
+- Déploiement READY dpl_Fk1PhJHGYnse4PEtsYZJNap6WmLW, commit 206e676, Preview fra1 ; alias public basculé après recette. Catalogue, santé, connexion propriétaire, upload et refus anonyme vérifiés ; option client masquée et tentative API forcée rejetée (400 WHATSAPP_TEST_RECIPIENT). Sessions de recette fermées.
+- Restant : approbation du modèle, activation dans la Preview, recette de livraison client réelle avant annonce de fonctionnement. Aucune confirmation client réelle envoyée à cette étape.
 
 ## WhatsApp automatique — recette réelle réussie le 23 novembre 2026
 
