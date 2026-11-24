@@ -7,10 +7,10 @@ test("accueil lisible aux cinq largeurs prévues", async ({
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: /Les petits détails/ }),
+      page.getByRole("heading", { name: /Un quotidien/ }),
     ).toBeVisible();
     await expect(
-      page.getByRole("link", { name: "Explorer la collection" }),
+      page.getByRole("link", { name: "Découvrir", exact: true }),
     ).toBeVisible();
     expect(
       await page.evaluate(

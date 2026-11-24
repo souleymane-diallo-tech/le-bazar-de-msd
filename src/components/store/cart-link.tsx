@@ -7,7 +7,7 @@ export function CartLink() {
   return (
     <Link
       href="/panier"
-      className="inline-flex min-h-11 items-center gap-2 rounded-full border border-primary/20 px-4 text-sm font-semibold"
+      className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-primary/20 px-2.5 sm:gap-2 sm:px-4 text-sm font-semibold"
       aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`}
     >
       <ShoppingBag size={18} aria-hidden="true" />

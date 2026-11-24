@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPin, ArrowUpRight } from "lucide-react";
+import { MapPin, ArrowUpRight, Search } from "lucide-react";
 import { CartLink } from "@/components/store/cart-link";
 import { getOrderPolicy } from "@/modules/orders/runtime";
 import { getPublicSettings } from "@/modules/settings/read";
@@ -23,42 +23,93 @@ export default async function StoreLayout({
           ? "Démonstration · Commandes fictives, aucune vente réelle"
           : "Version découverte · Commandes et paiements désactivés"}
       </div>
-      <header className="mx-auto max-w-7xl px-5 sm:px-10">
-        <div className="flex flex-wrap items-center justify-between gap-3 py-5">
-          <Link href="/" className="text-lg font-bold tracking-tight">
-            Le Bazar de MSD.
-          </Link>
-          <CartLink />
+      <header className="sticky top-0 z-30 border-b border-primary/15 bg-background shadow-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
+          <div className="flex items-center justify-between gap-3 py-2 sm:gap-6 sm:py-3">
+            <Link
+              href="/"
+              className="inline-flex min-h-11 shrink-0 items-center text-base font-extrabold tracking-tight sm:text-xl"
+              aria-label="Le Bazar de MSD, accueil"
+            >
+              Le Bazar de MSD<span className="text-primary">.</span>
+            </Link>
+            <form
+              action="/catalogue"
+              role="search"
+              aria-label="Recherche dans la boutique"
+              className="hidden min-w-0 flex-1 md:flex"
+            >
+              <label htmlFor="desktop-search" className="sr-only">
+                Chercher dans la boutique
+              </label>
+              <input
+                id="desktop-search"
+                name="q"
+                type="search"
+                maxLength={100}
+                placeholder="Rechercher un produit…"
+                className="min-h-11 w-full min-w-0 rounded-l-lg border border-primary/30 bg-white px-4 text-base"
+              />
+              <button
+                type="submit"
+                aria-label="Lancer la recherche"
+                className="flex min-h-11 min-w-12 items-center justify-center rounded-r-lg bg-primary text-white hover:bg-primary/90"
+              >
+                <Search size={21} aria-hidden="true" />
+              </button>
+            </form>
+            <CartLink />
+          </div>
+          <form
+            action="/catalogue"
+            role="search"
+            aria-label="Recherche dans la boutique"
+            className="mb-2 flex md:hidden"
+          >
+            <label htmlFor="mobile-search" className="sr-only">
+              Chercher dans la boutique
+            </label>
+            <input
+              id="mobile-search"
+              name="q"
+              type="search"
+              maxLength={100}
+              enterKeyHint="search"
+              placeholder="Rechercher un produit…"
+              className="min-h-11 w-full min-w-0 rounded-l-lg border border-primary/30 bg-white px-3 text-base"
+            />
+            <button
+              type="submit"
+              aria-label="Lancer la recherche"
+              className="flex min-h-11 min-w-12 items-center justify-center rounded-r-lg bg-primary text-white hover:bg-primary/90"
+            >
+              <Search size={21} aria-hidden="true" />
+            </button>
+          </form>
+          <nav
+            aria-label="Navigation principale"
+            className="flex items-center gap-3 overflow-x-auto text-sm sm:gap-6"
+          >
+            {[
+              ["Tout voir", "/catalogue"],
+              ["Maison", "/catalogue?category=maison"],
+              ["Salle de bain", "/catalogue?category=salle-de-bain"],
+              ["Gadgets", "/catalogue?category=gadgets"],
+            ].map(([name, href]) => (
+              <Link
+                key={href}
+                href={href}
+                className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap font-medium hover:underline underline-offset-4"
+              >
+                {name}
+              </Link>
+            ))}
+            <span className="ml-auto hidden shrink-0 items-center gap-1 text-xs text-muted-foreground lg:flex">
+              <MapPin size={14} aria-hidden="true" />
+              Dakar, Sénégal
+            </span>
+          </nav>
         </div>
-        <nav
-          aria-label="Navigation principale"
-          className="flex flex-wrap items-center gap-x-6 gap-y-1 border-t border-primary/15 py-2 text-sm"
-        >
-          <Link className="inline-flex min-h-11 items-center" href="/catalogue">
-            Toute la collection
-          </Link>
-          <Link
-            className="inline-flex min-h-11 items-center"
-            href="/catalogue?category=maison"
-          >
-            Maison
-          </Link>
-          <Link
-            className="inline-flex min-h-11 items-center"
-            href="/catalogue?category=salle-de-bain"
-          >
-            Salle de bain
-          </Link>
-          <Link
-            className="inline-flex min-h-11 items-center"
-            href="/catalogue?category=gadgets"
-          >
-            Gadgets
-          </Link>
-          <span className="ml-auto hidden items-center gap-1 text-xs text-muted-foreground sm:flex">
-            <MapPin size={14} aria-hidden="true" /> Dakar, Sénégal
-          </span>
-        </nav>
       </header>
       {children}
       <footer className="mt-12 border-t border-primary/20">

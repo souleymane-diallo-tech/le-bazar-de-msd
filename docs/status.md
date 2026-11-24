@@ -1,5 +1,11 @@
 # Suivi — 23 novembre 2026
 
+## UX mobile — itération 1, accueil et navigation
+
+- Branche `features/mobile-ux-home` : recherche visible, header fixe, bannière compacte, catégories et sélection à deux colonnes sur mobile. Identité MSD et médias conservés.
+- Recette : cinq largeurs 320/375/390/768/1440, prix visible à 390 × 844, cibles principales ≥ 44 px, absence de débordement, panier accessible après défilement, recherche et catégories au clavier. Six tests navigateur réussis sur la version compilée, incluant recherche/filtres et fiche/panier persistant/quantités/suppression. Lint, types et build Webpack réussis.
+- Critères, preuves et séquence des prochaines interfaces : `docs/ux-mobile.md`. Aperçu local ; alias public inchangé. Prochaine interface : catalogue et filtres mobiles.
+
 ## Confirmation WhatsApp client — préparation du 23 novembre 2026
 
 - Autorisée : confirmation de commande uniquement, avec consentement facultatif, numéro WhatsApp de test séparé des coordonnées fictives, référence/articles/total. Notifications gérant et client distinctes ; aucun lien administrateur dans le message client.

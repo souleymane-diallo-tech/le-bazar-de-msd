@@ -4,11 +4,23 @@ import { ArrowUpRight, ImageIcon } from "lucide-react";
 import type { CatalogProduct } from "@/modules/catalog/types";
 import { formatPrice, minPrice } from "@/modules/catalog/rules";
 
-export function ProductCard({ product }: { product: CatalogProduct }) {
+export function ProductCard({
+  product,
+  compact = false,
+}: {
+  product: CatalogProduct;
+  compact?: boolean;
+}) {
   const image = product.images[0];
   const available = product.variants.some((v) => v.available > 0);
   return (
-    <article className="group min-w-0">
+    <article
+      className={
+        compact
+          ? "group min-w-0 rounded-xl border border-primary/15 bg-white p-2.5 sm:p-4"
+          : "group min-w-0"
+      }
+    >
       <Link
         href={`/produits/${product.slug}`}
         className="block rounded-xl"
@@ -20,7 +32,11 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
               src={image.src}
               alt={image.alt}
               fill
-              sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 25vw"
+              sizes={
+                compact
+                  ? "(max-width: 1023px) 45vw, 25vw"
+                  : "(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 25vw"
+              }
               className="object-cover transition-transform duration-300 group-hover:scale-[1.025]"
             />
           ) : (
@@ -40,12 +56,28 @@ export function ProductCard({ product }: { product: CatalogProduct }) {
         <p className="mt-4 text-xs text-muted-foreground">
           {product.category.name}
         </p>
-        <h2 className="mt-1 text-base font-semibold group-hover:underline group-hover:underline-offset-4">
+        <h2
+          className={
+            compact
+              ? "mt-1 min-h-10 text-sm font-semibold leading-5 group-hover:underline sm:text-base"
+              : "mt-1 text-base font-semibold group-hover:underline group-hover:underline-offset-4"
+          }
+        >
           {product.name}
         </h2>
       </Link>
-      <div className="mt-2 flex flex-wrap justify-between gap-2">
-        <p className="text-sm font-bold">
+      <div
+        className={
+          compact
+            ? "mt-2 flex flex-col gap-1"
+            : "mt-2 flex flex-wrap justify-between gap-2"
+        }
+      >
+        <p
+          className={
+            compact ? "text-base font-bold sm:text-lg" : "text-sm font-bold"
+          }
+        >
           {product.variants.some((v) => v.priceXof !== minPrice(product))
             ? "Dès "
             : ""}

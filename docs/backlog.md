@@ -1,5 +1,7 @@
 # Backlog prêt à décliner en Issues
 
+UX mobile, 23 novembre : première interface accueil/navigation implémentée et vérifiée localement. Suivre `docs/ux-mobile.md` : catalogue, fiche produit, panier, commande/confirmation puis administration, avec critères d’acceptation à chaque étape. Recette utilisateur et déploiement de cette interface restent à planifier.
+
 Confirmation client, 23 novembre : consentement facultatif et preuve serveur, notification transactionnelle distincte, liste privée de test et modèle UTILITY soumis. Validation locale : 45 unitaires, 30 PostgreSQL, 5 navigateur ciblés. Activation distante conditionnée à l’approbation Meta et à la recette réelle ; modèle encore PENDING. Expédition/livraison client hors de cet incrément.
 
 23 novembre : token système remplacé et déployé, modèle APPROVED, notification réelle DELIVERED via le webhook signé (une tentative, commande idempotente). Alias public basculé en mode Meta pour la démonstration ; commandes de recette annulées, stock libéré. Restent vérification du déclenchement planifié autonome, amélioration de la relance manuelle immédiate dans la fenêtre de déduplication, renouvellement du token avant le 22 janvier 2027 et préparation distincte du numéro commercial. Voir status.md et ADR 012.

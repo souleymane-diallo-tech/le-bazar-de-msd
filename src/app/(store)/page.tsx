@@ -1,9 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Leaf } from "lucide-react";
+import {
+  ArrowRight,
+  House,
+  Bath,
+  Zap,
+  MessageCircle,
+  PackageCheck,
+} from "lucide-react";
 import { getCatalog } from "@/modules/catalog/service";
 import { ProductCard } from "@/components/store/product-card";
-import { Button } from "@/components/ui/button";
 import { pageMetadata } from "@/modules/seo/metadata";
 export const dynamic = "force-dynamic";
 export function generateMetadata() {
@@ -13,143 +19,175 @@ export function generateMetadata() {
     "/",
   );
 }
-
+const universes = [
+  { name: "Maison", slug: "maison", icon: House },
+  { name: "Salle de bain", slug: "salle-de-bain", icon: Bath },
+  { name: "Gadgets", slug: "gadgets", icon: Zap },
+];
 export default async function HomePage() {
   const products = await getCatalog();
   return (
-    <main id="contenu" className="mx-auto max-w-7xl px-5 pb-8 sm:px-10">
+    <main id="contenu" className="mx-auto max-w-7xl px-4 pb-8 sm:px-8">
       <section
-        className="mt-4 grid overflow-hidden rounded-2xl bg-secondary md:min-h-[530px] md:grid-cols-2"
         aria-labelledby="hero-title"
+        className="relative mt-4 grid grid-cols-[1.55fr_1fr] overflow-hidden rounded-2xl bg-secondary md:min-h-80 md:grid-cols-2"
       >
-        <div className="flex flex-col items-start justify-center px-6 py-12 sm:px-12">
-          <span className="mb-7 flex items-center gap-2 text-xs font-semibold uppercase tracking-[.18em]">
-            <Leaf size={16} aria-hidden="true" /> Utile. Simple. Bien pensé.
-          </span>
+        <div className="relative z-10 flex flex-col items-start justify-center p-4 sm:p-8 lg:p-12">
+          <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-primary sm:text-xs">
+            Des idées utiles, tout simplement
+          </p>
           <h1
             id="hero-title"
-            className="editorial text-4xl leading-[1.12] sm:text-5xl lg:text-6xl"
+            className="text-xl font-bold leading-tight tracking-tight min-[375px]:text-2xl sm:text-4xl lg:text-5xl"
           >
-            Les petits détails.
+            Un quotidien
             <br />
-            <span className="italic">Le plaisir</span>
-            <br />
-            du quotidien.
+            plus pratique.
           </h1>
-          <p className="mt-6 max-w-sm text-base leading-relaxed text-muted-foreground">
-            Des objets pratiques pour la maison et des idées qui vous
-            simplifient la vie.
+          <p className="mt-3 hidden max-w-sm text-muted-foreground md:block">
+            Pour votre maison, vos petits espaces et vos envies de simplicité.
           </p>
-          <Button asChild className="mt-8">
-            <Link href="/catalogue">
-              Explorer la collection <ArrowRight size={17} aria-hidden="true" />
-            </Link>
-          </Button>
+          <Link
+            href="/catalogue"
+            className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white hover:bg-primary/90 sm:mt-5 sm:px-5"
+          >
+            Découvrir <ArrowRight size={16} aria-hidden="true" />
+          </Link>
         </div>
-        <div className="relative min-h-80 md:min-h-full">
+        <div className="relative min-w-0">
           <Image
             src="/images/maison.jpg"
-            alt="Rangements muraux noirs dans une salle de bain lumineuse."
+            alt="Rangements muraux pour organiser la salle de bain"
             fill
-            sizes="(max-width: 767px) 100vw, 50vw"
+            sizes="(max-width: 767px) 38vw, 50vw"
             priority
-            className="object-cover"
+            className="object-cover object-center"
           />
-          <span className="absolute bottom-5 left-5 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold">
-            La maison, en toute simplicité.
-          </span>
         </div>
       </section>
-      <section
+      <nav
         aria-label="Nos univers"
-        className="grid gap-4 py-8 sm:grid-cols-3"
+        className="my-4 grid grid-cols-3 gap-2 sm:my-6 sm:gap-4"
       >
-        {[
-          [
-            "01",
-            "Maison & décoration",
-            "maison",
-            "Un intérieur qui vous ressemble.",
-          ],
-          [
-            "02",
-            "Salle de bain",
-            "salle-de-bain",
-            "Chaque essentiel à sa place.",
-          ],
-          [
-            "03",
-            "Gadgets du quotidien",
-            "gadgets",
-            "Pratiques, où que vous soyez.",
-          ],
-        ].map(([n, title, slug, description]) => (
+        {universes.map(({ name, slug, icon: Icon }) => (
           <Link
             key={slug}
             href={`/catalogue?category=${slug}`}
-            className="group rounded-xl border border-primary/15 p-5 transition-colors hover:bg-secondary"
+            className="flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl border border-primary/15 bg-white px-1 py-2 text-center text-xs font-semibold transition-colors hover:bg-secondary sm:min-h-20 sm:flex-row sm:gap-3 sm:text-base"
           >
-            <span className="text-xs text-muted-foreground">{n}</span>
-            <div className="mt-2 flex items-center justify-between gap-2">
-              <h2 className="font-semibold">{title}</h2>
-              <ArrowRight size={17} aria-hidden="true" />
-            </div>
-            <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+            <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
+            {name}
           </Link>
         ))}
-      </section>
-      <section aria-labelledby="selection-title" className="py-6">
-        <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+      </nav>
+      <section aria-labelledby="selection-title" className="py-1 sm:py-4">
+        <div className="mb-3 flex items-center justify-between gap-2">
           <div>
-            <p className="text-xs uppercase tracking-[.18em] text-muted-foreground">
-              À découvrir
-            </p>
             <h2
               id="selection-title"
-              className="editorial mt-2 text-3xl sm:text-4xl"
+              className="text-xl font-bold tracking-tight sm:text-3xl"
             >
-              Les nouveautés
+              À découvrir
             </h2>
+            <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+              Une sélection pour votre quotidien
+            </p>
           </div>
           <Link
             href="/catalogue"
-            className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4"
+            className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-lg px-2 text-sm font-semibold text-primary underline underline-offset-4"
           >
             Tout voir <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
-        {products.some((p) => p.isDemo) && (
-          <p className="mb-6 text-sm text-muted-foreground">
-            Sélection de démonstration — prix et stocks fictifs, aucune vente
-            réelle.
-          </p>
-        )}
         {products.length ? (
-          <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {products.slice(0, 4).map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} compact />
             ))}
           </div>
         ) : (
-          <p className="rounded-xl bg-secondary p-8">
+          <p className="rounded-xl bg-secondary p-6">
             La collection arrive bientôt. Aucun produit n’est encore publié.
           </p>
         )}
-      </section>
-      <section className="mt-12 grid gap-6 rounded-2xl bg-primary p-7 text-white sm:grid-cols-[1.5fr_1fr] sm:p-10">
-        <div>
-          <p className="text-xs uppercase tracking-widest text-white/80">
-            Pensé pour votre quotidien
+        {products.some((p) => p.isDemo) && (
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+            Prix et stocks de démonstration. Aucune vente réelle.
           </p>
-          <h2 className="editorial mt-3 text-3xl">
-            Une boutique à taille humaine.
-          </h2>
-        </div>
-        <p className="self-center text-sm leading-relaxed text-white/85">
-          Notre collection se prépare à Dakar. Les modalités de livraison et les
-          moyens de paiement seront précisés avant l’ouverture des commandes.
+        )}
+      </section>
+      <section
+        aria-labelledby="how-title"
+        className="mt-7 rounded-2xl border border-primary/15 bg-white p-5 sm:mt-10 sm:p-8"
+      >
+        <h2 id="how-title" className="text-lg font-bold sm:text-2xl">
+          Votre commande, en toute simplicité
+        </h2>
+        <ol className="mt-5 grid gap-5 text-sm sm:grid-cols-3">
+          {[
+            [
+              "1",
+              "Choisissez vos articles",
+              "Parcourez les produits et ajoutez vos envies au panier.",
+            ],
+            [
+              "2",
+              "Vérifiez votre commande",
+              "Retrouvez le total et les frais avant de confirmer.",
+            ],
+            [
+              "3",
+              "La boutique prend le relais",
+              "Le gérant reçoit la commande pour en assurer le suivi.",
+            ],
+          ].map(([n, title, description]) => (
+            <li key={n} className="flex gap-3">
+              <span
+                className="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary font-bold text-primary"
+                aria-hidden="true"
+              >
+                {n}
+              </span>
+              <div>
+                <h3 className="font-semibold">{title}</h3>
+                <p className="mt-1 leading-relaxed text-muted-foreground">
+                  {description}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-5 border-t border-primary/10 pt-4 text-xs text-muted-foreground">
+          Vous testez une démonstration : paiement et livraison sont simulés.
         </p>
       </section>
+      <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
+        <Link
+          href="/contact"
+          className="flex min-h-14 items-center gap-2 rounded-xl px-3 py-3 font-semibold hover:bg-secondary"
+        >
+          <MessageCircle size={20} aria-hidden="true" />
+          Besoin d’aide ?{" "}
+          <ArrowRight
+            size={16}
+            className="ml-auto shrink-0"
+            aria-hidden="true"
+          />
+        </Link>
+        <Link
+          href="/demonstration"
+          className="flex min-h-14 items-center gap-2 rounded-xl px-3 py-3 font-semibold hover:bg-secondary"
+        >
+          <PackageCheck size={20} className="shrink-0" aria-hidden="true" />
+          Comment tester{" "}
+          <ArrowRight
+            size={16}
+            className="ml-auto shrink-0"
+            aria-hidden="true"
+          />
+        </Link>
+      </div>
     </main>
   );
 }
