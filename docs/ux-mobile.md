@@ -49,10 +49,19 @@ Pas de paiement, commande ou notification déclenchés par cette recette. La sé
 
 Recette terminée : treize scénarios passants, dont recherche/tri après attente explicite de la fin de navigation dans le test. Build/TypeScript et lint réussis. Revue visuelle mobile et ordinateur ; captures `.local/ux-product-mobile.jpg` et `.local/ux-product-desktop.jpg`. Validation utilisateur et tests avec des clients réels restent distincts de cette recette technique.
 
-## Interfaces restantes
+## Itération 4 — Panier (24 novembre)
 
-1. **Panier** : modification simple, total explicite, CTA de commande ; vérifier suppression, stock modifié, panier vide et persistance.
-2. **Commande et confirmation** : champs regroupés, erreurs près des champs, frais avant validation, prévention des doublons et statut compréhensible ; vérifier clavier mobile, reprise après erreur et consentement WhatsApp facultatif.
-3. **Administration** : tableau de commandes prioritaire, statuts lisibles, recherche et actions adaptées au mobile ; formulaire produit progressif avec photo, prix, stock et validation ; vérifier accès, erreurs, sauvegarde et prévention de perte des modifications.
+Cartes d’articles compactes, photo et nom séparés des commandes de quantité/suppression, total de ligne en évidence. Récapitulatif fixe sur ordinateur et barre de poursuite en bas du mobile, indiquant explicitement que le sous-total exclut la livraison. État vide simplifié, erreurs et changements de prix affichés près des articles.
+
+Critères d’acceptation : aucun débordement aux cinq largeurs ; commandes d’au moins 44 px ; accès à la commande visible sur mobile ; quantité recalculée et conservée après actualisation ; suppression du dernier article vers l’état vide ; erreur de devis bloquant la poursuite avec reprise sans perte ; stock insuffisant bloquant la poursuite jusqu’à correction. La validation du serveur et les règles de stock restent inchangées. `mobile-cart.spec.ts` couvre ces critères, `storefront.spec.ts` couvre les prix/quantités falsifiés et les données anciennes.
+
+La barre affiche « À vérifier » pendant la vérification ou en cas d’erreur ; elle ne présente pas un ancien sous-total comme validé. Aucun paiement ni notification n’est déclenché dans cette recette.
+
+Recette : onze tests navigateur passants (17,8 s), lint/build/TypeScript réussis. Captures locales `.local/ux-cart-mobile.jpg` et `.local/ux-cart-desktop.jpg`. Validation utilisateur encore attendue avant l’interface suivante.
+
+## Interfaces suivantes
+
+1. **Commande et confirmation** : champs regroupés, erreurs près des champs, frais avant validation, prévention des doublons et statut compréhensible ; vérifier clavier mobile, reprise après erreur et consentement WhatsApp facultatif.
+2. **Administration** : tableau de commandes prioritaire, statuts lisibles, recherche et actions adaptées au mobile ; formulaire produit progressif avec photo, prix, stock et validation ; vérifier accès, erreurs, sauvegarde et prévention de perte des modifications.
 
 Pour chaque interface : établir les critères avant modification, implémenter, vérifier les cinq largeurs et les états d’erreur pertinents, consigner les preuves et présenter l’aperçu avant l’itération suivante. Ne pas annoncer une amélioration d’adoption sans observation utilisateur.

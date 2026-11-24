@@ -1,5 +1,7 @@
 # Backlog prêt à décliner en Issues
 
+UX mobile, 24 novembre — panier : cartes et actions tactiles, sous-total hors livraison et accès à la commande persistants, blocage tant que le devis/stock n’est pas valide. Onze tests navigateur réussis, lint et compilation validés. Aperçu local à valider avant commande/confirmation ; pas de déploiement.
+
 UX mobile, 24 novembre — fiche produit : implémentation et recette terminées localement, treize scénarios navigateur vérifiés (dont un après correction de synchronisation du test), lint/build/types réussis. Validation utilisateur avant panier. Prix, stock et notifications métier inchangés ; pas de déploiement.
 
 UX mobile, 24 novembre : accueil validé par l’utilisateur ; catalogue implémenté et recette finale réussie (huit tests navigateur, lint, types, build). Filtres mobiles, tri, suppression indépendante et retour fiche vérifiés. Aperçu local en attente de validation utilisateur avant la fiche produit ; aucun déploiement de ces incréments.

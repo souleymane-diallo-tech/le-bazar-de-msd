@@ -1,5 +1,12 @@
 # Suivi — 24 novembre 2026
 
+## UX mobile — itération 4, panier
+
+- Articles en cartes, commandes de quantité/suppression séparées, sous-total hors livraison et accès à la commande fixes sur mobile. Récapitulatif latéral sur ordinateur, état vide et messages de prix/stock lisibles.
+- Poursuite bloquée pendant vérification, en cas d’erreur de devis ou de stock insuffisant ; reprise et correction réactivent la commande. Aucune modification des règles serveur de prix/stock.
+- Onze tests navigateur réussis (17,8 s) : cinq largeurs, cibles tactiles, quantités persistantes, suppression, panne de devis/reprise, stock insuffisant, prix falsifiés, données anciennes/corrompues. Lint et build/TypeScript réussis ; seule correction finale : accord singulier/pluriel du compteur, recompilé.
+- Aperçu local `/panier`, captures `.local/ux-cart-mobile.jpg` et `.local/ux-cart-desktop.jpg`. Aucun déploiement. Prochaine interface après validation : commande et confirmation.
+
 ## UX mobile — itération 3, fiche produit
 
 - Photo contenue, titre/prix compacts, variantes avant description, mention d’épuisement. Quantité et ajout persistants sur mobile ; confirmation amenée à l’écran, pied de page dégagé. Retour explicite au catalogue avec filtres/tri conservés, destination limitée à `/catalogue`.
