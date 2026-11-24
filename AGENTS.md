@@ -31,3 +31,7 @@ Mettre à jour docs/status.md, backlog et ADR lors de toute décision structuran
 ## Activation distante autorisée
 
 La demande explicite de créer/connecter le stockage privé et déployer la démo, poursuivie le 20 novembre 2026, autorise Vercel Blob privé en Preview, les migrations Neon additives, le compte propriétaire distant de sept jours et le contact WhatsApp de test dans la base distante. Cette autorisation remplace les restrictions locales historiques ci-dessus pour cet incrément uniquement. Aucun abonnement payant, paiement réel ou lancement commercial.
+
+## Notifications automatiques autorisées
+
+L’itération poursuivie le 22 novembre 2026 autorise Meta Cloud API sur le compte de test, l’outbox PostgreSQL, Vercel Queues et la reprise planifiée gratuite. L’utilisateur a validé le portefeuille Tech expert, la création de l’application de démonstration, les conditions Meta et un token limité au Test Messaging Account enregistré en secret Preview. Cette autorisation remplace l’interdiction historique d’envoi automatique pour cette démonstration. Le modèle doit être approuvé et la réception testée avant toute annonce de fonctionnement ; aucun abonnement ni lancement commercial. Voir ADR 012.

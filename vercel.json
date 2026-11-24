@@ -1,4 +1,22 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["fra1"]
+  "regions": ["fra1"],
+  "schedules": {
+    "whatsapp-outbox-recovery": {
+      "schedule": "*/15 * * * *",
+      "topic": "order-whatsapp-reconcile"
+    }
+  },
+  "functions": {
+    "src/app/api/queues/whatsapp-reconcile/route.ts": {
+      "experimentalTriggers": [
+        { "type": "queue/v2beta", "topic": "order-whatsapp-reconcile" }
+      ]
+    },
+    "src/app/api/queues/whatsapp/route.ts": {
+      "experimentalTriggers": [
+        { "type": "queue/v2beta", "topic": "order-whatsapp" }
+      ]
+    }
+  }
 }

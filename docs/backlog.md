@@ -1,5 +1,11 @@
 # Backlog prêt à décliner en Issues
 
+Confirmation client, 23 novembre : consentement facultatif et preuve serveur, notification transactionnelle distincte, liste privée de test et modèle UTILITY soumis. Validation locale : 45 unitaires, 30 PostgreSQL, 5 navigateur ciblés. Activation distante conditionnée à l’approbation Meta et à la recette réelle ; modèle encore PENDING. Expédition/livraison client hors de cet incrément.
+
+23 novembre : token système remplacé et déployé, modèle APPROVED, notification réelle DELIVERED via le webhook signé (une tentative, commande idempotente). Alias public basculé en mode Meta pour la démonstration ; commandes de recette annulées, stock libéré. Restent vérification du déclenchement planifié autonome, amélioration de la relance manuelle immédiate dans la fenêtre de déduplication, renouvellement du token avant le 22 janvier 2027 et préparation distincte du numéro commercial. Voir status.md et ADR 012.
+
+22 novembre : suivi WhatsApp déployé en simulation, migration Neon appliquée après sauvegarde, webhook Meta configuré et abonnement du compte vérifié. Une commande distante a traversé Vercel Queues sans doublon, puis a été annulée avec restitution du stock. Tests locaux : 43 unitaires, 27 PostgreSQL et 22 navigateur passants ; CI réussie, PR #5. Restent approbation Meta du modèle français (PENDING), recette de livraison réelle, déclenchement planifié et token durable avant activation continue. Token de test renouvelé en secret Preview, à charger au prochain déploiement. Voir ADR 012 et status.md.
+
 Stockage durable : proposition Vercel Blob privé, adaptateur et script de transfert préparés, activation distante et recette avant bascule encore à effectuer. Procédure dans `docs/deployment-preparation.md`, ADR 011.
 
 Photos, 19 novembre : import local de la photo principale et miniatures réalisés, formats et dimensions contrôlés. Stockage durable distant et transfert des fichiers requis avant déploiement de cet incrément. WhatsApp remplaçable dans les paramètres existants. ADR 010.

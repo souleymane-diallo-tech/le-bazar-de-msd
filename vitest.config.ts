@@ -17,6 +17,8 @@ export default defineConfig({
         extends: true,
         test: {
           name: "integration",
+          // These suites edit the shared singleton StoreSettings; isolate their lifetimes.
+          fileParallelism: false,
           include: ["tests/integration/**/*.test.ts"],
           environment: "node",
           testTimeout: 15000,

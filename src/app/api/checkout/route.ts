@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { after } from "next/server";
+import { dispatchNotifications } from "@/modules/notifications/queue";
 import { z } from "zod";
 import { getDb } from "@/lib/db";
 import { getEnvironment } from "@/lib/env";
@@ -45,6 +47,14 @@ export async function POST(request: Request) {
         input.accessToken,
       );
     } else throw new CommerceError("INVALID", 400);
+    if (action === "place")
+      after(async () => {
+        try {
+          await dispatchNotifications(getDb());
+        } catch {
+          console.error("NOTIFICATION_DISPATCH_PENDING");
+        }
+      });
     return NextResponse.json(result, {
       headers: { "Cache-Control": "no-store" },
     });

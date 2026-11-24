@@ -218,6 +218,7 @@ model Order {
   items           OrderItem[]
   statusHistory   OrderStatusHistory[]
   payments        Payment[]
+  notifications   OrderNotification[]
   shipment        Shipment?
   createdAt       DateTime             @default(now()) @db.Timestamptz(3)
   updatedAt       DateTime             @updatedAt @db.Timestamptz(3)
@@ -437,4 +438,39 @@ model AuditLog {
 
   @@index([targetType, targetId, createdAt])
   @@index([actorId, createdAt])
+}
+
+enum NotificationState {
+  PENDING
+  PROCESSING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  UNCERTAIN
+  SIMULATED
+  CANCELLED
+}
+
+model OrderNotification {
+  id                String @id @default(cuid())
+  orderId           String
+  order             Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  kind              String @default("ORDER_CREATED")
+  recipient         String
+  mode              String
+  state             NotificationState @default(PENDING)
+  attempts          Int @default(0)
+  attemptId         String? @unique
+  providerMessageId String? @unique
+  errorCode         String?
+  nextAttemptAt     DateTime @default(now()) @db.Timestamptz(3)
+  leaseUntil        DateTime? @db.Timestamptz(3)
+  queuedAt          DateTime? @db.Timestamptz(3)
+  deliveredAt       DateTime? @db.Timestamptz(3)
+  createdAt         DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([orderId, kind])
+  @@index([state, nextAttemptAt])
 }

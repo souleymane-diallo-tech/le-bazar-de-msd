@@ -20,6 +20,7 @@ export default async function AdminLayout({
           ["/admin", "Tableau de bord"],
           ["/admin/catalogue", "Catalogue & stock"],
           ["/admin/commandes", "Commandes"],
+          ["/admin/notifications", "WhatsApp"],
           ...(actor.roleId === "OWNER"
             ? [
                 ["/admin/livraison", "Livraison"],

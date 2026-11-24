@@ -18,7 +18,10 @@ export default async function CheckoutPage() {
       </p>
       <h1 className="editorial mb-8 mt-3 text-4xl">Votre commande de test</h1>
       {enabled ? (
-        <CheckoutForm zones={zones} />
+        <CheckoutForm
+          zones={zones}
+          customerWhatsappEnabled={!!getOrderPolicy().customerRecipients.length}
+        />
       ) : (
         <p>Les commandes sont actuellement désactivées.</p>
       )}

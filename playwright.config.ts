@@ -14,6 +14,11 @@ export default defineConfig({
   },
   webServer: {
     command: "npm run start",
+    env: {
+      WHATSAPP_MODE: "simulated",
+      WHATSAPP_CUSTOMER_ENABLED: "true",
+      WHATSAPP_CUSTOMER_TEST_RECIPIENTS: "12025550123",
+    },
     url: "http://localhost:3000/api/health",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,

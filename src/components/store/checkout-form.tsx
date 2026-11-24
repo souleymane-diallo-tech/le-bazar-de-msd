@@ -23,7 +23,9 @@ async function call(action: string, data: unknown) {
 }
 export function CheckoutForm({
   zones,
+  customerWhatsappEnabled = false,
 }: {
+  customerWhatsappEnabled?: boolean;
   zones: { id: string; name: string; feeXof: number }[];
 }) {
   const { items } = useCart();
@@ -91,8 +93,9 @@ export function CheckoutForm({
         items: basket,
         quoteToken: quote.quoteToken,
         demoAcknowledged: true,
+        customerWhatsappConsent: contact.customerWhatsappConsent === "on",
       });
-      // Persist only this explicitly fictitious request for retry after a lost response/reload.
+      // Tab-only recovery data may include the explicitly consented test WhatsApp number.
       sessionStorage.setItem("msd.pending-order.v1", JSON.stringify(request));
       const result = await call("place", request);
       const receipt = {
@@ -198,7 +201,31 @@ export function CheckoutForm({
         >
           Retour au catalogue
         </Link>
-        {confirmation.whatsappUrl ? (
+        {confirmation.customerNotification && (
+          <p className="mt-5 text-sm" role="status">
+            Confirmation WhatsApp client :{" "}
+            {["DELIVERED", "READ"].includes(confirmation.customerNotification)
+              ? "livrée"
+              : confirmation.customerNotification === "SENT"
+                ? "transmise à WhatsApp"
+                : ["FAILED", "UNCERTAIN", "CANCELLED"].includes(
+                      confirmation.customerNotification,
+                    )
+                  ? "envoi non confirmé ; votre commande reste enregistrée"
+                  : confirmation.customerNotification === "SIMULATED"
+                    ? "simulée, aucun message envoyé"
+                    : "en attente d’envoi"}
+            .
+          </p>
+        )}
+        {confirmation.automaticNotification ? (
+          <p className="mt-6 rounded-xl border border-border bg-white p-5 text-sm">
+            Votre commande est enregistrée. Une notification WhatsApp au gérant
+            est prise en charge par la boutique. Vous n’avez aucun message à
+            envoyer ; la notification ne confirme ni la livraison ni le
+            paiement.
+          </p>
+        ) : confirmation.whatsappUrl ? (
           <div className="mt-6 rounded-xl border border-border bg-white p-5">
             <p className="text-sm">
               Transmettre au gérant les articles, le total et vos coordonnées de
@@ -244,8 +271,10 @@ export function CheckoutForm({
         <fieldset disabled={attempted || busy} className="space-y-5">
           <h2 className="editorial text-2xl">Coordonnées de test</h2>
           <p className="text-sm text-muted-foreground">
-            Utilisez uniquement des informations fictives. Aucun achat, paiement
-            ou envoi réel.
+            Utilisez des coordonnées de livraison fictives. Seul le numéro
+            WhatsApp de test autorisé peut être réel. Aucun achat, paiement ou
+            livraison réelle. Les notifications WhatsApp activées sont
+            réellement envoyées.
           </p>
           <label className="block">
             Nom fictif
@@ -270,6 +299,37 @@ export function CheckoutForm({
             />
             <span className="text-xs">Format : +221 suivi de 9 chiffres.</span>
           </label>
+          {customerWhatsappEnabled && (
+            <fieldset className="rounded-lg border p-4 space-y-3">
+              <legend className="px-1 font-semibold">
+                Confirmation WhatsApp facultative
+              </legend>
+              <label className="block">
+                Votre numéro WhatsApp de test
+                <input
+                  name="customerWhatsapp"
+                  type="tel"
+                  maxLength={40}
+                  placeholder="+ indicatif et numéro"
+                  className={field}
+                  aria-describedby="whatsapp-test-help"
+                />
+              </label>
+              <p id="whatsapp-test-help" className="text-xs">
+                Utilisez uniquement un numéro de test vérifié auprès de la
+                boutique. Aucun message promotionnel.
+              </p>
+              <label className="flex items-start gap-3 text-sm">
+                <input
+                  name="customerWhatsappConsent"
+                  type="checkbox"
+                  className="mt-1 size-5"
+                />
+                J’accepte de recevoir sur ce numéro, via WhatsApp (Meta), la
+                confirmation de cette commande avec ses articles et son montant.
+              </label>
+            </fieldset>
+          )}
           <label className="block">
             Zone de livraison
             <select name="zoneId" required className={field}>

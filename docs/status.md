@@ -1,4 +1,40 @@
-# Suivi — 20 novembre 2026
+# Suivi — 23 novembre 2026
+
+## Confirmation WhatsApp client — préparation du 23 novembre 2026
+
+- Autorisée : confirmation de commande uniquement, avec consentement facultatif, numéro WhatsApp de test séparé des coordonnées fictives, référence/articles/total. Notifications gérant et client distinctes ; aucun lien administrateur dans le message client.
+- Preuve de consentement horodatée et versionnée dans contactSnapshot ; outbox transactionnelle et unicité commande/type existantes réutilisées, sans migration. Liste privée de destinataires vérifiés contrôlée côté serveur à la commande et à l’envoi. Aucun numéro réel dans Git.
+- Modèle msd_customer_order_received soumis à Meta en français, catégorie UTILITY ; dernier état PENDING. Configuration Preview préparée, activation client false. Le numéro sénégalais du gérant reste en attente de vérification ; numéro actuel inchangé.
+- Vérification : 45 tests unitaires et 30 PostgreSQL passants ; cinq tests navigateur checkout/admin passants, incluant consentement clavier, absence de doublon, reprise après perte de réponse et largeurs 320/375/390/768/1440. Lint, format et build Webpack/TypeScript réussis. PostgreSQL local redémarré après récupération automatique.
+- Déploiement READY dpl_Fk1PhJHGYnse4PEtsYZJNap6WmLW, commit 206e676, Preview fra1 ; alias public basculé après recette. Catalogue, santé, connexion propriétaire, upload et refus anonyme vérifiés ; option client masquée et tentative API forcée rejetée (400 WHATSAPP_TEST_RECIPIENT). Sessions de recette fermées.
+- Restant : approbation du modèle, activation dans la Preview, recette de livraison client réelle avant annonce de fonctionnement. Aucune confirmation client réelle envoyée à cette étape.
+
+## WhatsApp automatique — recette réelle réussie le 23 novembre 2026
+
+- Token SYSTEM_USER valide, limité aux éléments de test autorisés, enregistré en secret Preview et chargé par le déploiement READY dpl_8eeKAWeZKUCeED6GUGafmFPW4T9L (commit 2283f1c, Next.js, fra1, target null). Expiration confirmée : 22 janvier 2027 à 12:16:36 UTC ; renouvellement et redéploiement requis avant échéance.
+- Modèle français msd_order_created APPROVED ; numéro émetteur de test CONNECTED. Le premier envoi a été explicitement refusé META_10 : accès granulaire insuffisant. Après accord distinct, accès total accordé au seul Test Messaging Account ; rôle Employee du portefeuille conservé. Voir ADR 012.
+- Nouvelle commande fictive via le checkout distant, rejeu idempotent sans doublon : notification passée par Vercel Queues, acceptée puis DELIVERED en une tentative. Le callback réel signé a mis à jour PostgreSQL ; aucune simulation de statut utilisée. Aucune donnée personnelle client réelle transmise.
+- Alias public https://le-bazar-de-msd-demo.vercel.app basculé sur cette Preview après recette. Mode meta actif pour les nouvelles commandes de démonstration. Aucun lancement commercial ni paiement activé.
+- Les deux commandes techniques ont été annulées et leurs stocks libérés. Santé, accueil, catalogue, contact, robots, connexion propriétaire et refus anonyme vérifiés après bascule ; sessions de recette fermées.
+- Limites : reprise planifiée autonome non encore attestée ; une relance immédiate dans la même fenêtre de déduplication de cinq minutes peut attendre la reprise. Le compte de test reste limité aux destinataires vérifiés. Migration vers un numéro commercial et paramètres définitifs à autoriser séparément.
+
+### Historique du 22 novembre
+
+## Notifications WhatsApp — déployées en simulation
+
+- Preview READY `dpl_H45aXLXaKPjKdH5siYo3Ed3avY7a`, commit `2763f4d`, alias public basculé après recette. PR brouillon #5, CI GitHub réussie ; aucune fusion main.
+- Recette distante : accès propriétaire et protection anonyme vérifiés, commande fictive rejouée sans doublon, une notification passée par Vercel Queues et terminée SIMULATED en une tentative. Commande annulée et stock libéré. Catalogue, santé, contact et robots vérifiés sur l’alias final.
+- Webhook : challenge vérifié sur la Preview et URL enregistrée par Meta sur l’alias ; champ messages abonné. Application ajoutée à subscribed_apps du compte de test et présence vérifiée par API. Requêtes non signées refusées (401). Un callback de test a été déclenché dans Meta ; aucune livraison réelle ni traitement de statut réel n’est revendiqué.
+- Blocage externe : modèle français toujours PENDING le 22 novembre après renouvellement du token temporaire. Mode `simulated` maintenu ; bouton manuel disponible. Le token renouvelé est enregistré en secret Preview mais sera chargé par le prochain déploiement. L’application Meta non publiée peut limiter les callbacks ; recette de livraison réelle et accès serveur durable nécessaires avant activation continue.
+- La reprise Schedules toutes les quinze minutes est incluse dans la configuration déployée ; son déclenchement autonome n’est pas encore attesté. Aucun abonnement ni paiement activé.
+
+### Préparation et vérifications
+
+- Branche `features/whatsapp-order-notifications` : outbox transactionnelle, worker Vercel Queues, reprise planifiée, webhook signé, suivi et relance propriétaire. Les résultats ambigus ne sont pas renvoyés automatiquement.
+- Meta : application de démonstration créée dans le portefeuille autorisé ; compte et destinataire de test vérifiés, token temporaire enregistré en secret Preview. Le projet n’étant pas lié à Git, Vercel refuse la restriction des variables par branche ; la variable est limitée à Preview et l’envoi reste désactivé.
+- Modèle français `msd_order_created` soumis en catégorie UTILITY, en attente de validation au moment de cette note. Clé de signature et jeton de vérification configurés comme secrets Preview après réauthentification utilisateur.
+- Vérification locale : lint réussi, 43 tests unitaires, 27 PostgreSQL et 22 navigateur passants, incluant administration WhatsApp aux cinq largeurs et clavier. Audit production : zéro vulnérabilité signalée. Build final Webpack et TypeScript réussis après protection supplémentaire des journaux de worker (Turbopack Windows a rencontré une erreur interne CSS).
+- Sauvegarde Neon vérifiée (67 331 octets), migration additive appliquée ; mode distant configuré en simulation pour la recette. Aucun envoi automatique réel ni déploiement de cet incrément revendiqué. La boutique publique conserve la version du 20 novembre jusqu’à recette. Aucun abonnement ni paiement activé.
 
 ## Activation distante du 20 novembre 2026
 
