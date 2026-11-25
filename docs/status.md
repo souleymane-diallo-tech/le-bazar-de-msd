@@ -1,4 +1,10 @@
-# Suivi — 24 novembre 2026
+# Suivi — 25 novembre 2026
+
+## UX mobile — itération 6, états d’interface
+
+- États transversaux ajoutés : bannière hors ligne, chargements de route et de panier, boutons occupés sans double soumission, erreur/réessai, fallback d’image, 404 produit, retrait annulable et retour en haut avec focus clavier.
+- Critères et scénarios sont décrits dans `docs/ux-mobile.md` et `tests/e2e/interface-states.spec.ts`. Le build Webpack, TypeScript et lint réussissent ; la recette navigateur compilée est encore à exécuter après libération du port local 3000.
+- Aucun changement métier, paiement ou notification réelle. Aperçu local `/catalogue`, `/panier` et `/commande`.
 
 ## UX mobile — itération 5, commande et confirmation
 

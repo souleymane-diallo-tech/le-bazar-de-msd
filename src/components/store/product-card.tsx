@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "./product-image";
 import Link from "next/link";
 import { ArrowUpRight, ImageIcon } from "lucide-react";
 import type { CatalogProduct } from "@/modules/catalog/types";

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "./product-image";
 import Link from "next/link";
 import { ShoppingBag, Share2, Check, Truck } from "lucide-react";
 import type { CatalogProduct } from "@/modules/catalog/types";
@@ -27,6 +27,7 @@ export function ProductDetails({
     message: string;
   } | null>(null);
   const [shareMessage, setShareMessage] = useState("");
+  const [sharing, setSharing] = useState(false);
   const feedbackRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (message) feedbackRef.current?.scrollIntoView({ block: "center" });
@@ -40,6 +41,8 @@ export function ProductDetails({
       )
     : null;
   async function share() {
+    if (sharing) return;
+    setSharing(true);
     try {
       if (navigator.share)
         await navigator.share({
@@ -55,6 +58,8 @@ export function ProductDetails({
         setShareMessage(
           "Partage indisponible. Copiez l’adresse de cette page.",
         );
+    } finally {
+      setSharing(false);
     }
   }
   return (
@@ -196,6 +201,7 @@ export function ProductDetails({
                 onChange={(event) => {
                   const next = Number(event.target.value);
                   if (Number.isInteger(next)) setQuantity(next);
+                  setMessage(null);
                 }}
                 required
                 disabled={!variant.available}
@@ -258,10 +264,11 @@ export function ProductDetails({
           <button
             type="button"
             onClick={share}
+            disabled={sharing}
             className="inline-flex min-h-11 items-center gap-2 text-sm underline"
           >
             <Share2 size={16} aria-hidden="true" />
-            Partager ce produit
+            {sharing ? "Ouverture du partage…" : "Partager ce produit"}
           </button>
           {contactUrl && (
             <a

@@ -1,5 +1,7 @@
 # Backlog prêt à décliner en Issues
 
+UX mobile, 25 novembre — états d’interface : hors ligne, chargement, action occupée, erreur/réessai, fallback image, 404, annulation et retour en haut testés dans `interface-states.spec.ts`. Build/types/lint passants ; recette compilée à finaliser sur le serveur local. Aucun déploiement ni message WhatsApp réel.
+
 UX mobile, 24 novembre — commande/confirmation : groupes de champs, étapes visibles, erreurs locales et focus sur le devis/confirmation. Six scénarios navigateur passants en simulation, dont reprise sans doublon, consentement facultatif et responsive. Validation locale avant administration ; aucun déploiement ni message WhatsApp réel de recette.
 
 UX mobile, 24 novembre — panier : cartes et actions tactiles, sous-total hors livraison et accès à la commande persistants, blocage tant que le devis/stock n’est pas valide. Onze tests navigateur réussis, lint et compilation validés. Aperçu local à valider avant commande/confirmation ; pas de déploiement.

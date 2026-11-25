@@ -46,6 +46,18 @@ input {
   outline: 3px solid #235eba;
   outline-offset: 4px;
 }
+main :is(input, select, textarea, button, a) {
+  scroll-margin-block: 190px 120px;
+}
+button:not(:disabled),
+a,
+select,
+summary {
+  touch-action: manipulation;
+}
+button:not(:disabled):active {
+  filter: brightness(0.92);
+}
 .editorial {
   font-family: Georgia, "Times New Roman", serif;
 }
@@ -66,5 +78,6 @@ input {
   *::after {
     scroll-behavior: auto !important;
     transition: none !important;
+    animation: none !important;
   }
 }

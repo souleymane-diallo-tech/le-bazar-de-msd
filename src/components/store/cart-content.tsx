@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "./product-image";
 import Link from "next/link";
 import { ShoppingBag, Trash2 } from "lucide-react";
-import { useCart, setCartQuantity } from "@/modules/cart/client";
+import { useCart, setCartQuantity, addToCart } from "@/modules/cart/client";
 import { parseCart, type CartQuote } from "@/modules/cart/rules";
 import { formatPrice } from "@/modules/catalog/rules";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,14 @@ export function CartContent({
 }: {
   checkoutEnabled?: boolean;
 }) {
-  const { raw, items } = useCart();
+  const { raw, items, ready } = useCart();
+  const [notice, setNotice] = useState("");
+  const [removed, setRemoved] = useState<{
+    variantId: string;
+    quantity: number;
+    available: number;
+    priceXof: number;
+  } | null>(null);
   const [revision, setRevision] = useState(0);
   const [result, setResult] = useState<{
     key: string;
@@ -51,28 +58,69 @@ export function CartContent({
   const verified = !loading && !result?.error && Boolean(quote);
   const canCheckout = verified && !quote?.hasIssues;
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const feedback = (
+    <div role="status" aria-live="polite">
+      {notice && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-primary/20 bg-secondary px-4 py-2 text-sm">
+          <span>{notice}</span>
+          {removed && (
+            <button
+              className="min-h-11 font-semibold underline"
+              type="button"
+              onClick={() => {
+                const result = addToCart(
+                  removed.variantId,
+                  removed.quantity,
+                  removed.available,
+                  removed.priceXof,
+                );
+                setNotice(
+                  result.ok
+                    ? "Article rétabli dans le panier."
+                    : result.message,
+                );
+                if (result.ok) setRemoved(null);
+              }}
+            >
+              Annuler le retrait
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+  if (!ready)
+    return (
+      <p role="status" className="rounded-xl bg-secondary p-5">
+        Chargement de votre panier…
+      </p>
+    );
   if (!items.length)
     return (
-      <div className="rounded-2xl border border-primary/15 bg-white px-5 py-10 text-center">
-        <ShoppingBag
-          size={40}
-          className="mx-auto text-muted-foreground"
-          aria-hidden="true"
-        />
-        <h2 className="mt-5 text-2xl font-bold">
-          Votre panier attend ses essentiels.
-        </h2>
-        <p className="mx-auto mt-4 max-w-sm text-muted-foreground">
-          Parcourez la collection et ajoutez les objets qui vous plaisent.
-        </p>
-        <Button asChild className="mt-7">
-          <Link href="/catalogue">Découvrir la collection</Link>
-        </Button>
+      <div>
+        {feedback}
+        <div className="rounded-2xl border border-primary/15 bg-white px-5 py-10 text-center">
+          <ShoppingBag
+            size={40}
+            className="mx-auto text-muted-foreground"
+            aria-hidden="true"
+          />
+          <h2 className="mt-5 text-2xl font-bold">
+            Votre panier attend ses essentiels.
+          </h2>
+          <p className="mx-auto mt-4 max-w-sm text-muted-foreground">
+            Parcourez la collection et ajoutez les objets qui vous plaisent.
+          </p>
+          <Button asChild className="mt-7">
+            <Link href="/catalogue">Découvrir la collection</Link>
+          </Button>
+        </div>
       </div>
     );
   return (
     <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr] lg:gap-8">
       <div aria-busy={loading}>
+        {feedback}
         <p className="mb-3 text-sm text-muted-foreground">
           {itemCount} article{itemCount > 1 ? "s" : ""} dans votre panier
         </p>
@@ -158,12 +206,14 @@ export function CartContent({
                       <select
                         id={`qty-${line.variantId}`}
                         value={item.quantity}
-                        onChange={(event) =>
+                        onChange={(event) => {
+                          setNotice("Quantité modifiée.");
+                          setRemoved(null);
                           setCartQuantity(
                             line.variantId,
                             Number(event.target.value),
-                          )
-                        }
+                          );
+                        }}
                         className="min-h-11 rounded-lg border border-border bg-white px-3 text-base"
                       >
                         {Array.from(
@@ -183,7 +233,16 @@ export function CartContent({
                       <button
                         type="button"
                         aria-label={`Retirer ${line.name}`}
-                        onClick={() => setCartQuantity(line.variantId, 0)}
+                        onClick={() => {
+                          setRemoved({
+                            variantId: line.variantId,
+                            quantity: item.quantity,
+                            available: line.available,
+                            priceXof: line.priceXof ?? item.seenPriceXof ?? 0,
+                          });
+                          setNotice(`${line.name} retiré du panier.`);
+                          setCartQuantity(line.variantId, 0);
+                        }}
                         className="inline-flex min-h-11 items-center gap-1 text-sm underline"
                       >
                         <Trash2 size={15} aria-hidden="true" />

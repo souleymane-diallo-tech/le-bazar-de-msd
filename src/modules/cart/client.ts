@@ -42,10 +42,17 @@ function write(items: CartItem[]) {
 }
 export function useCart() {
   const raw = useSyncExternalStore(subscribe, read, () => null);
+  const ready = useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
+  const items = parseCart(raw);
   return {
     raw,
-    items: parseCart(raw),
-    count: parseCart(raw).reduce((sum, item) => sum + item.quantity, 0),
+    ready,
+    items,
+    count: items.reduce((sum, item) => sum + item.quantity, 0),
   };
 }
 export function addToCart(

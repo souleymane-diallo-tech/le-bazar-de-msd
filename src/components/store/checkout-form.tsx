@@ -11,11 +11,21 @@ type Confirmation = Awaited<ReturnType<typeof readConfirmation>>;
 const field =
   "mt-1 min-h-12 w-full rounded-lg border border-primary/30 bg-white px-3 py-2 text-base aria-invalid:border-red-700";
 async function call(action: string, data: unknown) {
-  const response = await fetch("/api/checkout", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action, data }),
-  });
+  let response: Response;
+  try {
+    response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action, data }),
+      signal: AbortSignal.timeout(20000),
+    });
+  } catch {
+    throw new Error(
+      action === "place"
+        ? "Réponse indisponible. Votre commande a peut-être été enregistrée. Utilisez « Retrouver ma dernière confirmation » avant de recommencer."
+        : "Connexion indisponible ou trop lente. Réessayez ; votre saisie est conservée.",
+    );
+  }
   const result = await response.json();
   if (!response.ok)
     throw Object.assign(new Error(result.error), { status: response.status });
@@ -28,7 +38,9 @@ export function CheckoutForm({
   customerWhatsappEnabled?: boolean;
   zones: { id: string; name: string; feeXof: number }[];
 }) {
-  const { items } = useCart();
+  const { items, ready } = useCart();
+  const operation = useRef(false);
+  const [busyLabel, setBusyLabel] = useState("Vérification en cours…");
   const [quote, setQuote] = useState<Quote | null>(null);
   const [contact, setContact] = useState<Record<string, FormDataEntryValue>>(
     {},
@@ -72,6 +84,9 @@ export function CheckoutForm({
   const [quotedKey, setQuotedKey] = useState("");
   async function prepare(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (operation.current) return;
+    operation.current = true;
+    setBusyLabel("Calcul du total en cours…");
     setError("");
     setBusy(true);
     const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -97,11 +112,15 @@ export function CheckoutForm({
     } catch (e) {
       setError((e as Error).message);
     } finally {
+      operation.current = false;
       setBusy(false);
     }
   }
   async function submit() {
-    if (!quote || !credentials || quotedKey !== inputKey) return;
+    if (operation.current || !quote || !credentials || quotedKey !== inputKey)
+      return;
+    operation.current = true;
+    setBusyLabel("Enregistrement de votre commande…");
     setBusy(true);
     setError("");
     setAttempted(true);
@@ -140,10 +159,14 @@ export function CheckoutForm({
       }
       setError((e as Error).message);
     } finally {
+      operation.current = false;
       setBusy(false);
     }
   }
   async function recover() {
+    if (operation.current) return;
+    operation.current = true;
+    setBusyLabel("Recherche de votre confirmation…");
     setBusy(true);
     setError("");
     try {
@@ -172,6 +195,7 @@ export function CheckoutForm({
       }
       setError((e as Error).message);
     } finally {
+      operation.current = false;
       setBusy(false);
     }
   }
@@ -224,7 +248,7 @@ export function CheckoutForm({
           onClick={recover}
           disabled={busy}
         >
-          Actualiser le suivi
+          {busy ? "Actualisation en cours…" : "Actualiser le suivi"}
         </Button>{" "}
         <Link
           href="/catalogue"
@@ -467,7 +491,7 @@ export function CheckoutForm({
               busy || !items.length || !zones.length || !!placed || attempted
             }
           >
-            Vérifier le total
+            {busy ? "Vérification en cours…" : "Vérifier le total"}
           </Button>
         </fieldset>
       </form>
@@ -479,7 +503,12 @@ export function CheckoutForm({
         aria-live="polite"
       >
         <h2 className="text-xl font-bold">Avant de confirmer</h2>
-        {!items.length && (
+        {!ready && (
+          <p role="status" className="mt-4">
+            Chargement de votre panier…
+          </p>
+        )}
+        {ready && !items.length && (
           <p className="mt-4">
             Votre panier est vide.{" "}
             <Link href="/catalogue" className="underline">
@@ -519,7 +548,7 @@ export function CheckoutForm({
               disabled={busy || quotedKey !== inputKey || !!placed}
               onClick={submit}
             >
-              Confirmer la commande de test
+              {busy ? busyLabel : "Confirmer la commande de test"}
             </Button>
             {quotedKey !== inputKey && (
               <p className="mt-3">
@@ -541,7 +570,7 @@ export function CheckoutForm({
         )}
         {busy && (
           <p role="status" className="mt-4">
-            Vérification en cours…
+            {busyLabel}
           </p>
         )}
         <button

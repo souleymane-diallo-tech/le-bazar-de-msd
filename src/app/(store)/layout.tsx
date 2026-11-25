@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MapPin, ArrowUpRight, Search } from "lucide-react";
 import { CartLink } from "@/components/store/cart-link";
+import { StoreExperience } from "@/components/store/store-experience";
 import { getOrderPolicy } from "@/modules/orders/runtime";
 import { getPublicSettings } from "@/modules/settings/read";
 export const dynamic = "force-dynamic";
@@ -111,6 +112,7 @@ export default async function StoreLayout({
           </nav>
         </div>
       </header>
+      <StoreExperience />
       {children}
       <footer className="mt-12 border-t border-primary/20">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:grid-cols-2 sm:px-10">

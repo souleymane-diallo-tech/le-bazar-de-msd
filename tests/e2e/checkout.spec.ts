@@ -309,7 +309,30 @@ test("checkout clavier mobile, confirmation privée, traitement et collecte sép
   await page
     .getByRole("button", { name: "Confirmer la commande de test" })
     .focus();
-  await page.keyboard.press("Enter");
+  let releasePlacement!: () => void;
+  const placementGate = new Promise<void>((resolve) => {
+    releasePlacement = resolve;
+  });
+  await page.route("**/api/checkout", async (route) => {
+    if (route.request().postDataJSON()?.action === "place") await placementGate;
+    await route.continue();
+  });
+  try {
+    await page.keyboard.press("Enter");
+    await expect(
+      page.getByRole("button", {
+        name: "Enregistrement de votre commande…",
+        exact: true,
+      }),
+    ).toBeDisabled();
+    await expect(
+      page
+        .getByRole("status")
+        .filter({ hasText: "Enregistrement de votre commande" }),
+    ).toBeVisible();
+  } finally {
+    releasePlacement();
+  }
   await expect(
     page.getByRole("heading", { name: "Votre commande de test est reçue." }),
   ).toBeVisible();

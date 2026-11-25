@@ -67,6 +67,21 @@ Critères : champs invalides signalés près de la saisie ; devis et frais visib
 
 ## Interfaces à venir
 
+## Itération 6 — États d’interface (25 novembre)
+
+Objectif : rendre chaque action compréhensible et récupérable sur mobile, y compris lorsque le réseau, une image ou une page échoue.
+
+| Critère d’acceptation                                                                              | Preuve                                                                      |
+| -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Une coupure réseau est annoncée sans effacer la saisie                                             | `interface-states.spec.ts`, bannière `role=status`                          |
+| Les actions lentes indiquent leur progression et désactivent le doublon                            | Tests devis/confirmation, libellés « Vérification… » et « Enregistrement… » |
+| Le retrait du dernier article est annulable                                                        | Test panier avec action « Annuler le retrait »                              |
+| Une photo indisponible garde son cadre et son texte alternatif utile                               | Test fallback image                                                         |
+| Le produit absent propose un retour à la collection                                                | Test 404 produit                                                            |
+| Après un long défilement, le retour en haut respecte la réduction de mouvement et le focus clavier | Test 390 px                                                                 |
+
+Les états de chargement de route, de formulaire et d’image sont maintenant explicites ; aucune valeur de prix ou de stock n’est présentée comme validée pendant une attente. Recette locale : lint, TypeScript et build Webpack réussis. Les scénarios navigateur restent à exécuter sur le serveur compilé avant annonce finale.
+
 Recette de l’itération 5 : six scénarios navigateur réussis (46,5 s), build/TypeScript validés. Captures locales `.local/ux-checkout-mobile.jpg`, `.local/ux-confirmation-mobile.png` et `.local/ux-checkout-desktop.png`. Les notifications sont simulées dans cette recette ; aucun message externe envoyé.
 
 1. **Administration** : tableau de commandes prioritaire, statuts lisibles, recherche et actions adaptées au mobile ; formulaire produit progressif avec photo, prix, stock et validation ; vérifier accès, erreurs, sauvegarde et prévention de perte des modifications.
